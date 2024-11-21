@@ -1,0 +1,2352 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Session02 Installing R packages, I/O + a deep dive into the data.frame class</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><img id="logo" style="width: 30px;" src="DK_Logo_White_NoTitle_25.png" /></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Sessions
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="s00_installations.html">S00. R and Python Installations</a>
+    </li>
+    <li>
+      <a href="s01_introduction_to_r.html">S01. Introduction to R</a>
+    </li>
+    <li>
+      <a href="s02_dataframe.html">S02. I/O, Packages, and data.frame</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="l01_lists.html">L01. Data Types, Lists</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Notes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="n00_installations.html">N00. R and Python Installations</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="video.html">Video</a>
+</li>
+<li>
+  <a href="resources.html">Resources</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="media.html">Media</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Session02 Installing R packages, I/O + a
+deep dive into the data.frame class</h1>
+<h4 class="author">Goran S. Milovanovic, PhD</h4>
+
+</div>
+
+
+<p><img src="DK_Logo_100.png" /></p>
+<hr />
+<div
+id="session-02-installing-r-packages-io-a-deep-dive-into-the-data.frame-class"
+class="section level1">
+<h1>Session 02: Installing R packages, I/O + a deep dive into the
+data.frame class</h1>
+<p><strong>Feedback</strong> should be send to
+<code>goran.milovanovic@datakolektiv.com</code>. ***</p>
+<div id="what-do-we-want-to-do-today" class="section level3">
+<h3>What do we want to do today?</h3>
+<p>Data Science is, well, all about data. But data lives somewhere.
+Where? How do we find them? In this session we will learn about the
+basic I/O (Input/Output) operations in R: how to load the disk stored
+data written in various formats in R, and how to store them back. We
+will learn that sometimes it makes no difference if the dataset lives on
+the Internet or on our local hard drives. We will learn to perform the
+basic I/O operations in base R before we start meeting the friendly <a
+href="https://www.tidyverse.org/">tidyverse</a> packages - <a
+href="https://readr.tidyverse.org/">readr</a>, for example - that
+provide improved and somewhat more comfortable to work with procedures.
+We will learn more about the <code>data.frame</code> in R: what is
+subsetting and is it done, how to summarize a dataset represented by a
+<code>data.frame</code> in R, how to bind dataframes together. We
+continue to play with lists too and start learning about simple
+operations on strings in base R.</p>
+</div>
+<div id="prerequisits." class="section level3">
+<h3>0. Prerequisits.</h3>
+<ul>
+<li>Create a directory named <code>_data</code> in the directory where
+you want to store your R code for this session.</li>
+<li>Go to the <a href="http://insideairbnb.com/get-the-data.html">Inside
+Airbnb</a> page and download the <a
+href="http://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2020-12-12/visualisations/listings.csv"><code>listings.csv</code></a>
+<code>csv</code> file (under the <em>Amsterdam, North Holland, The
+Netherlands</em> section). Let’s learn something right now:
+<code>.csv</code> is short for <strong>comma separated values</strong>
+and represents one the most frequently observed file formats used in
+practice. The entries in this file are separated by commas: hence the
+name. The <code>csv</code> format has many close relatives, of which
+<code>tsv</code> - <strong>tab separated values</strong> - is probably
+the most famous one.</li>
+<li>Open the <code>listings.csv</code> file in Microsoft Excel or Libre
+Calc and save it using the same filename but as an <code>.xlsx</code>
+file in your <code>_data</code> directory.</li>
+</ul>
+</div>
+<div id="read-data-inspect-a-data-frame-store-data"
+class="section level3">
+<h3>1. Read data + inspect a data frame + store data</h3>
+<p>Again, everything happens in a directory somewhere. You really need
+to keep the organization of your directories neat!</p>
+<p>Remember, when we work in R, there is always something called a
+<strong>working directory</strong>. I know you have opened and R session
+in RStudio: ask yourself “Where am I?”:</p>
+<pre class="r"><code>getwd()</code></pre>
+<pre><code>## [1] &quot;/Users/goransm/Work/___DataKolektiv/__freeDataKolektiv/_devsify&quot;</code></pre>
+<pre class="r"><code>list.files(getwd())</code></pre>
+<pre><code>##   [1] &quot;_data&quot;                                    &quot;_devsify.Rproj&quot;                          
+##   [3] &quot;_site&quot;                                    &quot;_site.yml&quot;                               
+##   [5] &quot;01_think_together_dkserver.png&quot;           &quot;02_explore_possibilities_dkserver.png&quot;   
+##   [7] &quot;03_training_dkserver.png&quot;                 &quot;04_wikidata_dkserver.png&quot;                
+##   [9] &quot;about.html&quot;                               &quot;about.Rmd&quot;                               
+##  [11] &quot;academic.png&quot;                             &quot;AdvAnalyticsR2024_Banner.jpeg&quot;           
+##  [13] &quot;aleksandar_cvetkovic_introMLpython.jpg&quot;   &quot;aleksandar_cvetkovic_introMLpython.png&quot;  
+##  [15] &quot;AleksandarNarancic175.png&quot;                &quot;AleksandarPanovski175.png&quot;               
+##  [17] &quot;analysttraining.png&quot;                      &quot;businesstraining.png&quot;                    
+##  [19] &quot;DataScienceSessions.jpg&quot;                  &quot;devsify_DK_logo.png&quot;                     
+##  [21] &quot;devsify_GSM500px__Banner.png&quot;             &quot;DK_Logo_100.png&quot;                         
+##  [23] &quot;DK_Logo_400.png&quot;                          &quot;DK_logo_horizontal.png&quot;                  
+##  [25] &quot;DK_Logo_White_150.png&quot;                    &quot;DK_Logo_White_NoTitle_25.png&quot;            
+##  [27] &quot;dkmlconfpalic2023.png&quot;                    &quot;dkserver_consulting.jpg&quot;                 
+##  [29] &quot;dkserver_courses_CustomRTraining.jpg&quot;     &quot;dkserver_courses_DSSV1.jpg&quot;              
+##  [31] &quot;dkserver_courses_IntroDataManagement.jpg&quot; &quot;dkserver_courses.jpg&quot;                    
+##  [33] &quot;dkserver_wikidata.jpg&quot;                    &quot;DSCEurope2021.png&quot;                       
+##  [35] &quot;dscEurope2022_BDTTechTutorial.png&quot;        &quot;DSCEurope2022_panel.png&quot;                 
+##  [37] &quot;dsceurope2023.png&quot;                        &quot;dss_vol05_python2023_500px.png&quot;          
+##  [39] &quot;DSS_Vol06_Py_Banner_OPENED_02.png&quot;        &quot;dss03python2023_banner500px.png&quot;         
+##  [41] &quot;dss04python2023_banner500px.png&quot;          &quot;DSS05_2023_srb.png&quot;                      
+##  [43] &quot;dsss2022_courses.jpg&quot;                     &quot;dsss2022_header.jpg&quot;                     
+##  [45] &quot;dssvol06_py_banner.jpeg&quot;                  &quot;eRum2018.png&quot;                            
+##  [47] &quot;eRum2020.png&quot;                             &quot;favicon.png&quot;                             
+##  [49] &quot;filipinterviewInstitutZaFiziku.jpg&quot;       &quot;footer.html&quot;                             
+##  [51] &quot;foundationaltraining.png&quot;                 &quot;freeDK_Expectations.png&quot;                 
+##  [53] &quot;freeDK_Organization.png&quot;                  &quot;freeDK_Program.png&quot;                      
+##  [55] &quot;freeDK_Rules.png&quot;                         &quot;freeDK_TechStack.png&quot;                    
+##  [57] &quot;Full_GPT_architecture.png&quot;                &quot;github.png&quot;                              
+##  [59] &quot;goran_milovanovic_introMLpython.jpg&quot;      &quot;goran_milovanovic_introMLpython.png&quot;     
+##  [61] &quot;GSM_Krakow2024_invert.jpg&quot;                &quot;GSM_Krakow2024.jpg&quot;                      
+##  [63] &quot;gsm_round_175px.png&quot;                      &quot;Hallucination_CronenbergStereo.png&quot;      
+##  [65] &quot;header.html&quot;                              &quot;HeikeThomys175px.jpg&quot;                    
+##  [67] &quot;HipkonLajt2020.png&quot;                       &quot;igf_identifying_the_impact.png&quot;          
+##  [69] &quot;IlijaLazarevic175px.jpg&quot;                  &quot;index.html&quot;                              
+##  [71] &quot;index.Rmd&quot;                                &quot;InspiraHub2023Meetup.png&quot;                
+##  [73] &quot;instagram.png&quot;                            &quot;IntroMLPython_Head_eng.png&quot;              
+##  [75] &quot;IntroMLPython_Head.png&quot;                   &quot;JelisavetaMilovanovic175px.jpeg&quot;         
+##  [77] &quot;l01_lists.html&quot;                           &quot;l01_lists.Rmd&quot;                           
+##  [79] &quot;linkedin.png&quot;                             &quot;Logo-2C-21px-TM.png&quot;                     
+##  [81] &quot;machinery.png&quot;                            &quot;media.html&quot;                              
+##  [83] &quot;media.Rmd&quot;                                &quot;MilanoR2019.png&quot;                         
+##  [85] &quot;MilicaDjurkovic175px.jpg&quot;                 &quot;MilovanMinic175px.jpeg&quot;                  
+##  [87] &quot;MilovanovicVreme.jpg&quot;                     &quot;MLSS03_ConvexFunctions.png&quot;              
+##  [89] &quot;MLSS03_NeuralNetwork.png&quot;                 &quot;MLSS03_WebPage_Notebook_Banner.png&quot;      
+##  [91] &quot;MLSS03_WebPageBanner.png&quot;                 &quot;n00_installations.html&quot;                  
+##  [93] &quot;n00_installations.Rmd&quot;                    &quot;n00_intro_session.html&quot;                  
+##  [95] &quot;n00_intro_session.html.R&quot;                 &quot;n00_intro_session.R&quot;                     
+##  [97] &quot;n00_intro_session.txt.R&quot;                  &quot;n01_intro_session.R&quot;                     
+##  [99] &quot;NedaRadibratovic175px.jpg&quot;                &quot;Netokracija2023.png&quot;                     
+## [101] &quot;NetokracijaIntervju2023.png&quot;              &quot;PE_banner_2024.png&quot;                      
+## [103] &quot;PE_GeneralBanner.png&quot;                     &quot;PE_GeneralBanner02_web.png&quot;              
+## [105] &quot;PE_GeneralBanner02.png&quot;                   &quot;PE_GeneralBannerDecember2023.png&quot;        
+## [107] &quot;PE_sep2023.png&quot;                           &quot;prerequisites.html&quot;                      
+## [109] &quot;prerequisites.nb.html&quot;                    &quot;prerequisites.Rmd&quot;                       
+## [111] &quot;RadmilaVelickovic175px.png&quot;               &quot;RadovanSimikic175px.jpg&quot;                 
+## [113] &quot;regression_mle.png&quot;                       &quot;renv&quot;                                    
+## [115] &quot;renv.lock&quot;                                &quot;resources.html&quot;                          
+## [117] &quot;resources.Rmd&quot;                            &quot;Rlogo.png&quot;                               
+## [119] &quot;s00_installations.html&quot;                   &quot;s00_installations.Rmd&quot;                   
+## [121] &quot;S01_01_Functions.jpeg&quot;                    &quot;S01_02_Arrays_and_Lists.jpeg&quot;            
+## [123] &quot;s01_introduction_to_r_files&quot;              &quot;s01_introduction_to_r.html&quot;              
+## [125] &quot;s01_introduction_to_r.nb.html&quot;            &quot;s01_introduction_to_r.Rmd&quot;               
+## [127] &quot;S02_01_DataFrames.jpeg&quot;                   &quot;s02_dataframe.Rmd&quot;                       
+## [129] &quot;S03_01_FunctionalProgramming.jpeg&quot;        &quot;S04_01_RProgramming.jpeg&quot;                
+## [131] &quot;S07_01_ProbabilityFunctions.jpeg&quot;         &quot;S17_01_ROC.jpeg&quot;                         
+## [133] &quot;S17_02_LikelihoodFunction.jpeg&quot;           &quot;S21_01_RandomForest.jpeg&quot;                
+## [135] &quot;S22_01_Bias-Variance_Tradeoff.jpeg&quot;       &quot;session00_logos.png&quot;                     
+## [137] &quot;site_libs&quot;                                &quot;sitelinks1.jpg&quot;                          
+## [139] &quot;sitelinks2.jpg&quot;                           &quot;sitelinks3.jpg&quot;                          
+## [141] &quot;sitelinks4.jpg&quot;                           &quot;skc_kahneman_delfi_2015.jpg&quot;             
+## [143] &quot;startit_add_dsss2022_800.jpeg&quot;            &quot;StartitMeetup2016_InfRetreival.png&quot;      
+## [145] &quot;StartitMeetup2016.png&quot;                    &quot;talasAI.png&quot;                             
+## [147] &quot;twitter.png&quot;                              &quot;undp_machinery2023.jpg&quot;                  
+## [149] &quot;UvodR_startit_banner.jpg&quot;                 &quot;video.Rmd&quot;                               
+## [151] &quot;VladimirMijatovic175px.jpg&quot;               &quot;wd_thinkpad_official.png&quot;                
+## [153] &quot;webit2023.jpeg&quot;                           &quot;WikidataCon2019.png&quot;                     
+## [155] &quot;WikidataCon2021.png&quot;                      &quot;wikimediablog2018.jpg&quot;</code></pre>
+<p>Ok, so I do have a <code>_data</code> directory in my working
+directory. Let’s pronounce the <code>_data</code> directory in R:</p>
+<pre class="r"><code>rootDir &lt;- getwd()
+dataDir &lt;- paste0(rootDir, &#39;/_data/&#39;)
+analyticsDir &lt;- paste0(rootDir, &quot;/_analytics/&quot;)
+list.files(dataDir)</code></pre>
+<pre><code>## [1] &quot;listings_selection.csv&quot; &quot;listings.csv&quot;           &quot;listings.xlsx&quot;</code></pre>
+<p>^^ And here is the <code>listings.csv</code> file. It represents the
+Airbnb summary information and metrics for listings in Amsterdam. We
+will use it to practice our data frame skills in R.</p>
+<p>We want to read <code>listings.csv</code> to R and make it a
+<code>data.frame</code>. This is how we do it:</p>
+<pre class="r"><code>filename &lt;- paste0(dataDir, &quot;listings.csv&quot;)
+listings &lt;- read.csv(file = filename,
+                     header = TRUE,
+                     check.names = FALSE,
+                     stringsAsFactors = FALSE)</code></pre>
+<p>What has just happened:</p>
+<ul>
+<li><code>read.csv</code> is an R function to read <code>csv</code>
+files from disk (or Internet, as we will see later) into the RAM memory
+of your machine which is put to R’s availability;</li>
+<li>the <code>file</code> argument is the complete path to the file in
+your local filesystem;</li>
+<li>the <code>header</code> argument tells R that the first row of the
+file contains column names;</li>
+<li>the <code>check.names</code> argument, set to <code>FALSE</code> in
+this example, tells R not to check whether the column names are
+syntacticaly valid R column names for a data frame;</li>
+<li>the <code>stringsAsFactors</code> argument, set to
+<code>FALSE</code>, is a bit annoying: the <code>read.csv()</code>
+default value for this argument is <code>TRUE</code> and using it that
+way would turn any character valued columns into a data type known as
+<code>factor</code> in R, and more often than not that is not what you
+want to do; never forget to set <code>stringsASFactors = F</code> in
+<code>read.csv()</code> if you are not sure that you want all chacter
+valued columns automatically converted into factors.</li>
+</ul>
+<p>You can now inspect <code>listings</code> in RStudio from the
+<strong>Environment</strong> panel. We will take a look at the structure
+of this data frame now: <code>head(someDataFrame, how many rows)</code>
+shows us the top <code>how many rows</code> from the
+<code>someDataFrame</code> data frame; <code>tail()</code> looks at the
+provided number of rows found at the bottom of the data frame:</p>
+<pre class="r"><code>top_listings &lt;- head(listings, 20)
+head(listings, 10)</code></pre>
+<pre><code>##       id                                               name host_id host_name neighbourhood_group
+## 1   2818           Quiet Garden View Room &amp; Super Fast WiFi    3159    Daniel                  NA
+## 2  20168       Studio with private bathroom in the centre 1   59484 Alexander                  NA
+## 3  25428    Lovely apt in City Centre (w.lift) near Jordaan   56142      Joan                  NA
+## 4  27886  Romantic, stylish B&amp;B houseboat in canal district   97647      Flip                  NA
+## 5  28871                            Comfortable double room  124245     Edwin                  NA
+## 6  29051                            Comfortable single room  124245     Edwin                  NA
+## 7  31080                2-story apartment + rooftop terrace  133488    Nienke                  NA
+## 8  41125                  Amsterdam Center Entire Apartment  178515     Fatih                  NA
+## 9  43109                   Oasis in the middle of Amsterdam  188098     Aukje                  NA
+## 10 43980 View into park / museum district (long/short stay)   65041        Ym                  NA
+##                             neighbourhood latitude longitude       room_type price minimum_nights
+## 1  Oostelijk Havengebied - Indische Buurt 52.36575   4.94142    Private room    59              3
+## 2                            Centrum-Oost 52.36509   4.89354    Private room   236              1
+## 3                            Centrum-West 52.37297   4.88339 Entire home/apt   125             14
+## 4                            Centrum-West 52.38761   4.89188    Private room   135              2
+## 5                            Centrum-Oost 52.36610   4.88953    Private room    75              2
+## 6                            Centrum-Oost 52.36607   4.89100    Private room    55              2
+## 7                                    Zuid 52.35132   4.84838 Entire home/apt   219              3
+## 8                            Centrum-West 52.37891   4.88321 Entire home/apt   160              4
+## 9                            Centrum-West 52.37537   4.88932 Entire home/apt   211              3
+## 10                                   Zuid 52.35746   4.86124 Entire home/apt    67             30
+##    number_of_reviews last_review reviews_per_month calculated_host_listings_count availability_365
+## 1                278  2020-02-14              1.95                              1              123
+## 2                339  2020-04-09              2.58                              2                3
+## 3                  5  2020-02-09              0.14                              1               33
+## 4                219  2020-07-25              2.01                              1              219
+## 5                336  2020-09-20              2.68                              2              346
+## 6                481  2020-08-28              4.05                              2              360
+## 7                 32  2017-10-16              0.28                              1                0
+## 8                 89  2020-02-10              0.73                              1                0
+## 9                 60  2020-03-07              4.31                              1                0
+## 10                61  2018-02-18              0.50                              2              184</code></pre>
+<pre class="r"><code>tail(listings, 10)</code></pre>
+<pre><code>##             id                                               name   host_id host_name
+## 18513 46910585                           luxurious 2bdr apartment 378943951    Martin
+## 18514 46911127                                       FELICE house 373125933     Dario
+## 18515 46912324                studio In Amsterdam shared bathroom 375398295    Danila
+## 18516 46913926 Room for 2 facing private patio - Amsterdam centre 104495359 Sebastian
+## 18517 46937483        ♛♝♕ WOW 3 BD APT - Oosterpark Amsterdam ♛♝♕ 379277730      Jean
+## 18518 46938808                                      NiceAmsterdam 379294518 Elizabeth
+## 18519 46940774           Fantastic Apartment with beautiful views 279181956     Ramon
+## 18520 46944602                        cozy apartment in amsterdam 375398295    Danila
+## 18521 46953753           Great luxurious apartment in city centre 379498141      Lisa
+## 18522 46960026         Classic houseboat in Amsterdam city centre 213284349    Jochum
+##       neighbourhood_group                          neighbourhood latitude longitude
+## 18513                  NA                           Centrum-Oost 52.37867   4.90730
+## 18514                  NA                           Centrum-West 52.37706   4.89396
+## 18515                  NA                De Pijp - Rivierenbuurt 52.34381   4.90639
+## 18516                  NA                           Centrum-West 52.37495   4.89378
+## 18517                  NA                               Oud-Oost 52.35830   4.92186
+## 18518                  NA                           Centrum-Oost 52.36978   4.91443
+## 18519                  NA                           Centrum-Oost 52.36404   4.87967
+## 18520                  NA                De Pijp - Rivierenbuurt 52.34071   4.90854
+## 18521                  NA                           Centrum-Oost 52.36003   4.89317
+## 18522                  NA Oostelijk Havengebied - Indische Buurt 52.37701   4.91797
+##             room_type price minimum_nights number_of_reviews last_review reviews_per_month
+## 18513 Entire home/apt   130              3                 0                            NA
+## 18514 Entire home/apt    46              1                 0                            NA
+## 18515 Entire home/apt    50              3                 0                            NA
+## 18516    Private room    40              1                 0                            NA
+## 18517 Entire home/apt   275              3                 0                            NA
+## 18518 Entire home/apt   330              3                 0                            NA
+## 18519 Entire home/apt   350              4                 0                            NA
+## 18520 Entire home/apt    60             28                 0                            NA
+## 18521    Private room    67              2                 0                            NA
+## 18522    Private room    96              2                 0                            NA
+##       calculated_host_listings_count availability_365
+## 18513                              1              347
+## 18514                              7              135
+## 18515                              2              163
+## 18516                              1               13
+## 18517                              1              350
+## 18518                              1              362
+## 18519                              1               21
+## 18520                              2              346
+## 18521                              1              179
+## 18522                              2               89</code></pre>
+<p>We use <code>str()</code> to obtain a description of the data frame -
+its columns and the respective data types:</p>
+<pre class="r"><code>str(listings)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    18522 obs. of  16 variables:
+##  $ id                            : int  2818 20168 25428 27886 28871 29051 31080 41125 43109 43980 ...
+##  $ name                          : chr  &quot;Quiet Garden View Room &amp; Super Fast WiFi&quot; &quot;Studio with private bathroom in the centre 1&quot; &quot;Lovely apt in City Centre (w.lift) near Jordaan&quot; &quot;Romantic, stylish B&amp;B houseboat in canal district&quot; ...
+##  $ host_id                       : int  3159 59484 56142 97647 124245 124245 133488 178515 188098 65041 ...
+##  $ host_name                     : chr  &quot;Daniel&quot; &quot;Alexander&quot; &quot;Joan&quot; &quot;Flip&quot; ...
+##  $ neighbourhood_group           : logi  NA NA NA NA NA NA ...
+##  $ neighbourhood                 : chr  &quot;Oostelijk Havengebied - Indische Buurt&quot; &quot;Centrum-Oost&quot; &quot;Centrum-West&quot; &quot;Centrum-West&quot; ...
+##  $ latitude                      : num  52.4 52.4 52.4 52.4 52.4 ...
+##  $ longitude                     : num  4.94 4.89 4.88 4.89 4.89 ...
+##  $ room_type                     : chr  &quot;Private room&quot; &quot;Private room&quot; &quot;Entire home/apt&quot; &quot;Private room&quot; ...
+##  $ price                         : int  59 236 125 135 75 55 219 160 211 67 ...
+##  $ minimum_nights                : int  3 1 14 2 2 2 3 4 3 30 ...
+##  $ number_of_reviews             : int  278 339 5 219 336 481 32 89 60 61 ...
+##  $ last_review                   : chr  &quot;2020-02-14&quot; &quot;2020-04-09&quot; &quot;2020-02-09&quot; &quot;2020-07-25&quot; ...
+##  $ reviews_per_month             : num  1.95 2.58 0.14 2.01 2.68 4.05 0.28 0.73 4.31 0.5 ...
+##  $ calculated_host_listings_count: int  1 2 1 1 2 2 1 1 1 2 ...
+##  $ availability_365              : int  123 3 33 219 346 360 0 0 0 184 ...</code></pre>
+<p><strong>Note.</strong> <code>str()</code> works on lists:</p>
+<pre class="r"><code>someList &lt;- list(a = 1, b = 2, c = 3)
+str(someList)</code></pre>
+<pre><code>## List of 3
+##  $ a: num 1
+##  $ b: num 2
+##  $ c: num 3</code></pre>
+<pre class="r"><code>print(someList)</code></pre>
+<pre><code>## $a
+## [1] 1
+## 
+## $b
+## [1] 2
+## 
+## $c
+## [1] 3</code></pre>
+<pre class="r"><code>names(someList)</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;</code></pre>
+<p><code>head()</code> and <code>tail()</code> also do lists:</p>
+<pre class="r"><code>someList &lt;- list(1, &#39;a&#39;, &#39;Belgrade&#39;, 3, 3.14, 909, &#39;R&#39;, TRUE, F, &#39;00&#39;)
+head(someList, 3)</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] &quot;a&quot;
+## 
+## [[3]]
+## [1] &quot;Belgrade&quot;</code></pre>
+<pre class="r"><code>tail(someList, 3)</code></pre>
+<pre><code>## [[1]]
+## [1] TRUE
+## 
+## [[2]]
+## [1] FALSE
+## 
+## [[3]]
+## [1] &quot;00&quot;</code></pre>
+<p>If we are interested in the column names of the data frame only:</p>
+<pre class="r"><code>colnames(listings)</code></pre>
+<pre><code>##  [1] &quot;id&quot;                             &quot;name&quot;                          
+##  [3] &quot;host_id&quot;                        &quot;host_name&quot;                     
+##  [5] &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
+##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                     
+##  [9] &quot;room_type&quot;                      &quot;price&quot;                         
+## [11] &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
+## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;             
+## [15] &quot;calculated_host_listings_count&quot; &quot;availability_365&quot;</code></pre>
+<p>Later we will see how to use <code>colnames()</code> to set our own
+column names on the existing data frame.</p>
+<p>In the next step I want to change the <code>listings</code> data
+frame just a bit, by selecting only a few of its columns, and then store
+it to disk in the <code>csv</code> format but using a different file
+name than <code>listings.csv</code>:</p>
+<pre class="r"><code>listings_selection &lt;- listings[ , 1:3]
+head(listings_selection)</code></pre>
+<pre><code>##      id                                              name host_id
+## 1  2818          Quiet Garden View Room &amp; Super Fast WiFi    3159
+## 2 20168      Studio with private bathroom in the centre 1   59484
+## 3 25428   Lovely apt in City Centre (w.lift) near Jordaan   56142
+## 4 27886 Romantic, stylish B&amp;B houseboat in canal district   97647
+## 5 28871                           Comfortable double room  124245
+## 6 29051                           Comfortable single room  124245</code></pre>
+<p>Similarly as we have used the <code>read.csv()</code> function to
+read a file into a data frame, we use <code>write.csv()</code> to store
+a data frame into a file in our local filesystem:</p>
+<pre class="r"><code>write.csv(x = listings_selection, 
+          file = paste0(dataDir, &#39;listings_selection.csv&#39;))</code></pre>
+</div>
+<div
+id="more-elaborated-io-install-r-packages-subsetting-data-frames-elementary-string-processing"
+class="section level3">
+<h3>2. More elaborated I/O + install R packages + subsetting data frames
++ elementary string processing</h3>
+<p>If you want to see what objects do you have instantiated in the
+current R session, use <code>ls()</code>:</p>
+<pre class="r"><code>ls()</code></pre>
+<pre><code>##  [1] &quot;a&quot;                  &quot;analyticsDir&quot;       &quot;awesome&quot;            &quot;cities&quot;            
+##  [5] &quot;countries&quot;          &quot;d&quot;                  &quot;dataDir&quot;            &quot;filename&quot;          
+##  [9] &quot;freqHosts&quot;          &quot;iris&quot;               &quot;lattitudes&quot;         &quot;listings&quot;          
+## [13] &quot;listings_5&quot;         &quot;listings_selection&quot; &quot;ll&quot;                 &quot;logic&quot;             
+## [17] &quot;longitudes&quot;         &quot;mtcars&quot;             &quot;my_list&quot;            &quot;my_vector&quot;         
+## [21] &quot;myArray1&quot;           &quot;myArray2&quot;           &quot;myCities&quot;           &quot;myFun&quot;             
+## [25] &quot;myList&quot;             &quot;myResult&quot;           &quot;mySequence&quot;         &quot;num_host_listings&quot; 
+## [29] &quot;num_hosts&quot;          &quot;object&quot;             &quot;person&quot;             &quot;persons&quot;           
+## [33] &quot;populations&quot;        &quot;roomType&quot;           &quot;roomTypes&quot;          &quot;rootDir&quot;           
+## [37] &quot;s&quot;                  &quot;separateCities&quot;     &quot;someDataFrame&quot;      &quot;someList&quot;          
+## [41] &quot;someVector&quot;         &quot;string&quot;             &quot;strings&quot;            &quot;testDataFrame&quot;     
+## [45] &quot;testHosts&quot;          &quot;top_listings&quot;       &quot;urlData&quot;            &quot;vec&quot;               
+## [49] &quot;word&quot;               &quot;word1&quot;              &quot;word2&quot;</code></pre>
+<p>Some of them we do not need anymore and we want to remove them.
+<strong>Note.</strong> In real Data Science practice, most of the time
+we really need to look carefully after memory usage, because we
+typically work with large datasets. The datasets that we have in this
+session are rather small:</p>
+<pre class="r"><code>dim(listings)</code></pre>
+<pre><code>## [1] 18522    16</code></pre>
+<p><code>listings</code> has 18522 rows and 16 columnes, while
+<code>listings_selection</code> has…</p>
+<pre class="r"><code>dim(listings_selection)</code></pre>
+<pre><code>## [1] 18522     3</code></pre>
+<p>We do not need the <code>listings_selection</code> data frame
+anymore, so let’s remove it with <code>rm()</code>:</p>
+<pre class="r"><code>rm(listings_selection)
+ls()</code></pre>
+<pre><code>##  [1] &quot;a&quot;                 &quot;analyticsDir&quot;      &quot;awesome&quot;           &quot;cities&quot;           
+##  [5] &quot;countries&quot;         &quot;d&quot;                 &quot;dataDir&quot;           &quot;filename&quot;         
+##  [9] &quot;freqHosts&quot;         &quot;iris&quot;              &quot;lattitudes&quot;        &quot;listings&quot;         
+## [13] &quot;listings_5&quot;        &quot;ll&quot;                &quot;logic&quot;             &quot;longitudes&quot;       
+## [17] &quot;mtcars&quot;            &quot;my_list&quot;           &quot;my_vector&quot;         &quot;myArray1&quot;         
+## [21] &quot;myArray2&quot;          &quot;myCities&quot;          &quot;myFun&quot;             &quot;myList&quot;           
+## [25] &quot;myResult&quot;          &quot;mySequence&quot;        &quot;num_host_listings&quot; &quot;num_hosts&quot;        
+## [29] &quot;object&quot;            &quot;person&quot;            &quot;persons&quot;           &quot;populations&quot;      
+## [33] &quot;roomType&quot;          &quot;roomTypes&quot;         &quot;rootDir&quot;           &quot;s&quot;                
+## [37] &quot;separateCities&quot;    &quot;someDataFrame&quot;     &quot;someList&quot;          &quot;someVector&quot;       
+## [41] &quot;string&quot;            &quot;strings&quot;           &quot;testDataFrame&quot;     &quot;testHosts&quot;        
+## [45] &quot;top_listings&quot;      &quot;urlData&quot;           &quot;vec&quot;               &quot;word&quot;             
+## [49] &quot;word1&quot;             &quot;word2&quot;</code></pre>
+<p><code>someList</code> is really small and we do not care to remove
+it.</p>
+<div id="install-a-package-to-read-data-from-excel"
+class="section level4">
+<h4>2.1 Install a package to read data from Excel</h4>
+<p>What if the <code>listings</code> data frame was stored as a
+Microsoft Excel file, with an <code>.xlsx</code> extension in place of
+<code>.csv</code>? Well, one thing to do would be to first convert it to
+<code>csv</code> outside R, from Excel itself for example. Why would we
+do that? Because we tend to be consistent in the way we code and what
+procedures and standards do we use in our work: for example, we can
+introduce a convention to keep all data as <code>.csv</code> files in
+the scope of some project. But sometimes we don’t and we simply need to
+grab a file with a certain extension quickly. Now, base R does not have
+a function to read <code>.xlsx</code> files. But there are R
+<strong>packages</strong> that provide such functions. Whenever we want
+to use an R package, we need to install it first. The base R function to
+install packages is <code>install.packages()</code>:</p>
+<pre class="r"><code>install.packages(&#39;readxl&#39;)</code></pre>
+<p>When we want to use functions from an R package, we need to call the
+package by <code>library()</code>:</p>
+<pre class="r"><code>library(readxl)</code></pre>
+<p>Now, the <code>readxl</code> package has a function to read Excel
+files:</p>
+<pre class="r"><code>listings &lt;- read_excel(paste0(dataDir, &quot;listings.xlsx&quot;), 
+                       col_names = TRUE)</code></pre>
+<pre><code>## New names:
+## • `` -&gt; `...17`</code></pre>
+<pre class="r"><code>head(listings)</code></pre>
+<pre><code>## # A tibble: 6 × 17
+##      id name       host_id host_name neighbourhood_group neighbourhood latitude longitude room_type
+##   &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;               &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;    
+## 1  2818 Quiet Gar… 3159    Daniel    &lt;NA&gt;                Oostelijk Ha… 52.36575      4.94 Private …
+## 2 20168 Studio wi… 59484   Alexander &lt;NA&gt;                Centrum-Oost  52.36509      4.89 Private …
+## 3 25428 Lovely ap… 56142   Joan      &lt;NA&gt;                Centrum-West  52.37297      4.88 Entire h…
+## 4 27886 Romantic,… 97647   Flip      &lt;NA&gt;                Centrum-West  52.38761      4.89 Private …
+## 5 28871 Comfortab… 124245  Edwin     &lt;NA&gt;                Centrum-Oost  52.3661       4.89 Private …
+## 6 29051 Comfortab… 124245  Edwin     &lt;NA&gt;                Centrum-Oost  52.36607      4.89 Private …
+## # ℹ 8 more variables: price &lt;chr&gt;, minimum_nights &lt;dbl&gt;, number_of_reviews &lt;dbl&gt;,
+## #   last_review &lt;chr&gt;, reviews_per_month &lt;chr&gt;, calculated_host_listings_count &lt;dbl&gt;,
+## #   availability_365 &lt;dbl&gt;, ...17 &lt;dbl&gt;</code></pre>
+<p>Note how I have reused the variable name: <code>listings</code>. It
+was an existing data frame which is now overwritten by the same data
+from a different file. Do not forget to use <code>?</code> from the R
+console to obtain documentation on any new functions that you need to
+learn: <code>?read_excel</code>, for example.</p>
+<p><strong>Note.</strong> Do <code>class(listings)</code>:</p>
+<pre class="r"><code>class(listings)</code></pre>
+<pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<p>What is this: <code>tbl_df</code>, <code>tbl</code>? In short: the
+classes were added to the <code>data.frame</code> class in the
+<code>read_excel()</code> call and we will start meeting them frequently
+once we begin to use the <code>tidyverse</code> packages like
+<code>readr</code>. Nothing to worry about at this point. Let’s strip
+them of the <code>listings</code> object manually:</p>
+<pre class="r"><code>listings &lt;- as.data.frame(listings)
+class(listings)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<p>Ok. Back to the original <code>listings.csv</code> now:</p>
+<pre class="r"><code>filename &lt;- paste0(dataDir, &#39;listings.csv&#39;)
+listings &lt;- read.csv(file = filename, 
+                    header = T, 
+                    check.names = F,
+                    stringsAsFactors = F)</code></pre>
+</div>
+<div id="subsetting-a-data-frame-in-base-r" class="section level4">
+<h4>2.2 Subsetting a data frame in base R</h4>
+<p>Now we need to learn how to <strong>subset</strong> a data frame, to
+slice out exactly the data that we are interested in. Data frames can be
+sliced by conditions set on their rows, columns, and by any combinations
+of conditions set on rows and columns. For example, if we are interested
+in only the top five rows of listings, we can do:</p>
+<pre class="r"><code>listings_5 &lt;- listings[1:5, ]
+listings_5</code></pre>
+<pre><code>##      id                                              name host_id host_name neighbourhood_group
+## 1  2818          Quiet Garden View Room &amp; Super Fast WiFi    3159    Daniel                  NA
+## 2 20168      Studio with private bathroom in the centre 1   59484 Alexander                  NA
+## 3 25428   Lovely apt in City Centre (w.lift) near Jordaan   56142      Joan                  NA
+## 4 27886 Romantic, stylish B&amp;B houseboat in canal district   97647      Flip                  NA
+## 5 28871                           Comfortable double room  124245     Edwin                  NA
+##                            neighbourhood latitude longitude       room_type price minimum_nights
+## 1 Oostelijk Havengebied - Indische Buurt 52.36575   4.94142    Private room    59              3
+## 2                           Centrum-Oost 52.36509   4.89354    Private room   236              1
+## 3                           Centrum-West 52.37297   4.88339 Entire home/apt   125             14
+## 4                           Centrum-West 52.38761   4.89188    Private room   135              2
+## 5                           Centrum-Oost 52.36610   4.88953    Private room    75              2
+##   number_of_reviews last_review reviews_per_month calculated_host_listings_count availability_365
+## 1               278  2020-02-14              1.95                              1              123
+## 2               339  2020-04-09              2.58                              2                3
+## 3                 5  2020-02-09              0.14                              1               33
+## 4               219  2020-07-25              2.01                              1              219
+## 5               336  2020-09-20              2.68                              2              346</code></pre>
+<p>Remember <code>head()</code> - we can use that too:</p>
+<pre class="r"><code>listings_5 &lt;- head(listings, 5)
+listings_5</code></pre>
+<pre><code>##      id                                              name host_id host_name neighbourhood_group
+## 1  2818          Quiet Garden View Room &amp; Super Fast WiFi    3159    Daniel                  NA
+## 2 20168      Studio with private bathroom in the centre 1   59484 Alexander                  NA
+## 3 25428   Lovely apt in City Centre (w.lift) near Jordaan   56142      Joan                  NA
+## 4 27886 Romantic, stylish B&amp;B houseboat in canal district   97647      Flip                  NA
+## 5 28871                           Comfortable double room  124245     Edwin                  NA
+##                            neighbourhood latitude longitude       room_type price minimum_nights
+## 1 Oostelijk Havengebied - Indische Buurt 52.36575   4.94142    Private room    59              3
+## 2                           Centrum-Oost 52.36509   4.89354    Private room   236              1
+## 3                           Centrum-West 52.37297   4.88339 Entire home/apt   125             14
+## 4                           Centrum-West 52.38761   4.89188    Private room   135              2
+## 5                           Centrum-Oost 52.36610   4.88953    Private room    75              2
+##   number_of_reviews last_review reviews_per_month calculated_host_listings_count availability_365
+## 1               278  2020-02-14              1.95                              1              123
+## 2               339  2020-04-09              2.58                              2                3
+## 3                 5  2020-02-09              0.14                              1               33
+## 4               219  2020-07-25              2.01                              1              219
+## 5               336  2020-09-20              2.68                              2              346</code></pre>
+<p>Again, the columns of <code>listings</code>:</p>
+<pre class="r"><code>colnames(listings)</code></pre>
+<pre><code>##  [1] &quot;id&quot;                             &quot;name&quot;                          
+##  [3] &quot;host_id&quot;                        &quot;host_name&quot;                     
+##  [5] &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
+##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                     
+##  [9] &quot;room_type&quot;                      &quot;price&quot;                         
+## [11] &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
+## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;             
+## [15] &quot;calculated_host_listings_count&quot; &quot;availability_365&quot;</code></pre>
+<p>And if we want to subset only the rows from 5 to 10 and only the
+<code>name</code> and <code>room_type</code> columns:</p>
+<pre class="r"><code>listings[5:10, c(&#39;host_name&#39;, &#39;room_type&#39;)]</code></pre>
+<pre><code>##    host_name       room_type
+## 5      Edwin    Private room
+## 6      Edwin    Private room
+## 7     Nienke Entire home/apt
+## 8      Fatih Entire home/apt
+## 9      Aukje Entire home/apt
+## 10        Ym Entire home/apt</code></pre>
+<p>Or:</p>
+<pre class="r"><code>listings[5:10, c(4, 9)]</code></pre>
+<pre><code>##    host_name       room_type
+## 5      Edwin    Private room
+## 6      Edwin    Private room
+## 7     Nienke Entire home/apt
+## 8      Fatih Entire home/apt
+## 9      Aukje Entire home/apt
+## 10        Ym Entire home/apt</code></pre>
+<p>Or:</p>
+<pre class="r"><code>listings[c(5,6,7,8,9,10), c(4, 9)]</code></pre>
+<pre><code>##    host_name       room_type
+## 5      Edwin    Private room
+## 6      Edwin    Private room
+## 7     Nienke Entire home/apt
+## 8      Fatih Entire home/apt
+## 9      Aukje Entire home/apt
+## 10        Ym Entire home/apt</code></pre>
+<p>Remember that <code>c()</code> puts things together in R. We have
+used two vectors, <code>c(5,6,7,8,9,10)</code>, which can also be
+written as a sequence <code>5:10</code>, and <code>c(4,9)</code> in
+which we have used column positions but we could have used column names
+as well like in the <code>c('host_name', 'room_type')</code> example to
+subset the <code>listings</code> data frame.</p>
+<p>We can subset a data frame by imposing conditions on rows and/or
+columns too:</p>
+<pre class="r"><code>listings[listings$id &gt; 42000 , c(2, 3)]</code></pre>
+<pre><code>##                                                   name  host_id
+## 9                     Oasis in the middle of Amsterdam   188098
+## 10  View into park / museum district (long/short stay)    65041
+## 11                       Luxury design with canal view   187728
+## 12                      Cozy loft in central Amsterdam   207342
+## 13        Multatuli Luxury Guest Suite in top location   225987
+## 14                   Luxurous Houseboat-Great Location   227530
+## 15          Family Home (No drugs, smoking or parties)   231864
+## 16                  B &amp; B de 9 Straatjes (city center)   231946
+## 17                                      Amsterdam Aqua   185836
+## 18         Spacious studio at the attic of a townhouse   246493
+## 19            Nice room near centre with en suite bath   247822
+## 20                               Luminous central room   260785
+## 21              Fully equiped house, PIJP area = great   262846
+## 22                    Greatly located, cozy atmosphere   263844
+## 23                 Apartment near Museumplein (centre)   264178
+## 24      En Suite Apartment in a monumental canal house   278253
+## 25   Charming, beautifully &amp; sunny place with cat Luna   301340
+## 26                 Very nice appartment ALL of januari   306117
+## 27                                    Luxury Houseboat   306192
+## 28                    Unique 3 bedroom house in Centre   312863
+## 29                   Amsterdam - The Pijp Apartment 1A   335166
+## 30                                Rebel - Private Room   336950
+## 31                           Yves Klein - Private Room   336950
+## 32                 Attic room with doublebed available   339333
+## 33                 Centre Museum Quarter Apt Roof Deck   381900
+## 34  Garden Suite Studiohttps://www.airbnb.com/manage-l   399879
+## 35                    Cottage Room- Completely Private   399879
+## 36                      Red Studio Palamedes Amsterdam   400896
+## 37                   Yellow Studio Palamedes Amsterdam   400896
+## 38                     studio INN, bright and spacious   409579
+## 39                  TOP LOCATED Canalhouse B&amp;B Jordaan   436145
+## 40                 The Backroom - Central private appt   186729
+## 41                     Bright apt in central Amsterdam   450453
+## 42          Central Studio apartment in Trendy De Pijp   457263
+## 43                 Bed&amp;Bike SleepOnNature - free bikes   459028
+## 44    Privat room and shared Houseboat &quot;Ramona&quot; centre   494281
+## 45                   De Baronie B&amp;B in historic centre   510526
+## 46                         Beautiful and spacious room   195859
+## 47                      A&#39;dam Centre, Bright and Comfy   249794
+## 48                               Amsterdam at its best   563208
+## 49          all private, city center @ home with art-1   538659
+## 50        Large private room for rent Center / De Pijp   642044
+## 51                       Houseboat with beautiful view   673879
+## 52                       light modern &amp; cosy apartment   689016
+## 53                   Bright room in lively Kinkerbuurt   715549
+## 54                   Apartment 2 minutes from Centrum!   748161
+## 55          Modern app. with brand new design bathroom   776296
+## 56                              Amsterdam at your feet   790547
+## 57      SUPERLOCATED Room in  CANALHOUSE, Private bath   436145
+## 58   Central,Rooftop 360&#39;,Zen,Canal-View, Bright,Quiet   806976
+## 59                   Spacious apartment next to center   815989
+## 60  Authentic Amsterdam Experience@Townhouse w/Rooftop   818319
+## 61  Pleasant,cosy &amp; crazy apartment with small balcony   818479
+## 62      Cosy Apt | IN CITY CENTRE | Close to Artis Zoo   834139
+## 63  Cat lover&#39;s paradise in Amsterdam&#39;s hottest street    58458
+## 64                   Authentic Amsterdam apartment RAI   856540
+## 65                    Central, quiet, design apartment   876866
+## 66                   Metropolitan B&amp;B centre Amsterdam   915591
+## 67  Private Loft&amp;Bathroom  Ensuite Studio Ctr Amsterda   935742
+## 68                 The best spot to discover Amsterdam   967796
+## 69                              ART &amp; DESIGN APARTMENT   976652
+## 70                 Studio next 2 V´park near Leidsepl.   539840
+## 71     TOP location with private terrace in old centre   542540
+## 72                 Best Area - Large Luxury 3 Bdr Home   999036
+## 73                  Central yet quiet studio apartment  1011967
+## 74                         Spacious home w roof garden   887591
+## 75                     Amsterdam Apartment (waterview)   599238
+## 76                 LUXURIOUS GUESTHOUSE in CITY CENTER  1107389
+## 77                    Suite in Canalhouse with Jacuzzi  1135329
+## 78     Cosy apartment in West | Quiet street | Netflix  1155595
+## 79     Jordaan apt with views of canals and Westerkerk  1205924
+## 80  Sonnenberg - Canal side &amp; view - Private &amp; Central  1005087
+## 81                  LOFT with terrace, super location!  1294098
+## 82                 Bellavista, central,with canal view  1298735
+## 83                      Modern studio near central AMS  1314658
+## 84                 Amazing apartment historical centre  1322517
+## 85                    The Flying Pancake B&amp;B Amsterdam  1334704
+## 86                    Amazing apartment in city center  1337537
+## 87   bed &amp; bike with free parking \nthe house of finer  1344947
+## 88                     Caracteristic, family apartment  1350388
+## 89                     Great CENTRAL apartment De Pijp  1358307
+## 90                   Charming Studio with Roof Terrace  1376607
+## 91                 Private, central &amp; luxurious apment  1391689
+## 92              Quiet room in sunny apartment on canal  1417625
+## 93                  Luxury appartm, good neighbourhood  1426693
+## 94             Cozy sleeping in popular Amsterdam West  1435990
+## 95                 Beautiful central &amp; quiet apartment  1436134
+## 96                  nice apartment in centre amsterdam  1446698
+## 97                 Your central home in wonderful AMS!  1471195
+## 98                  5-bedrooms house; central location  1451657
+## 99                  Cozy and quiet 1 bedroom apartment  1173052
+## 100                Center,Canal View, Private Bathroom  1491565
+## 101                        BandB de Baarsjes Amsterdam  1501422
+## 102                Center, Large&amp;Sunny Room,Pvt Bathrm  1491565
+## 103    cosy bedroom | garden | near center | breakfast  1247363
+## 104                   Cozy &amp; large bohemian style room  1511330
+## 105                     Sunny Apartment along river IJ  1493495
+## 106                           Volledig huis-apartement  1518360
+## 107    Modern apartment + rooftop terrace @city centre  1532319
+## 108                 Cosy apartment in charming Jordaan  1550321
+## 109                  Sunny family flat in the Jordaan!  1557454
+## 110     Quiet studio in the heart of town with Garden!   276068
+## 111        Unique Beautiful Houseboat (ship) in Center  1565319
+## 112                      Smack dab middle of Amsterdam  1565512
+## 113                         Canal &amp; Parkview Apartment  1573009
+## 114         SunShine, A Sunny Amsterdam Center Special  1141485
+## 115                  Sailing Ship Amsterdam Centre (1)  1582128
+## 116                 SunBird, Sunny Apt in Quiet Street  1141485
+## 117                SunFlower, A Sunny B&amp;B + 2 Bicycles  1141485
+## 118    Luxurious 17C Canal Villa Apt, Low-cost Parking  1570754
+## 119                   Cozy Central Apartment Amsterdam  1598424
+## 120  *historic centre* *bright* *canal view* *jordaan*  1600010
+## 121                  40 m2 Appartment near Leidseplein  1023895
+## 122       Ground floor apartment with patio in De Pijp  1613017
+## 123                 &quot;The Roosevelt Apt&quot;  Amsterdam RAI  1616799
+## 124              Elegant Appartement Central Location.  1640702
+## 125                Familyhome easy airport connection!  1642815
+## 126                beautiful designed ap.+bikes+garden  1672823
+## 127                Lovely FAMILY house near Vondelpark  1687595
+## 128 Stay at &#39;Perfect appartement in the center&#39; by the  1730202
+## 129             Amstel Nest - an urban retreat for two  1740785
+## 130      SPACIOUS historical Amsterdam apartment 120m2  1751751
+## 131                      Luxe boat AMSTERDAM IJBURG!!!  1775032
+## 132                 Amsterdam appartment + southgarden  1811552
+## 133                ★ STYLISH FAMILY HOME - CITY CENTER  1811745
+## 134                ★ Stunning City Centre Apartment #3  1826139
+## 135   Bright, newly renovated apartment in Center-East  1831568
+## 136   PEACEFUL HOME IN HISTORIC CENTRE, NEXT TO AMSTEL  1853421
+## 137  Charming,  bright and quiet home center Amsterdam  1855417
+## 138                              Freedom on the water!  1901477
+## 139      Private Studio Houseboat *BEST VIEW* @ Amstel  1907015
+## 140                Central Loft, Great Rooftop Terrace  1927004
+## 141                    Lovely apt, Amsterdam /Jordaan.  1939619
+## 142                 Room in Jordaan Heart of Amsterdam  1979865
+## 143     Comfortable design apartment with roof terrace  2008330
+## 144                Beautiful spacious 130m family home   325306
+## 145       Rooftop Terrace Luxury Loft Centre Amsterdam  2035506
+## 146                        Beautiful apartment in AMS!  2048100
+## 147                   Charming house, perfect for two!  2063261
+## 148                Cent Adam Lux (2-4p) Apt 90 sqm(m2)  2063612
+## 149                   Sunny Amsterdam East Harbor View  1336633
+## 150                Beautiful 19th Cent. City Apartment  2078292
+## 151                              ★ City Centre Loft #4  1826139
+## 152                           Sunny apartment with cat  1939922
+## 153                  Beautiful apartment @ true center  2144360
+## 154                        COOL DESIGN HOUSE with WiFi  2174719
+## 155                    Bright apt in central Amsterdam  2181530
+## 156                Charming houseboat near Olympic St.  2191136
+## 157                Family house in centre of Amsterdam  2193861
+## 158       Fantastic apartment right in the city centre  2059471
+## 159                    cosy room with private entrance  2202945
+## 160           Three colourful art rooms in trendy Pijp  1543378
+## 161    creative ground floor house close to Vondelpark  2220492
+## 162                     Houseboat &#39;Saturnus&#39; Amsterdam  2238440
+## 163                    FABULOUS MODERN LOFT IN JORDAAN  2243649
+## 164                    Superb, quiet home with garden!    81046
+## 165                    Great apartment near the centre  1997447
+## 166                  Central 17th Century Unique House  2297302
+## 167   GROUNDFLOOR IN WESTERPARK + WIFI and a comfy bed   860750
+## 168                   Luxurious apartment @ Dam Square  2313040
+## 169                Amsterdam-Beatiful entire apartment  2352274
+## 170                   Cosy apartment along the Amstel.  2378237
+## 171                   Live the life of A&#39;dam on water!  1382273
+## 172                 Spacious studio apartment in A&#39;dam  2395278
+## 173        Modern 3 bedroom apt. + garden near Jordaan  2396890
+## 174                Central quiet ap&#39;ment with parcview  2418579
+## 175              Family apartment 80m2 near Vondelpark  2397045
+## 176     Light filled, split level, cosy and clean home  2480479
+## 177 Quiet &amp; spacious apt, near Museums &amp; Concertgebouw  2483843
+## 178                Centre Amsterdam perfect for family  1645998
+## 179                           Stylish Design Apartment  2492723
+## 180                Light studio in centre of Amsterdam  2493425
+## 181                     ★ Combo City Centre Apartments  1826139
+## 182                   Typical Amsterdam apt. in center  2536209
+## 183                Familyfriendly Suite incl breakfast  2536879
+## 184  Apartment near centre with amazing view over city  2541099
+## 185                  4 bedroom apartment near the park  2041793
+## 186 Bright Canal house with amazing view! @the Jordaan  2550339
+## 187                Beautiful grand appartment (135 m2)  2569931
+## 188 BEAUTIFUL 3 BEDROOM 2 BALCONY • HEART OF AMSTERDAM  2589433
+## 189                                     Somewhere Else  2594559
+## 190                 Comfortable and pleasant apartment  2639261
+## 191                   Beautiful ground floor apartment   356740
+## 192                Family Friendly Spacious Appartment  2674073
+## 193                    PLAYFUL SPLIT-LEVEL LOFT+GARDEN  2303229
+## 194                  Luxury apartment + private garden  2677807
+## 195                        3 bedrooms Apartment+Garden  2699033
+## 196                    Charming canal apartment (75m2)  2707013
+## 197                           Cosy Campervan Amsterdam   711896
+## 198                 Near city center, green area, WIFI  2460631
+## 199                 * Live like a King @ Prinsengracht  1600010
+## 200                     B&amp;B WestergasTverblijf , Cosy!   618589
+## 201                 Lovely house close to the Jordaan!  2727759
+## 202                   Amsterdam - conveniently located  1829820
+## 203                     peaceful stay near city centre  2737834
+## 204    Spacious duplex apartment + terrace near centre  2761838
+## 205               Beautiful apartment + Lovely garden.  2778131
+## 206                 Bright central studio with terrace  2794849
+## 207                  Pretty apt in the center of A&#39;dam  2797260
+## 208                    Super nice place in Amsterdam!!  2806790
+## 209                   Southern Comfort near Vondelpark  2439449
+## 210 Spacious, 2 bedrooms &amp; garden close to the centre! 21800150
+## 211                    Monumental Amsterdam Canalhouse  2809841
+## 212          AMS CENTRAL FAMILY HOME with huge garden.  2815910
+## 213                      Loft right in the city centre  2830952
+## 214                 Appartment in centre of Amsterdam.  2831228
+## 215            Private Studio on Spectacular Houseboat  2851886
+## 216                    Cosy apartment with canal view!  2859023
+## 217                 Comfy house with garden in De Pijp  1544456
+## 218 Sunny &amp; central located apartment near Albert Cuyp  2865047
+## 219                    Quiet large park side apartment  2865851
+## 220        Bright &amp; spacious design apt. in quiet area   405625
+## 221                                      Jacky&#39;s place  2866493
+## 222                              Amsterdam Family Home  2868026
+## 223              Warm Family Canal House in the Center   199266
+## 224                Large 3 bedroom apartment surrounde  1759884
+## 225                 Casa Bacco @ Amsterdam city center  1501059
+## 226           Sweet ap. with garden and  2 bedrooms...  2901110
+## 227                Great 140 m2 app. lovely canalview.  2717366
+## 228                  Lovely apartment near city centre  2906309
+## 229                                    Romantic Refuge  2906532
+## 230                          Our Cozy Third floor Home  2912339
+## 231                   amazing apartment in Amsterdam!!  2913467
+## 232                Beautiful apartment near Vondelpark  2914846
+## 233                                CASA LOVE @ De Pijp  2655785
+## 234                 House on waterfront - free parking  2580855
+## 235                    Cozy room in Amsterdam&#39;s Center  2408429
+## 236    OvernightWorkingPlaceConnectPeopleDeHallenA&#39;Dam  2923773
+## 237                   Lovely apartment on TOP location  2871004
+## 238                       Beautiful Family appartement  2977834
+## 239     Modern Houseboat | Canal Views! | JORDAAN AREA  3007402
+## 240                    Sleep at Amy&#39;s B&#39;n&#39;B Front Room  3015785
+## 241 Huge luxurious (2bedr.) apt in vibrant &#39;oud west&#39;!  2485229
+## 242                Your own cottage in the countryside  3040748
+## 243                     Artist&#39;s flat overlooking park   749611
+## 244     Light, spacious apartment in trendy Westerpark  2782084
+## 245  Beautiful and spacious apartment with big rooftop  2695123
+## 246    Specious family residence near the city centre.  2980639
+## 247                      Big apartment near Vondelpark  3093502
+## 248                 Beautifull apartment at Westerpark  3098348
+## 249                      Beautiful Apartment Amsterdam  3111814
+## 250                   Sleep at Amy&#39;s B&#39;n&#39;B Garden Room  3015785
+## 251                House boat near museums in the Pijp  3113556
+## 252                  Luxury apartment with nice garden  2504685
+## 253                    Canal apartment on Singelgracht  3116801
+## 254                Cntr. Amsterdam - roof top, 1 bedrm  6522250
+## 255                                     Casa Don Mateo  3146203
+## 256 &#39;Westerpark Sanctuary&#39;, Office-Apt. across W-Park.  3078488
+## 257       Beautiful, light apartment with huge garden!  2922757
+## 258                   Cozy, quiet home near Vondelpark  3181829
+## 259                 Spacious duplex with roof terrasse  3192579
+## 260                   Beautiful apartment in Amsterdam  3195385
+## 261                    Apartment with garden + 2 bikes  3195444
+## 262               Adam Canal Center- /long stay ready.  3207136
+## 263                   Cute Condo in heart of Amsterdam  3209034
+## 264        Proper &amp; clean apartment, nice neighborhood  3209315
+## 265                  Sunny Apartm canal + roof terrace  3254029
+## 266                  Cozy apartment centre first canal  3255626
+## 267                Most popular neighbourhood of A&#39;Dam  2841990
+## 268         Lovely apartment in dynamic Pijp for rent!  3280080
+## 269                    Sunny apartment with canal view  2369370
+## 270                My perfect spot next to the Jordaan  3266011
+## 271  VeryBig luxurious family house A&quot;dam free parking  1634910
+## 272      Characteristic canalhouse near Leidse square!  3287406
+## 273  A-location, ensuite bathroom, centre - Milkmaid -  3278419
+## 274 A-location ensuite bathroom centre &#39;Pearl Earring&#39;  3278419
+## 275                  Style, History &amp; Design - 2 Bedrm  3305102
+## 276                                       Ground floor  3317069
+## 277 Large 4 floor art-filled family-friendly townhouse  3336575
+## 278                120m2 luxurious house with a garden  3350109
+## 279                Boutique luxe apt. at PRINSENGRACHT  3351752
+## 280                Design Waterfront flat near station  1406783
+## 281                    Artists house with two gardens.  3361425
+## 282                       Lovely, Spacious appartment!  3367431
+## 283                Green, sportive experience in A&#39;dam  3375589
+## 284                   Apartment in centre of Amsterdam  3375808
+## 285                  Cozy, unique apartment in Jordaan  2467597
+## 286                 House in city centre, sunny garden  3080120
+## 287            Beautiful &amp; Artistic APT | CITY CENTRE!  1609969
+## 288          Long term rent: Spacious 4 room apartment  3418459
+## 289                  Lovely a&#39;dam, groundfloor, garden  3433441
+## 290                             Central A&#39;dam 4p 2bedr  3441165
+## 291                       Peaceful and Central at home  3451776
+## 292                  Penthouse with terrace in centrum  3460384
+## 293                     Walking Distance Waterlooplein  3440799
+## 294                 Nice Room near to RAI and downtown  2309485
+## 295                 Room privacy near centre Amsterdam  3498674
+## 296              Cosy, quiet apartment near Vondelpark  3499336
+## 297                               City beach apartment  2272095
+## 298                 SPACIOUS LOFT in 17C CANAL MANSION  3529778
+## 299                   Luxury canal-apartment Amsterdam  3281295
+## 300    2 rooms in beautiful appartment near Vondelpark  3548522
+## 301                     Quiet room in Amsterdam Center  3556421
+## 302              Green oasis only 15 min from Station.  3564543
+## 303   Cosy and stylish flat in Oud-West for cat lovers  2302855
+## 304                 Friendly ap. near centre Amsterdam  3557630
+## 305                   Museum Suite, near Leidse Square  3595270
+## 306                 Lovely apartment South A&#39;dam (RAI)  3586216
+## 307             Comfortable apartment near city centre  3505991
+## 308             Cozy and light in Bos en Lommer, 96 m²  3607736
+## 309                 Oud West Vondelpark Centre Jordaan  3123495
+## 310  Appartment 5 min from Vondelpark &amp; Roofterrace!!!  3051231
+## 311                   luxe apartment in amsterdam city  3397629
+## 312                   Amsterdam Sweet Unit Museumplein  3648704
+## 313         Unique spacious family home in the Jordaan  3517912
+## 314                    Independent Studio in &#39;De Pijp&#39;  3644216
+## 315   Cozy Spacious Clean Stylish Quiet in Lively Pijp  3656864
+## 316  Light apartment in Old-West nearby the Vondelpark  3672783
+## 317                  Warm &amp; Romantic apt in De Jordaan  3673389
+## 318                    Cozy houseboat near Vondelpark!  3678493
+## 319   Sunny, Elegant, Spacious apartment in the Centre  3681248
+## 320                 Loft style home nearby city centre  3689867
+## 321                  Cozy app. @ Vondelpark (Oud-Zuid)  1725014
+## 322          Canal house right in the Jordaan (center)  3713242
+## 323                Sunny apt great location free bikes  3723928
+## 324    Spacious and cozy apartment close to Westerpark  3727363
+## 325                Luxury design appt - Centre De Pijp  3744541
+## 326                 Beautiful loft in center Amsterdam  3775786
+## 327                  Superb loft apartment in de Pijp!  1902079
+## 328                   Fantastic studio Amsterdam Centr  3781782
+## 329                    Great location modern apartment  3788198
+## 330 Suite 2 Stay - studio Beautiful Barok - canal area  3788673
+## 331                   Bed &amp; Breakfast in Oud West Area  3267693
+## 332                   Cosy apartment in upcoming Oost!  2460974
+## 333                    Bright Design Apt | Artful Stay   965667
+## 334    FAMILY HOME WITH SUNNY PRIVATE GARDEN IN CENTER  3823268
+## 335                     Roof Terrace Apartm w. parking   232321
+## 336       Fantastic apartment in Amsterdam&#39;s best area  3872261
+## 337          Private Room at our LoveNest in Amsterdam  3846003
+## 338                Love Nest for rent in the center!!!  3846003
+## 339      Modern  stylish villa: My Amsterdam Houseboat  3877342
+## 340                  Cosy/Creative/Canal Apt for 2/3 p  3880042
+## 341                      Sailing ship Amsterdam center  1582128
+## 342                           Best Deal, City Center!!  3888452
+## 343                              Kiki&#39;s Loft Apartment  3899684
+## 344                    Kiki&#39;s Garden View Apartment 01  3899684
+## 345                    Kiki&#39;s Garden View Apartment 02  3899684
+## 346                         Kiki&#39;s Penthouse Apartment  3899684
+## 347                     Private luxury B&amp;B near Amstel  3518386
+## 348                 beautiful apartment in canal house  3713242
+## 349                Spacious apt in great neighbourhood  3482922
+## 350                     nice cozy room near Vondelpark  3548522
+## 351                      Spacious Sunny Apartment - 4p  3966326
+## 352                Beautiful apartment with big garden  3970623
+## 353                   Canal house - Heart of Amsterdam  3970753
+## 354      A special spot near the Jordaan ideal for two  3975477
+## 355                 Bright &amp; Cosy Canal View Apartment 17507481
+## 356          Central apartment 50m2, Old West Jordaan.  1387938
+## 357                Luxurious, Spacious and light 130m2  3997123
+## 358                     Spacious delightful Canalhouse  4000086
+## 359      beautiful spacious appartment near Vondelpark  3548522
+## 360                Spacious design apt. | Centre A&#39;dam  4002861
+## 361                    Nice Apartment 50m2, East Side!  3661217
+## 362           Private guest apartment on a shared boat  4009374
+## 363    40% discount A&#39;dam Apartment - Clean Quiet Safe  4013546
+## 364                Great room in Amsterdam near Centre  3914844
+## 365    LOFT at Canal : special fall-break &amp; ADE price!  3678216
+## 366                 Room, brandnew luxurious houseboat  3877342
+## 367                Fantastic 100m2 apartment. Top loca  4063638
+## 368                         Lovely Amsterdam Houseboat  4068486
+## 369  City Centre Room with En-Suite Shower and Terrace  2313061
+## 370            Nice and Cozy Room Offered in Amsterdam   195859
+## 371                   Charming monument in the Jordaan  4075972
+## 372                    Jordaan, the Heart of Amsterdam  2924870
+## 373                the Boathouse bed&amp;bike A&#39;dam centre  4091515
+## 374                Amsterdam Studio Garden Museumplein  3648704
+## 375                   Spacious, bright and comfortable  4106698
+## 376      Sleep on board of our ship in North Amsterdam  3357851
+## 377                  Lovely apartment near city centre  4109239
+## 378                 Beautiful apartment in city centre  4117326
+## 379                 Design apartment nearby the Amstel  4117053
+## 380          9-STREETS apartment in A&#39;dam Wolvenstraat  4120466
+## 381         Apartment for FAMILIES in city center | 4P  4125951
+## 382                  Lovely Cozy Place in De Baarsjes!  3161745
+## 383    Great apartment Oud West close to foodhallen***  4074819
+## 384                       Amsterdam Houseboat &#39;Centre&#39;  2586026
+## 385                Cozy design apartment in Amsterdam!  4150161
+## 386                    apartment near center Amsterdam   711884
+## 387                Groundfloor Lofty Apt | Artful Stay   965667
+## 388                 Gorgeous Apartment near Vondelpark  3042726
+## 389 Spacious apartment in trendy Baarsjes (2 - 4 pers)  4180511
+## 390                       Knus en gezellig appartement  3826985
+## 391                   Romantic Houseboat in the center  4184910
+## 392     NEW! cozy and private Amsterdam studio for two  4188143
+## 393                           PERFECT LOCATION FOR TNW  4203731
+## 394                   Luxurious apartment 72m2 in Pijp  4207199
+## 395                  mediterranean ambiance appartment  4215174
+## 396                         Charlie + Coco&#39;s Apartment  1657181
+## 397  Sleeping in a unique ship in the center of A&#39;dam!  4221960
+## 398      Stylish Loft with a Balcony - Couples retreat  3742898
+## 399                                               Boss   336950
+## 400      Spacious, modern loft in historic city centre  3449505
+## 401                  The Best 2-Floor CANAL Apartment!  4291496
+## 402                Modern apt with canal and park view  4294992
+## 403       Authentic houseboat with privacy and comfort  4296919
+## 404  La Vie En Rose B&amp;B Amsterdam Center large Suite 2  3788898
+## 405                 CANAL  APTM. WITH GARDEN IN CENTRE  4297337
+## 406                  Cosy apartment next to Dam Square   673543
+## 407  Stylish apartment for 4 persons with large garden  4323295
+## 408                Very charming home and lush garden!  4346522
+## 409                  Apt &amp; Garden in the Pijp near RAI  4312792
+## 410                Spacious, bright apartment near RAI  4363352
+## 411    180m2 Loft in former Monastry with garden @Pijp  4364112
+## 412            B&amp;B Mondriaan, bright and modern studio  4364462
+## 413                  Spacious Apt in the Rivierenbuurt  4119336
+## 414                 Occasional availability Centre Apt  3054367
+## 415                      Very cosy apt at top location   551716
+## 416                Spacious apartment 60m2 for couple!  3557914
+## 417                Spacious apartment! Great location!   437989
+## 418                  Large charming house A&#39;dam centre  4419885
+## 419          Lovely apartment @Vondelpark for families  4663170
+## 420                      Bright &quot; feel good&quot; apartment  4426149
+## 421                Central design apt in pretty street  4438302
+## 422                   HOUSEBOAT NOVA 80m2 + FREE BIKES  4443833
+## 423                 Perfect location bright cosy appt!  4398387
+## 424  Lovely top 2 floors. Canal view. 3 bedr. 2 bathr.  1347048
+## 425                 Fancy apartment heart of Amsterdam  4520552
+## 426                 Apartment in city centre (Jordaan)  4520718
+## 427                 Beautiful apartment in city centre  2620478
+## 428 Sunny apartment Amsterdam Zuid behind Museumsquare  4543444
+## 429                    luxurious double room apartment  4552493
+## 430                  Spacious apartment in &#39;Pijp&#39; area  1118702
+## 431       *Comfortable apartment close to city center*  1314991
+## 432 Bright apt in center with canal view and king bed!  4592706
+## 433                The Weavery Boutique Bed&amp;Breakfast2  4614541
+## 434                  Private, quiet room in old center  4615516
+## 435                   The Room Upstairs - Free parking  4615590
+## 436                    5 BR apartment / Quiet / Garden  4585922
+## 437                The Weavery Boutique Bed&amp;Breakfast1  4614541
+## 438                Spacious room with private bathroom  3332206
+## 439            Big room (&amp; big bathroom) in canalhouse  4663978
+## 440                                        ArtPark B&amp;B  4682226
+## 441                 Luxurious and spacious mobile home  4698057
+## 442                            Art apartment Amsterdam  4682226
+## 443                Lux 2-bed aprt + 2 bath + 2 terrace  4724613
+## 444                Apartment near city centre + canals  4579810
+## 445                     Unique view on the Herengracht  4735700
+## 446                Bright &amp; spacious apt central A&#39;dam   450453
+## 447      Room in modern apartment with rooftop terrace  1608775
+## 448             Spacious 2Bed apt in REDLIGHT district  4774482
+## 449                   Comfortabel 2p. appt. in de Pijp  4779243
+## 450                       Trendy apartment in Oud-West  4817958
+## 451                 A cosy Bed and Breakfast in A&#39;dam.   488009
+## 452                    Private getaway Citycentre Adam  1903103
+## 453                 Big central Jordaan apt + rooftop!  4917532
+## 454                  Urban Villa, bright and spacious!  4922720
+## 455                Luxury apartment near RAI (in Pijp)  4927986
+## 456                     Cute apartment with big garden   589967
+## 457               Spacious family house in city centre  4937229
+## 458                         The Guestroom in Amsterdam  4947559
+## 459       2 KM from Anne Frank house /Jordaan / Canals  3112142
+## 460   Fully equipped apartment Amsterdam + Roofterrace  4959941
+## 461                House with garden in quite oud-zuid  4965029
+## 462                    Spacious studio - Best location  1917728
+## 463                Charming topfloor flat @ Vondelpark  1176934
+## 464                  Design apt 10 min from Dam Square  2570850
+## 465        Houseboat: Our little paradise in Amsterdam  4281750
+## 466    Spacious &amp; central appt + private roof terrace!  5022352
+## 467          Authentic modern garden family apt. 120m2  1422043
+## 468                  LOTUS, Classic Dutch Saling Barge  5037506
+## 469                The A&#39;dam experience! Spacious Loft  5062046
+## 470                  2 private floors near Rijksmuseum  5069954
+## 471                  Cozy apartment + bikes Westerpark  5073186
+## 472                   Child friendly classic houseboat  5076226
+## 473                   H&amp;H&#39;s place - Light and colorful  4280207
+## 474                                     Homy apartment  3775031
+## 475 Private apartment near lively neighborhood Jordaan  5102632
+## 476                Spacious room in quiet neighborhood  5134833
+## 477                Comfortable family home with garden  5146783
+## 478                Great house,Perfect place, S-Garden  5162447
+## 479                 Comfortable apartment in eco-house  5163484
+## 480                          Canalhouse in city center  5173586
+## 481                Stylish, clean studio, high service  5183517
+## 482       Private studio 25m2 for two near A&#39;dam Arena  5183517
+## 483                               Canal House 3 floors  4663978
+## 484                    Modern, spacious designer house  4794187
+## 485 central family home 120sm+garden   child friendly!  2049167
+## 486              All private, city center, art @home-2   538659
+## 487                 Space, glass floors &amp; roof terrace  2633774
+## 488                 Living in a houseboat on the water  5297940
+## 489                                Private Garden room  4073717
+## 490                      Lovely Room in nice apartment  3879155
+## 491                   Clean, spacious, 2 bathroom LOFT  3971476
+## 492                      Nice Room in Centre Amsterdam  5417945
+## 493                 Travel and sleep like a local 75m2  3205205
+## 494                                     Waterfront B&amp;B  4415881
+## 495                 Lovely Canal Apartment Leidseplein  5472530
+## 496                            knus huisje met tuintje  5476741
+## 497                        Very large &amp; new apartment!  5488484
+## 498                                    The Canal House  5489703
+## 499                Nice,new app. nearby Center/Jordaan  5527871
+## 500                      Beautiful apartment in centre  5530981
+## 501                 Fun apt @ the corner of the Jordan  5536020
+## 502 Luxury BedonBoard on Beautiful Houseboat Amsterdam  3523553
+## 503                  A&#39;dam West - room with double bed  4443157
+## 504                        Light Apartment with garden  5545294
+## 505      Central, comfortable, bath and great kitchen!  5558015
+## 506 Rustig gelegen zonnig appartement voor een familie  5039682
+## 507                   Canal app. 80m² Museum+shop area  4473576
+## 508   Cosy private studio on houseboat in the centre!*   125667
+##  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 18014 rows ]</code></pre>
+<p>Shall we set a condition on column names perhaps?</p>
+</div>
+<div id="subsetting-by-columns-grepl-to-perform-regex-match"
+class="section level4">
+<h4>2.3 Subsetting by columns + <code>grepl()</code> to perform regex
+match</h4>
+<pre class="r"><code>listings[1:10, grepl(&quot;^number&quot;, colnames(listings))]</code></pre>
+<pre><code>##  [1] 278 339   5 219 336 481  32  89  60  61</code></pre>
+<p>We already now that <code>colnames(listings)</code> will return a
+character vector encompassing all column names from
+<code>listings</code>. The <code>grepl()</code> function operates on
+characters. It’s task is to check if the <a
+href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html">regular
+expression (regex)</a> described by its first argument
+(<code>^number</code> in our example) matches any character sequence
+found in its second argument (<code>colnames(listings)</code> in our
+example). The regular expression <code>^number</code> says search for
+anything that begins with <code>number</code> in the given string, so
+<code>^</code> is the character (precisely: a metacharacter) in the
+regex syntax that stands for the beginning of the string. Similarly,
+<code>$</code> is a metacharacter that stands for the empty character at
+the end of the string. Let’se see what <code>grepl()</code> does:</p>
+<pre class="r"><code>string &lt;- &#39;the quick brown fox jumps over the lazy dog&#39;
+grepl(&#39;^t&#39;, string)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>^^ Asks if <code>string</code> begins with <code>'T'</code>.</p>
+<pre class="r"><code>string &lt;- &#39;the quick brown fox jumps over the lazy dog&#39;
+grepl(&#39;g$&#39;, string)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>^^ Asks if <code>string</code> ends with <code>'g'</code>.</p>
+<pre class="r"><code>string &lt;- &#39;the quick brown fox jumps over the lazy dog&#39;
+grepl(&#39;x$&#39;, string)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>^^ Asks if <code>string</code> ends with <code>'x'</code>.</p>
+<pre class="r"><code>strings &lt;- c(&#39;the quick brown fox jumps over the lazy dog&#39;, 
+             &#39;Inland Empire&#39;, 
+             &#39;Wild at Heart&#39;)
+grepl(&#39;e$&#39;, strings)</code></pre>
+<pre><code>## [1] FALSE  TRUE FALSE</code></pre>
+<p>We will learn more about <code>regex</code> later in this course. But
+the previous example illustrates something more than the usage of
+<code>grepl()</code> to check for character sequences in R. Pay
+attention, please: we have defined a new character vector,
+<code>strings</code>, with three elements:
+<code>'the quick brown fox jumps over the lazy dog'</code>,
+<code>'Inland Empire'</code>, and <code>'Wild at Heart'</code>. We have
+called <code>grepl()</code> like this: <code>grepl('e$', strings)</code>
+to ask if <strong>any</strong> of the strings in <code>strings</code>
+matches the <code>e$</code> regex (and <code>e$</code> asks: does it end
+with <code>'e'</code>?). R responded by a vector of logicals:
+<code>FALSE  TRUE FALSE</code>, and the length of the output vector is 3
+- exactly as the length of the input string <code>strings</code>. In
+other words, <code>grepl()</code> is a <strong>vectorized
+function</strong>: it can be applied to a vector of elements, and will
+compute what it does on each element, pack its results back in another
+vector and serve them in that form! <strong>Many</strong> R functions
+are vectorized, and this is one the most powerful features of this
+beautiful programming language. We will also learn much more about
+vector programming and code vectorization with R in our future
+sessions.</p>
+<p>A glimpse of vectorization only, the essential feature of R - which
+is a member of the class of <em>vector languages</em> or <em>vector
+programming languages</em>:</p>
+<pre class="r"><code>someVector &lt;- c(1, 2, 3, 4, 5)
+someVector + 10</code></pre>
+<pre><code>## [1] 11 12 13 14 15</code></pre>
+<pre class="r"><code>someVector^2</code></pre>
+<pre><code>## [1]  1  4  9 16 25</code></pre>
+<pre class="r"><code>someVector %% 2 == 0</code></pre>
+<pre><code>## [1] FALSE  TRUE FALSE  TRUE FALSE</code></pre>
+</div>
+<div id="read.csv-from-the-internet" class="section level4">
+<h4>2.4 <code>read.csv()</code> from the Internet</h4>
+<p>Oh, one more thing. Remember that <code>listings</code> live on the
+Internet: <a href="http://insideairbnb.com/get-the-data.html">here</a>.
+If you browse to that Inside Airbnb page and copy (right click!) the
+<code>listings.csv</code> link location -
+<code>http://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2020-12-12/visualisations/listings.csv</code>
+in the time of writing of this Notebook - you can obtain it from
+<code>read.csv()</code> in R like this:</p>
+<pre class="r"><code>urlData &lt;- &#39;https://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2024-09-05/visualisations/listings.csv&#39;
+listingsOnline &lt;- read.csv(URLencode(urlData), 
+                           header = T, 
+                           check.names = F, 
+                           stringsAsFactors = F)
+head(listingsOnline)</code></pre>
+<pre><code>##      id                                              name host_id     host_name
+## 1  2818         Quiet Garden View Room &amp; Super Fast Wi-Fi    3159        Daniel
+## 2 27886 Romantic, stylish B&amp;B houseboat in canal district   97647          Flip
+## 3 28871                           Comfortable double room  124245         Edwin
+## 4 29051                           Comfortable single room  124245         Edwin
+## 5 44391   Quiet 2-bedroom Amsterdam city centre apartment  194779           Jan
+## 6 48373               Cozy family home in Amsterdam South  220434 Vesna &amp; Misha
+##   neighbourhood_group                          neighbourhood latitude longitude       room_type
+## 1                  NA Oostelijk Havengebied - Indische Buurt 52.36435   4.94358    Private room
+## 2                  NA                           Centrum-West 52.38761   4.89188    Private room
+## 3                  NA                           Centrum-West 52.36775   4.89092    Private room
+## 4                  NA                           Centrum-Oost 52.36584   4.89111    Private room
+## 5                  NA                           Centrum-Oost 52.37168   4.91471 Entire home/apt
+## 6                  NA                 Buitenveldert - Zuidas 52.32781   4.87680 Entire home/apt
+##   price minimum_nights number_of_reviews last_review reviews_per_month
+## 1    83              3               389  2024-08-31              2.07
+## 2   155              3               279  2024-09-03              1.81
+## 3    79              2               638  2024-09-03              3.73
+## 4    59              2               761  2024-09-04              4.64
+## 5    NA              3                42  2022-08-20              0.25
+## 6    NA              3                 5  2024-04-28              0.36
+##   calculated_host_listings_count availability_365 number_of_reviews_ltm                  license
+## 1                              1              105                    35 0363 5F3A 5684 6750 D14D
+## 2                              1              193                    18 0363 974D 4986 7411 88D8
+## 3                              2               74                   100 0363 607B EA74 0BD8 2F6F
+## 4                              2               91                    84 0363 607B EA74 0BD8 2F6F
+## 5                              1                0                     0 0363 E76E F06A C1DD 172C
+## 6                              1                0                     4 0363 4A2B A6AD 0196 F684</code></pre>
+<p>The <code>URLencode()</code> function takes care of the
+percent-encoding of characters in the URLs. Never forget to use it when
+you need an online file. There are better solutions to this than the
+base R <code>URLencode()</code> function (see: <a
+href="https://cran.r-project.org/web/packages/urltools/index.html">urltools</a>
+package), but the base solution will do nicely as well - or at least in
+the beginning of your work in Data Science.</p>
+<p>Now we have a copy of <code>listings</code>…</p>
+<pre class="r"><code>rm(listingsOnline)</code></pre>
+<p>Only our second session and we can already read data from the local
+filesystem, Microsoft Excel, and the Internet!</p>
+</div>
+<div id="subsetting-data-frames-in-base-r-some-principles"
+class="section level4">
+<h4>2.5 Subsetting data frames in base R: some principles</h4>
+<p>Ok, back to <code>data.frame</code>. Here are <em>some
+principles</em> of data frame subsetting in R:</p>
+<p><img src="/S02_01_DataFrames.jpeg" /></p>
+</div>
+</div>
+<div
+id="more-fun-with-listings-some-other-data-frames-basic-visualizations-w.-ggplot2"
+class="section level3">
+<h3>3. More fun with <code>listings</code>, some other data frames +
+basic visualizations w. {ggplot2}</h3>
+<p>It is time: star doing analytics with <code>listings</code>!</p>
+<p>We first provide a concise overview of what is found in this dataset.
+Let’s see:</p>
+<pre class="r"><code>str(listings)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    18522 obs. of  16 variables:
+##  $ id                            : int  2818 20168 25428 27886 28871 29051 31080 41125 43109 43980 ...
+##  $ name                          : chr  &quot;Quiet Garden View Room &amp; Super Fast WiFi&quot; &quot;Studio with private bathroom in the centre 1&quot; &quot;Lovely apt in City Centre (w.lift) near Jordaan&quot; &quot;Romantic, stylish B&amp;B houseboat in canal district&quot; ...
+##  $ host_id                       : int  3159 59484 56142 97647 124245 124245 133488 178515 188098 65041 ...
+##  $ host_name                     : chr  &quot;Daniel&quot; &quot;Alexander&quot; &quot;Joan&quot; &quot;Flip&quot; ...
+##  $ neighbourhood_group           : logi  NA NA NA NA NA NA ...
+##  $ neighbourhood                 : chr  &quot;Oostelijk Havengebied - Indische Buurt&quot; &quot;Centrum-Oost&quot; &quot;Centrum-West&quot; &quot;Centrum-West&quot; ...
+##  $ latitude                      : num  52.4 52.4 52.4 52.4 52.4 ...
+##  $ longitude                     : num  4.94 4.89 4.88 4.89 4.89 ...
+##  $ room_type                     : chr  &quot;Private room&quot; &quot;Private room&quot; &quot;Entire home/apt&quot; &quot;Private room&quot; ...
+##  $ price                         : int  59 236 125 135 75 55 219 160 211 67 ...
+##  $ minimum_nights                : int  3 1 14 2 2 2 3 4 3 30 ...
+##  $ number_of_reviews             : int  278 339 5 219 336 481 32 89 60 61 ...
+##  $ last_review                   : chr  &quot;2020-02-14&quot; &quot;2020-04-09&quot; &quot;2020-02-09&quot; &quot;2020-07-25&quot; ...
+##  $ reviews_per_month             : num  1.95 2.58 0.14 2.01 2.68 4.05 0.28 0.73 4.31 0.5 ...
+##  $ calculated_host_listings_count: int  1 2 1 1 2 2 1 1 1 2 ...
+##  $ availability_365              : int  123 3 33 219 346 360 0 0 0 184 ...</code></pre>
+<p>So,</p>
+<ul>
+<li><code>id</code> is just some id of the listing,</li>
+<li><code>name</code> is (I guess, it’s Airbnb’s dataset) the title of
+the listing as it was advertised,</li>
+<li><code>host_id</code> is, obviously, the host id,</li>
+<li><code>host_name</code> is also self-explanatory,</li>
+<li><code>neighbourhood_group</code> has a lot of <code>NA</code>
+values, we will learn about <code>NA</code> soon,</li>
+<li><code>neighbourhood</code> seems to represent a particular
+neighbourhood of Amsterdam,</li>
+<li><code>latitude</code> and <code>longitude</code> are
+self-explanatory,</li>
+<li><code>room_type</code> - the room type,</li>
+<li><code>price</code> - we do not know the units, say EUR,</li>
+<li><code>minimun_nights</code> - the minimum nights for a stay in this
+property,</li>
+<li><code>number_of_reviews</code> - how many reviews did a particular
+listing receive,</li>
+<li><code>last_review</code> - the timestamp of the latest review for
+this listing, <code>YYYY-MM-DD</code> format,</li>
+<li><code>last_review</code> - how many reviews were received for this
+listing,</li>
+<li><code>reviews_per_month</code> - how many reviews per month, we do
+not know the time frame across which was this measure aggregated,</li>
+<li><code>calculated_host_listings_count</code> - I have no idea what
+this is, we will do some research on this later, and finally</li>
+<li><code>availability_365</code> - how many days in a years is this
+available.</li>
+</ul>
+<div id="play-for-real-a-deep-dive-into-listings"
+class="section level4">
+<h4>3.1 Play for real: a deep dive into <code>listings</code>!</h4>
+<p>Ok. First, I would like to learn more about the
+<code>calculated_host_listings_count</code> column, which I did not
+understand immediately. I have an <em>intuition</em> about it: it could
+be the number of different listings with the same
+<code>host_id</code>/<code>host_name</code>.</p>
+<p>Step 0: reload <code>listings.csv</code></p>
+<pre class="r"><code>filename &lt;- paste0(dataDir, &#39;listings.csv&#39;)
+listings &lt;- read.csv(file = filename, 
+                    header = T, 
+                    check.names = F,
+                    stringsAsFactors = F)
+str(listings)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    18522 obs. of  16 variables:
+##  $ id                            : int  2818 20168 25428 27886 28871 29051 31080 41125 43109 43980 ...
+##  $ name                          : chr  &quot;Quiet Garden View Room &amp; Super Fast WiFi&quot; &quot;Studio with private bathroom in the centre 1&quot; &quot;Lovely apt in City Centre (w.lift) near Jordaan&quot; &quot;Romantic, stylish B&amp;B houseboat in canal district&quot; ...
+##  $ host_id                       : int  3159 59484 56142 97647 124245 124245 133488 178515 188098 65041 ...
+##  $ host_name                     : chr  &quot;Daniel&quot; &quot;Alexander&quot; &quot;Joan&quot; &quot;Flip&quot; ...
+##  $ neighbourhood_group           : logi  NA NA NA NA NA NA ...
+##  $ neighbourhood                 : chr  &quot;Oostelijk Havengebied - Indische Buurt&quot; &quot;Centrum-Oost&quot; &quot;Centrum-West&quot; &quot;Centrum-West&quot; ...
+##  $ latitude                      : num  52.4 52.4 52.4 52.4 52.4 ...
+##  $ longitude                     : num  4.94 4.89 4.88 4.89 4.89 ...
+##  $ room_type                     : chr  &quot;Private room&quot; &quot;Private room&quot; &quot;Entire home/apt&quot; &quot;Private room&quot; ...
+##  $ price                         : int  59 236 125 135 75 55 219 160 211 67 ...
+##  $ minimum_nights                : int  3 1 14 2 2 2 3 4 3 30 ...
+##  $ number_of_reviews             : int  278 339 5 219 336 481 32 89 60 61 ...
+##  $ last_review                   : chr  &quot;2020-02-14&quot; &quot;2020-04-09&quot; &quot;2020-02-09&quot; &quot;2020-07-25&quot; ...
+##  $ reviews_per_month             : num  1.95 2.58 0.14 2.01 2.68 4.05 0.28 0.73 4.31 0.5 ...
+##  $ calculated_host_listings_count: int  1 2 1 1 2 2 1 1 1 2 ...
+##  $ availability_365              : int  123 3 33 219 346 360 0 0 0 184 ...</code></pre>
+<p>Step 1: ask R how many <strong>unique</strong> <code>host_id</code>
+values there are in the dataset:</p>
+<pre class="r"><code>num_hosts &lt;- length(unique(listings$host_id))
+num_hosts</code></pre>
+<pre><code>## [1] 16033</code></pre>
+<p>The <code>unique()</code> function: you will be using it every now
+and then. It’s easy: if <code>vec &lt;- c(1, 2, 3, 5, 5, 7)</code> is a
+vector, <code>unique(vec)</code> is <code>c(1, 2, 3, 5, 7)</code>,
+look:</p>
+<pre class="r"><code>vec &lt;- c(1, 2, 3, 5, 5, 7)
+unique(vec)</code></pre>
+<pre><code>## [1] 1 2 3 5 7</code></pre>
+<p>Step 2: ask R to count how many different listings there are <em>per
+unique</em> <code>host_id</code>.</p>
+<pre class="r"><code>num_host_listings &lt;- table(listings$host_id)
+head(num_host_listings, 50)</code></pre>
+<pre><code>## 
+##   3159   3592   7924  12085  30390  47517  49851  56142  58458  59484  61977  62341  62658  65041 
+##      1      1      1      1      1      1      1      1      1      2      1      1      1      2 
+##  72890  77950  81046  92194  92253  96492  97647  98297  98647  98844 109257 111635 113034 124245 
+##      1      1      1      1      1      1      1      1      1      1      1      1      1      2 
+## 125667 126790 127938 133488 142145 149649 158271 166264 169567 178515 178521 179452 185619 185836 
+##      2      1      1      1      1      1      1      1      1      1      1      1      1      1 
+## 186729 187728 188073 188098 190897 194523 195126 195537 
+##      1      1      1      1      1      1      1      1</code></pre>
+<p>The <code>table()</code> function is your tool to obtain the
+frequency distribution of a variable in R. It’s easy: if
+<code>vec &lt;- c(1, 2, 3, 5, 5, 7, 7, 7)</code> is a vector,
+<code>table(vec)</code> is:</p>
+<pre class="r"><code>vec &lt;- c(1, 2, 3, 5, 5, 7, 7, 7)
+table(vec)</code></pre>
+<pre><code>## vec
+## 1 2 3 5 7 
+## 1 1 1 2 3</code></pre>
+<p>What is the <code>class()</code> of the output of
+<code>table()</code>?</p>
+<pre class="r"><code>class(table(vec))</code></pre>
+<pre><code>## [1] &quot;table&quot;</code></pre>
+<p>Yes, R has a plenty of specific types, and sometimes - and maybe most
+of the time - it is handy to turn them all into data frames:</p>
+<pre class="r"><code>freqHosts &lt;- as.data.frame(table(listings$host_id), 
+                           stringsAsFactors = FALSE)
+head(freqHosts)</code></pre>
+<pre><code>##    Var1 Freq
+## 1  3159    1
+## 2  3592    1
+## 3  7924    1
+## 4 12085    1
+## 5 30390    1
+## 6 47517    1</code></pre>
+<p>The <code>Var1</code> represents the <code>host_id</code> from the
+<code>listings</code> data frame, while <code>Freq</code> is its
+frequency: how many times does the respective value of <code>Var1</code>
+appear in the <code>listings</code> data.frame?</p>
+<p>One check:</p>
+<pre class="r"><code>dim(freqHosts)[1] == num_hosts</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Of course, it has to be! So <code>dim(x)</code> where <code>x</code>
+is a <code>data.frame</code> returns a vector of length two, of which
+the first element is the number of rows in <code>x</code> and the second
+the number of columns in <code>x</code>. In a frequency distribution,
+every particular value of a discrete variables occurs only once, so of
+course that <code>dim(freqHosts)[1] == num_hosts</code> must evaluate to
+<code>T</code>.</p>
+<p>Now, if my intuition that <code>calculated_host_listings_count</code>
+column stands for the number of different listings with the same
+<code>host_id</code>/<code>host_name</code>, then its values must be the
+same as those that I have produced by <code>table()</code> in
+<code>freqHosts</code>. How do we test this hypothesis?</p>
+<p>Step 3. Extract only <code>host_id</code> and
+<code>calculated_host_listings_count</code> from <code>listings</code>;
+if I am right, there will be duplicated values in this selection:</p>
+<pre class="r"><code>testHosts &lt;- listings[ , c(&#39;host_id&#39;, &#39;calculated_host_listings_count&#39;)]
+head(testHosts)</code></pre>
+<pre><code>##   host_id calculated_host_listings_count
+## 1    3159                              1
+## 2   59484                              2
+## 3   56142                              1
+## 4   97647                              1
+## 5  124245                              2
+## 6  124245                              2</code></pre>
+<p>Ok, now: are there any duplicated rows present?</p>
+<pre class="r"><code>d &lt;- duplicated(testHosts)
+table(d)</code></pre>
+<pre><code>## d
+## FALSE  TRUE 
+## 16033  2489</code></pre>
+<p>Of course there are, but the result most probably does not mean too
+much at this point. Step by step, the <code>duplicated()</code> function
+R returns a logical vector (<code>TRUE</code> or
+<code>FALSE</code>):</p>
+<pre class="r"><code>vec &lt;- c(1, 2, 3, 2, 2, 4, 5, 5, 7)
+duplicated(vec)</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE</code></pre>
+<p>Note how each <em>first appearance</em> of an element in a vector
+receives <code>FALSE</code> - because it is not duplicated - while every
+subsequent appearance of the same element receives <code>TRUE</code> -
+because it is duplicated. <code>duplicated()</code> works for data
+frames too, in which case it looks at all the values across all of the
+rows and returns as many logicals as there are rows following the same
+logic: first apperance is marked as <code>FALSE</code> and then all
+repetitions are marked as <code>TRUE</code>:</p>
+<pre class="r"><code>d &lt;- duplicated(testHosts)
+head(d)</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE FALSE FALSE  TRUE</code></pre>
+<p>So, what happened when I did <code>table(d)</code> is that R has
+counted how many duplicates (<code>TRUE</code>) there were in
+<code>testHosts</code>:</p>
+<pre class="r"><code>table(d)</code></pre>
+<pre><code>## d
+## FALSE  TRUE 
+## 16033  2489</code></pre>
+<p>There are <code>2489</code> duplicated values. Interesting enough, I
+can use the logical vector that <code>duplicated()</code> outputs to
+clean up my <code>testHosts</code> data frame from duplicated entries in
+this way:</p>
+<pre class="r"><code>dim(testHosts)</code></pre>
+<pre><code>## [1] 18522     2</code></pre>
+<pre class="r"><code>testHosts &lt;- testHosts[!duplicated(testHosts), ]
+
+dim(testHosts)</code></pre>
+<pre><code>## [1] 16033     2</code></pre>
+<p>to keep only the <code>16033</code> rows that were never
+repeated.</p>
+<p>We get back to the hypothesis:
+<code>calculated_host_listings_count</code> column stands for the number
+of different listings with the same
+<code>host_id</code>/<code>host_name</code>. If this is true, than the
+frequency counts in <code>freqHosts$Freq</code> must be the same, across
+the <code>host_id</code> values, as the values found in
+<code>testHosts$calculated_host_listings_count</code>, correct? How do
+we proceed to find out?</p>
+<p>What do we have are two data frames:</p>
+<pre class="r"><code>head(freqHosts)</code></pre>
+<pre><code>##    Var1 Freq
+## 1  3159    1
+## 2  3592    1
+## 3  7924    1
+## 4 12085    1
+## 5 30390    1
+## 6 47517    1</code></pre>
+<p>and the de-duplicated <code>testHosts</code>:</p>
+<pre class="r"><code>head(testHosts)</code></pre>
+<pre><code>##   host_id calculated_host_listings_count
+## 1    3159                              1
+## 2   59484                              2
+## 3   56142                              1
+## 4   97647                              1
+## 5  124245                              2
+## 7  133488                              1</code></pre>
+<p>and do not forget that we know that <code>Var1</code> in
+<code>freqHosts</code> encompasses the same values of
+<code>host_id</code> from <code>listings</code> as
+<code>testHosts$host_id</code>. I would know like to put
+<code>freqHosts</code> and <code>testHosts</code> side by side and
+inspect if the values of <code>freqHosts$Var1</code> and
+<code>testHosts$host_id</code> are really the same.</p>
+<p>Check one thing first:</p>
+<pre class="r"><code>dim(freqHosts)</code></pre>
+<pre><code>## [1] 16033     2</code></pre>
+<pre class="r"><code>dim(testHosts)</code></pre>
+<pre><code>## [1] 16033     2</code></pre>
+<p>Of course. But the order of <code>Var1</code> in
+<code>freqHosts</code> and <code>host_id</code> in
+<code>testHosts</code> does not seem to be the same. Let’s fix that by
+using <code>order()</code>. How does it work?</p>
+<pre class="r"><code>someDataFrame &lt;- data.frame(someNum = c(5, 9, 1, 3, 4, 10), 
+                            someChar = c (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;, &#39;f&#39;), 
+                            stringsAsFactors = F)
+print(someDataFrame)</code></pre>
+<pre><code>##   someNum someChar
+## 1       5        a
+## 2       9        b
+## 3       1        c
+## 4       3        d
+## 5       4        e
+## 6      10        f</code></pre>
+<p>Now:</p>
+<pre class="r"><code>someDataFrame[order(someDataFrame$someNum), ]</code></pre>
+<pre><code>##   someNum someChar
+## 3       1        c
+## 4       3        d
+## 5       4        e
+## 1       5        a
+## 2       9        b
+## 6      10        f</code></pre>
+<p>Take a look at the following:</p>
+<pre class="r"><code>vec &lt;- c(5, 9, 1, 3, 4, 10)
+order(vec)</code></pre>
+<pre><code>## [1] 3 4 5 1 2 6</code></pre>
+<p>or</p>
+<pre class="r"><code>vec &lt;- c(5, 9, 1, 3, 4, 10)
+vec[order(vec)]</code></pre>
+<pre><code>## [1]  1  3  4  5  9 10</code></pre>
+<p>So, the output of <code>order()</code> tells us the following: which
+element of a vector (by position) should be placed where in order to
+have the original vector sorted out. This is why</p>
+<pre class="r"><code>someDataFrame[order(someDataFrame$someNum), ]</code></pre>
+<pre><code>##   someNum someChar
+## 3       1        c
+## 4       3        d
+## 5       4        e
+## 1       5        a
+## 2       9        b
+## 6      10        f</code></pre>
+<p>works: <code>order(someDataFrame$someNum)</code> returns an ordering
+of rows such that the data frame is sorted by <code>someNum</code>.</p>
+<p>We now sort <code>freqHosts</code> and <code>testHosts</code> so that
+all <code>host_id</code> values are aligned (remember, <code>Var1</code>
+in <code>freqHosts</code> represents <code>hosts_id</code> in
+<code>testHosts</code>). Before we do that, take a look at the
+following:</p>
+<pre class="r"><code>str(freqHosts)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    16033 obs. of  2 variables:
+##  $ Var1: chr  &quot;3159&quot; &quot;3592&quot; &quot;7924&quot; &quot;12085&quot; ...
+##  $ Freq: int  1 1 1 1 1 1 1 1 1 2 ...</code></pre>
+<pre class="r"><code>str(testHosts)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    16033 obs. of  2 variables:
+##  $ host_id                       : int  3159 59484 56142 97647 124245 133488 178515 188098 65041 187728 ...
+##  $ calculated_host_listings_count: int  1 2 1 1 2 1 1 1 2 1 ...</code></pre>
+<p>What I do not like is that <code>Var1</code>in <code>freqHosts</code>
+is a <code>character</code>, while <code>host_id</code> in
+<code>testHosts</code> is a numeric. Fix:</p>
+<pre class="r"><code>freqHosts$Var1 &lt;- as.numeric(freqHosts$Var1)
+str(freqHosts)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    16033 obs. of  2 variables:
+##  $ Var1: num  3159 3592 7924 12085 30390 ...
+##  $ Freq: int  1 1 1 1 1 1 1 1 1 2 ...</code></pre>
+<p>Ok, sort freqHosts by <code>Var1</code>:</p>
+<pre class="r"><code>freqHosts &lt;- freqHosts[order(freqHosts$Var1), ]
+head(freqHosts, 10)</code></pre>
+<pre><code>##     Var1 Freq
+## 1   3159    1
+## 2   3592    1
+## 3   7924    1
+## 4  12085    1
+## 5  30390    1
+## 6  47517    1
+## 7  49851    1
+## 8  56142    1
+## 9  58458    1
+## 10 59484    2</code></pre>
+<p>and sort <code>testHosts</code> by <code>host_id</code>:</p>
+<pre class="r"><code>testHosts &lt;- testHosts[order(testHosts$host_id), ]
+head(testHosts, 10)</code></pre>
+<pre><code>##       host_id calculated_host_listings_count
+## 1        3159                              1
+## 15914    3592                              1
+## 9837     7924                              1
+## 9176    12085                              1
+## 1579    30390                              1
+## 1405    47517                              1
+## 10848   49851                              1
+## 3       56142                              1
+## 63      58458                              1
+## 2       59484                              2</code></pre>
+<p>Now the two data frames should be nicely aligned. Let’s put them side
+by side in a new data frame:</p>
+<pre class="r"><code>testDataFrame &lt;- cbind(freqHosts, testHosts)
+head(testDataFrame, 40)</code></pre>
+<pre><code>##      Var1 Freq host_id calculated_host_listings_count
+## 1    3159    1    3159                              1
+## 2    3592    1    3592                              1
+## 3    7924    1    7924                              1
+## 4   12085    1   12085                              1
+## 5   30390    1   30390                              1
+## 6   47517    1   47517                              1
+## 7   49851    1   49851                              1
+## 8   56142    1   56142                              1
+## 9   58458    1   58458                              1
+## 10  59484    2   59484                              2
+## 11  61977    1   61977                              1
+## 12  62341    1   62341                              1
+## 13  62658    1   62658                              1
+## 14  65041    2   65041                              2
+## 15  72890    1   72890                              1
+## 16  77950    1   77950                              1
+## 17  81046    1   81046                              1
+## 18  92194    1   92194                              1
+## 19  92253    1   92253                              1
+## 20  96492    1   96492                              1
+## 21  97647    1   97647                              1
+## 22  98297    1   98297                              1
+## 23  98647    1   98647                              1
+## 24  98844    1   98844                              1
+## 25 109257    1  109257                              1
+## 26 111635    1  111635                              1
+## 27 113034    1  113034                              1
+## 28 124245    2  124245                              2
+## 29 125667    2  125667                              2
+## 30 126790    1  126790                              1
+## 31 127938    1  127938                              1
+## 32 133488    1  133488                              1
+## 33 142145    1  142145                              1
+## 34 149649    1  149649                              1
+## 35 158271    1  158271                              1
+## 36 166264    1  166264                              1
+## 37 169567    1  169567                              1
+## 38 178515    1  178515                              1
+## 39 178521    1  178521                              1
+## 40 179452    1  179452                              1</code></pre>
+<p>Are the two data frames perfectly aligned? To find out we ask how
+many matches there are between <code>testDataFrame$Var1</code> and
+<code>testDataFrame$host_id</code>:</p>
+<pre class="r"><code>sum(testDataFrame$Var1 == testDataFrame$host_id)</code></pre>
+<pre><code>## [1] 16033</code></pre>
+<p>A new R function: <code>sum()</code>. This is how it works:</p>
+<pre class="r"><code>sum(c(5, 6))</code></pre>
+<pre><code>## [1] 11</code></pre>
+<p>But also:</p>
+<pre class="r"><code>sum(c(TRUE, FALSE, TRUE, TRUE))</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p><code>sum()</code> across logical vectors in R: <code>TRUE</code>
+counts as <code>1</code>, <code>FALSE</code> counts as <code>0</code>.
+So if we derive an index vector, say something indicating the number of
+matches of some kind, <code>sum()</code> can help us find out how many
+times a match was successful.</p>
+<p>Also, the data frames should match in all positions, so
+<code>dim(testDataFrame)[1]</code> - the number of rows in
+<code>testDataFrame</code> should be the same:</p>
+<pre class="r"><code>dim(testDataFrame)[1]</code></pre>
+<pre><code>## [1] 16033</code></pre>
+<p>Ok, they match. Are the values in <code>Freq</code> and
+<code>calculated_host_listings_count</code> really the same?</p>
+<pre class="r"><code>sum(testDataFrame$Freq == testDataFrame$calculated_host_listings_count)</code></pre>
+<pre><code>## [1] 16033</code></pre>
+<p>Yes, the values in
+<code>testDataFrame$calculated_host_listings_count</code> and
+<code>testDataFrame$Freq</code> match <em>perfectly</em>, so our
+hypothesis about the structure of the <code>listings</code> data set
+holds!</p>
+<blockquote>
+<p>At this point you might ask yourself: is it possible that we need to
+invest all this work just to figure out the meaning of one single column
+in a data frame? The answer is: yes, and no. To consider the ‘no’ answer
+first: I am doing this intentionally, to provide an exercise, a training
+opportunity to you. In practice, there are many finer, more elaborated,
+and more comfortable ways to do exactly the same in R, and you will
+learn a lot about them in the future sessions. As of the ‘yes’ answer:
+we are dealing with a very small dataset here, a one encompassing barely
+16K rows and several columns. In the wild, if you start applying Data
+Science in R or any other language in practice, the datasets that you
+will be facing will probably be orders of magnitude larger. Can you
+inspect by eye a dataset encompassing a few hundreds of millions of rows
+and say tens, or hundreds of columns? Well, no. And that is why you have
+to be prepared to invest serious work in understanding the structure of
+just any dataset at hand. It is hard, it is tedious, it takes a lot of
+patientce, and it certainly makes Data Science less than the most
+sexiest profession of the 21st century.</p>
+</blockquote>
+</div>
+<div id="play-for-real-simple-analytics-visualizations-of-listings"
+class="section level4">
+<h4>3.2 Play for real: simple analytics &amp; visualizations of
+<code>listings</code>!</h4>
+<p><strong>Q1.</strong> What is the distribution of
+<code>room_type</code> in <code>listings</code>? Let’s see and
+illustrate:</p>
+<pre class="r"><code>roomType &lt;- as.data.frame(table(listings$room_type))
+colnames(roomType) &lt;- c(&#39;room_type&#39;, &#39;frequency&#39;)
+roomType &lt;- roomType[order(roomType$frequency), ]
+head(roomType)</code></pre>
+<pre><code>##         room_type frequency
+## 4     Shared room        52
+## 2      Hotel room       141
+## 3    Private room      3896
+## 1 Entire home/apt     14433</code></pre>
+<p>What if we want to place the most frequent <code>room_type</code> in
+the top?</p>
+<pre class="r"><code>roomType &lt;- roomType[order(-roomType$frequency), ]
+head(roomType)</code></pre>
+<pre><code>##         room_type frequency
+## 1 Entire home/apt     14433
+## 3    Private room      3896
+## 2      Hotel room       141
+## 4     Shared room        52</code></pre>
+<p>How many different <code>room_type</code> values do we observe?</p>
+<pre class="r"><code>roomTypes &lt;- as.data.frame(table(listings$room_type))
+colnames(roomTypes) &lt;- c(&#39;room_type&#39;, &#39;count&#39;)
+roomTypes</code></pre>
+<pre><code>##         room_type count
+## 1 Entire home/apt 14433
+## 2      Hotel room   141
+## 3    Private room  3896
+## 4     Shared room    52</code></pre>
+<p>Ok, four only. Visualize this (<strong>note:</strong> we are jumping
+a bit ahead here, but there is a reason to it):</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(data = roomTypes, 
+       aes(x = room_type, y = count)) + 
+  geom_bar(stat = &#39;identity&#39;, fill = &quot;cadetblue3&quot;) +
+  xlab(&#39;Room type&#39;) + 
+  ylab(&#39;Count&#39;) +
+  ggtitle(&#39;Room type distribution in Airbnb Listings&#39;) + 
+  theme_bw() + 
+  theme(panel.border = element_blank())</code></pre>
+<p><img src="s02_dataframe_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+<p><a href="https://ggplot2.tidyverse.org/">{ggplot2}</a> is an industry
+standard R package for <em>static</em> data visualizations (in spite of
+the fact that you can produce interactive visualizations with
+{ggplot2}). Before the end of this session, I would like to begin
+analyzing the {ggplot2} code: we will be using so much of it in the
+future.</p>
+<p>Observe the first part:</p>
+<pre class="r"><code>ggplot(data = roomTypes, 
+       aes(x = room_type, y = count))</code></pre>
+<p><img src="s02_dataframe_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
+<p>This produced <em>noting</em>. Not really: it is an empty plot, but
+it does have the horizontal (<em>x</em>) axis as well as the vertical
+(<em>Y</em>) axis defined. The <code>ggplot()</code> function asks for a
+<code>data</code> argument: the <code>data.frame</code> encompassing the
+data that we want to visualize. A call to another function,
+<code>aes()</code>, is made inside of <code>ggplot()</code>, defining
+the <code>x</code> and <code>y</code> arguments: what goes on the
+horizontal and vertical axes of the plot. <em>Note:</em> when using
+{ggplot2}, once the dataset is determined in the <code>data</code>
+argument of <code>ggplot()</code> there is no need to make a reference
+to it in <code>aes()</code> or elsewhere: we can make references to its
+columns directly, as we did in
+<code>aes(x = room_type, y = count)</code>.</p>
+<p>What happens after the first <code>+</code> in the code?</p>
+<pre class="r"><code>ggplot(data = roomTypes, 
+       aes(x = room_type, y = count)) + 
+  geom_bar(stat = &#39;identity&#39;, fill = &quot;cadetblue3&quot;)</code></pre>
+<p><img src="s02_dataframe_files/figure-html/unnamed-chunk-81-1.png" width="672" />
+The addition of <code>geom_bar()</code> adds a <strong>layer</strong> to
+the {ggplot2} plot. Any {ggplot2} visualization is produced in this
+way:</p>
+<ul>
+<li>first define the <code>data</code> and the mapping of variables in
+<code>aes()</code> in a <code>ggplot()</code> call, then</li>
+<li>add layers by using an appropriate <strong>geom</strong>, like
+<code>geom_bar()</code> in this example, and</li>
+<li>style the plot by adding additional layers such as
+<code>ggtitle()</code> or <code>theme()</code>.</li>
+</ul>
+<p>Note how <code>geom_bar()</code> also has arguments that help style
+the plot, e.g. <code>fill = "cadetblue3"</code> which picked
+<code>cadetblue3</code> as the fill color for the bar plot. More on
+colors in R: <a
+href="https://www.r-graph-gallery.com/42-colors-names.html">colors in
+R</a>.</p>
+<p>What happens next is the introduction of the <code>x</code> and
+<code>y</code> labels to the plot, as well as the plot title:</p>
+<pre class="r"><code>ggplot(data = roomTypes, 
+       aes(x = room_type, y = count)) + 
+  geom_bar(stat = &#39;identity&#39;, fill = &quot;cadetblue3&quot;) +
+  xlab(&#39;Room type&#39;) + 
+  ylab(&#39;Count&#39;) +
+  ggtitle(&#39;Room type distribution in Airbnb Listings&#39;)</code></pre>
+<p><img src="s02_dataframe_files/figure-html/unnamed-chunk-82-1.png" width="672" />
+Finally we chose to strip some default settings by using
+<code>theme_bw()</code> and style the plot by removing the
+<code>panel.border</code> in an additional <code>theme()</code> call:
+<code>theme(panel.border = element_blank())</code>:</p>
+<pre class="r"><code>ggplot(data = roomTypes, 
+       aes(x = room_type, y = count)) + 
+  geom_bar(stat = &#39;identity&#39;, fill = &quot;cadetblue3&quot;) +
+  xlab(&#39;Room type&#39;) + 
+  ylab(&#39;Count&#39;) +
+  ggtitle(&#39;Room type distribution in Airbnb Listings&#39;) + 
+  theme_bw() + 
+  theme(panel.border = element_blank())</code></pre>
+<p><img src="s02_dataframe_files/figure-html/unnamed-chunk-83-1.png" width="672" />
+<code>theme()</code> is used to access the details of a {ggplot2} plot;
+for example, center the plot title:</p>
+<pre class="r"><code>ggplot(data = roomTypes, 
+       aes(x = room_type, y = count)) + 
+  geom_bar(stat = &#39;identity&#39;, fill = &quot;cadetblue3&quot;) +
+  xlab(&#39;Room type&#39;) + 
+  ylab(&#39;Count&#39;) +
+  ggtitle(&#39;Room type distribution in Airbnb Listings&#39;) + 
+  theme_bw() + 
+  theme(panel.border = element_blank()) + 
+  theme(plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="s02_dataframe_files/figure-html/unnamed-chunk-84-1.png" width="672" />
+or control the behavior of the axes:</p>
+<pre class="r"><code>ggplot(data = roomTypes, 
+       aes(x = room_type, y = count)) + 
+  geom_bar(stat = &#39;identity&#39;, fill = &quot;cadetblue3&quot;) +
+  xlab(&#39;Room type&#39;) + 
+  ylab(&#39;Count&#39;) +
+  ggtitle(&#39;Room type distribution in Airbnb Listings&#39;) + 
+  theme_bw() + 
+  theme(panel.border = element_blank()) + 
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  theme(axis.text.x = element_text(size = 13))</code></pre>
+<p><img src="s02_dataframe_files/figure-html/unnamed-chunk-85-1.png" width="672" />
+There are so many nice tricks that can be pulled with {ggplot2}, you
+will see. At this point, it is important to remember the following:</p>
+<ul>
+<li>the plot is defined by the <code>data</code> argument in the
+<code>ggplot()</code> call, and</li>
+<li>the mapping of the variables from the dataset onto the plot is
+defined by an <code>aes()</code> call inside the <code>ggplot()</code>
+call;</li>
+<li>additional layers are added with <code>+</code>, while various
+<code>geom</code> things define the type of the plot (bar plot, in our
+example; we will soon learn about line plots, scatter plots, density
+plots, etc); finally,</li>
+<li>there are ways to style the plot additionally, most of which rely on
+various <code>theme()</code> function calls.</li>
+</ul>
+</div>
+</div>
+<div id="further-readings" class="section level3">
+<h3>Further Readings</h3>
+<ul>
+<li><a
+href="https://monashdatafluency.github.io/r-intro-2/starting-out-in-r.html#saving-code-in-an-r-script">Chapter
+1 Starting out in R from Introduction to R, version</a></li>
+<li><a
+href="https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/">Chapter
+Data Types and Structures from Programming with R</a></li>
+<li><a href="https://r4ds.had.co.nz/workflow-basics.html">Chapter 4
+Workflow: basics from R for Data Science</a></li>
+</ul>
+</div>
+<div id="highly-recommended-to-do" class="section level3">
+<h3>Highly Recommended To Do</h3>
+<ul>
+<li>Read <a href="https://r4ds.had.co.nz/">Chapters 1 to 3 from R for
+Data Science, Hadley Wickham &amp; Garrett Grolemund</a></li>
+<li>Read <a
+href="https://www.google.com/search?client=firefox-b-d&amp;channel=trow2&amp;sxsrf=ALeKk03T_qLCMzRICYWj5UHqFBHnvfV6Uw%3A1607220795553&amp;ei=Oz7MX8aeIYK6kwWc5JbgAw&amp;q=Norman+Matloff+The+Art+of+R+Programming+pdf&amp;oq=Norman+Matloff+The+Art+of+R+Programming+pdf&amp;gs_lcp=CgZwc3ktYWIQAzIFCAAQyQM6BwgjEMkDECc6AgguUJk9WOdAYKRBaABwAHgAgAGHAYgB9QOSAQMwLjSYAQCgAQGqAQdnd3Mtd2l6wAEB&amp;sclient=psy-ab&amp;ved=0ahUKEwiGqOCEpLjtAhUC3aQKHRyyBTwQ4dUDCAw&amp;uact=5">Chapters
+1 to 5 from Norman Matloff’s The Art of R Programming</a></li>
+</ul>
+</div>
+<div id="r-markdown" class="section level3">
+<h3>R Markdown</h3>
+<p><a href="https://rmarkdown.rstudio.com/">R Markdown</a> is what I
+have used to produce this beautiful Notebook. We will learn more about
+it near the end of the course, but if you already feel ready to dive
+deep, here’s a book: <a href="https://bookdown.org/yihui/rmarkdown/">R
+Markdown: The Definitive Guide, Yihui Xie, J. J. Allaire, Garrett
+Grolemunds.</a></p>
+</div>
+<div id="exercises" class="section level3">
+<h3>Exercises</h3>
+<ul>
+<li><p><strong>E1.</strong> Produce a new column in
+<code>listings</code>: <code>listings$endsIn_e</code>. The type of the
+column should be logical (i.e. <code>TRUE</code>, <code>FALSE</code>):
+<code>TRUE</code> if <code>host_name</code> ends with <code>e</code>,
+<code>FALSE</code> otherwise. Hint: <code>grepl()</code>, and remember
+that <code>grepl()</code> is vectorized.</p></li>
+<li><p><strong>E2.</strong> Use <code>table()</code> so to produce a
+<code>neighbourhood</code> X <code>room_type</code> two-way contingency
+table and turn it into a <code>data.frame</code>.</p></li>
+<li><p><strong>E3.</strong> Reproduce the following chart with {gplot2}
+by relying on the code presented in this session + <a
+href="https://ggplot2.tidyverse.org/">ggplot2 documentation</a> +
+Hadley’s book + steal code from Stack Overflow… whatever, just try to
+reproduce it. <strong>Hints.</strong> In <code>aes()</code>, you need to
+define <code>group =</code>, and <code>fill =</code>; the density plot
+in {ggplot2} is produced by <code>geom_density()</code> which has an
+<code>alpha =</code> argument to set for color transparency; natural
+logarithm in R is <code>log()</code> (and then there is
+<code>log10()</code> too).</p></li>
+</ul>
+<pre><code>## Warning: Removed 16 rows containing non-finite outside the scale range (`stat_density()`).</code></pre>
+<p><img src="s02_dataframe_files/figure-html/unnamed-chunk-86-1.png" width="672" /></p>
+<ul>
+<li><p><strong>E5.</strong> Compute the average
+<code>number_of_reviews</code> by <code>neighbourhood</code> in
+<code>listings</code>. <strong>Hint:</strong> use <code>mean()</code>,
+very similar to <code>sum()</code>. Put the results in the
+<code>data.frame</code> with the columns named
+<code>neighbourhood</code> and <code>average_reviews</code>.</p></li>
+<li><p><strong>E6.</strong> What are the top five listings in
+<code>listings</code> with the best price per night ratio?</p></li>
+<li><p><strong>E7.</strong> What is the average price per night ratio
+across the neighbourhoods in <code>listings</code>?</p></li>
+</ul>
+<hr />
+<p>License: <a href="http://www.gnu.org/licenses/gpl-3.0.txt">GPLv3</a>
+This Notebook is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or (at your
+option) any later version. This Notebook is distributed in the hope that
+it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details. You should have received a
+copy of the GNU General Public License along with this Notebook. If not,
+see <a href="http://www.gnu.org/licenses/"
+class="uri">http://www.gnu.org/licenses/</a>.</p>
+</div>
+</div>
+
+<hr>
+<p style="text-align:center;">
+  <img src="DK_Logo_White_150.png">
+</p>
+<p style="font-size:13px;text-align:center;">
+  <b>Contact: </b><a href = "mailto: goran.milovanovic@datakolektiv.com">goran.milovanovic@datakolektiv.com</a><br><br><a href="https://github.com/datakolektiv"><img src="github.png"></a>&nbsp;&nbsp;<a href="https://www.linkedin.com/in/gmilovanovic/"><img src="linkedin.png"></a>
+</p>
+<p style="font-size:11px;text-align:center;"><b>Impressum</b><br>
+<b>Data Kolektiv, 2004, Belgrade.</b></p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

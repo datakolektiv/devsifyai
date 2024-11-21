@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Session01 Intro to R and The Shape of Things to Come</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="site_libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<link href="site_libs/leaflet-awesomemarkers-2.0.3/leaflet.awesome-markers.css" rel="stylesheet" />
+<script src="site_libs/leaflet-awesomemarkers-2.0.3/leaflet.awesome-markers.min.js"></script>
+<link href="site_libs/fontawesome-4.7.0/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><img id="logo" style="width: 30px;" src="DK_Logo_White_NoTitle_25.png" /></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Sessions
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="s00_installations.html">S00. R and Python Installations</a>
+    </li>
+    <li>
+      <a href="s01_introduction_to_r.html">S01. Introduction to R</a>
+    </li>
+    <li>
+      <a href="s02_dataframe.html">S02. I/O, Packages, and data.frame</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="l01_lists.html">L01. Data Types, Lists</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Notes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="n00_installations.html">N00. R and Python Installations</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="video.html">Video</a>
+</li>
+<li>
+  <a href="resources.html">Resources</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="media.html">Media</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Session01 Intro to R and The Shape of
+Things to Come</h1>
+<h4 class="author">Goran S. Milovanovic, PhD</h4>
+
+</div>
+
+
+<p><img src="DK_Logo_100.png" /></p>
+<hr />
+<div id="session-01-feeling-r-basics-intuitive-understanding-of-r"
+class="section level1">
+<h1>Session 01: Feeling R: Basics + Intuitive Understanding of R</h1>
+<p><strong>Feedback</strong> should be send to
+<code>goran.milovanovic@datakolektiv.com</code>. ***</p>
+<div id="welcome-to-r" class="section level3">
+<h3>Welcome to R!</h3>
+<p><img src="Rlogo.png" width="300" /></p>
+</div>
+<div id="what-do-we-want-to-do-today" class="section level3">
+<h3>What do we want to do today?</h3>
+<p>Our goal in <code>Session 01</code> is to develop and intuition of R,
+and <em>a feeling for</em> the programming language R. Yes, we need to
+work on our emotions, dear students. Because programming in Data Science
+- as well as programming in general - is nothing but communication, and
+a very specific one. Programming languages are not very tolerant in the
+way they communicate with us: for example, they demand that we be very
+upfront and straightforward, and they have no tolerance for ambiguity.
+If they do not understand something that we say, they will immediately
+respond with a cold - and at first cryptic - error message. That means
+that we need to be very patient while we learn the strict rules of
+communication with machines in Data Science and elsewhere. I guarantee
+you that there is a specific emotional state, a specific state of mind,
+that accompanies the focused work of any programmer and Data Scientist.
+It is a kind of calmness coupled with a good, very good intuition about
+the nature of the programming language they use. This is our goal: we
+need to start developing our intuition about R. How does R like to
+work?</p>
+</div>
+<div id="prerequisits." class="section level3">
+<h3>0. Prerequisits.</h3>
+<p>None. There is an R console open in front of your eyes and you can
+reach your machine’s keyboard.</p>
+</div>
+<div id="navigating-the-work-environment-where-am-i"
+class="section level3">
+<h3>1. Navigating the work environment: where am I?</h3>
+<p>Everything happens in folders (or directories - simply pick the term
+of your preference), right? Say, we want to write our first R program -
+a <em>script</em>, as it is usually called. That program will consist of
+a set of lines in the programming language R, and those lines will be
+telling to our machine what to we want from her. Ok, this set of lines -
+a script - needs to live somewhere. It needs to live in some directory
+on your computer’s disk.</p>
+<p>When we work in R, there is always something called a <strong>working
+directory</strong>. There is a <em>function</em> in R - think of it as a
+free R program that you already have upon installing this programming
+language - that will let you know what is your current working
+directory. If you write any R code and decide to save it for later use,
+and do not specify the directory where you want it to live, R will use
+your current working directory as a destination folder. That function is
+<code>get_wd()</code></p>
+<pre class="r"><code>getwd()</code></pre>
+<pre><code>## [1] &quot;/Users/goransm/Work/___DataKolektiv/__freeDataKolektiv/_devsify&quot;</code></pre>
+<p><strong>Note.</strong> As you can see, the file paths in R are a bit
+different that those that you are used to see on the Windows operative
+system (but exactly the same as those we have on Linux). R will use
+<code>/</code> to define paths, while Windows uses the backslash -
+<code>\</code> - instead. Your RStudio IDE takes care that these paths
+are compatible so there is nothing you need to worry about (for
+now).</p>
+<p>The output of <code>getwd()</code> should end with
+<code>01_IntroDataScience_Non-Tech/_Code</code> if you have opened the
+course RStudio project exactly as suggested in the beginning of this
+session. What comes before
+<code>01_IntroDataScience_Non-Tech/_Code</code> is the path on your
+local filesystem (i.e. your machine) where you have cloned the course
+repository.</p>
+<p>Now, let’s learn about the contents of our current working
+directory:</p>
+<pre class="r"><code>list.files(getwd())</code></pre>
+<pre><code>##   [1] &quot;_data&quot;                                    &quot;_devsify.Rproj&quot;                          
+##   [3] &quot;_site&quot;                                    &quot;_site.yml&quot;                               
+##   [5] &quot;01_think_together_dkserver.png&quot;           &quot;02_explore_possibilities_dkserver.png&quot;   
+##   [7] &quot;03_training_dkserver.png&quot;                 &quot;04_wikidata_dkserver.png&quot;                
+##   [9] &quot;about.html&quot;                               &quot;about.Rmd&quot;                               
+##  [11] &quot;academic.png&quot;                             &quot;AdvAnalyticsR2024_Banner.jpeg&quot;           
+##  [13] &quot;aleksandar_cvetkovic_introMLpython.jpg&quot;   &quot;aleksandar_cvetkovic_introMLpython.png&quot;  
+##  [15] &quot;AleksandarNarancic175.png&quot;                &quot;AleksandarPanovski175.png&quot;               
+##  [17] &quot;analysttraining.png&quot;                      &quot;businesstraining.png&quot;                    
+##  [19] &quot;DataScienceSessions.jpg&quot;                  &quot;devsify_DK_logo.png&quot;                     
+##  [21] &quot;devsify_GSM500px__Banner.png&quot;             &quot;DK_Logo_100.png&quot;                         
+##  [23] &quot;DK_Logo_400.png&quot;                          &quot;DK_logo_horizontal.png&quot;                  
+##  [25] &quot;DK_Logo_White_150.png&quot;                    &quot;DK_Logo_White_NoTitle_25.png&quot;            
+##  [27] &quot;dkmlconfpalic2023.png&quot;                    &quot;dkserver_consulting.jpg&quot;                 
+##  [29] &quot;dkserver_courses_CustomRTraining.jpg&quot;     &quot;dkserver_courses_DSSV1.jpg&quot;              
+##  [31] &quot;dkserver_courses_IntroDataManagement.jpg&quot; &quot;dkserver_courses.jpg&quot;                    
+##  [33] &quot;dkserver_wikidata.jpg&quot;                    &quot;DSCEurope2021.png&quot;                       
+##  [35] &quot;dscEurope2022_BDTTechTutorial.png&quot;        &quot;DSCEurope2022_panel.png&quot;                 
+##  [37] &quot;dsceurope2023.png&quot;                        &quot;dss_vol05_python2023_500px.png&quot;          
+##  [39] &quot;DSS_Vol06_Py_Banner_OPENED_02.png&quot;        &quot;dss03python2023_banner500px.png&quot;         
+##  [41] &quot;dss04python2023_banner500px.png&quot;          &quot;DSS05_2023_srb.png&quot;                      
+##  [43] &quot;dsss2022_courses.jpg&quot;                     &quot;dsss2022_header.jpg&quot;                     
+##  [45] &quot;dssvol06_py_banner.jpeg&quot;                  &quot;eRum2018.png&quot;                            
+##  [47] &quot;eRum2020.png&quot;                             &quot;favicon.png&quot;                             
+##  [49] &quot;filipinterviewInstitutZaFiziku.jpg&quot;       &quot;footer.html&quot;                             
+##  [51] &quot;foundationaltraining.png&quot;                 &quot;freeDK_Expectations.png&quot;                 
+##  [53] &quot;freeDK_Organization.png&quot;                  &quot;freeDK_Program.png&quot;                      
+##  [55] &quot;freeDK_Rules.png&quot;                         &quot;freeDK_TechStack.png&quot;                    
+##  [57] &quot;Full_GPT_architecture.png&quot;                &quot;github.png&quot;                              
+##  [59] &quot;goran_milovanovic_introMLpython.jpg&quot;      &quot;goran_milovanovic_introMLpython.png&quot;     
+##  [61] &quot;GSM_Krakow2024_invert.jpg&quot;                &quot;GSM_Krakow2024.jpg&quot;                      
+##  [63] &quot;gsm_round_175px.png&quot;                      &quot;Hallucination_CronenbergStereo.png&quot;      
+##  [65] &quot;header.html&quot;                              &quot;HeikeThomys175px.jpg&quot;                    
+##  [67] &quot;HipkonLajt2020.png&quot;                       &quot;igf_identifying_the_impact.png&quot;          
+##  [69] &quot;IlijaLazarevic175px.jpg&quot;                  &quot;index.html&quot;                              
+##  [71] &quot;index.Rmd&quot;                                &quot;InspiraHub2023Meetup.png&quot;                
+##  [73] &quot;instagram.png&quot;                            &quot;IntroMLPython_Head_eng.png&quot;              
+##  [75] &quot;IntroMLPython_Head.png&quot;                   &quot;JelisavetaMilovanovic175px.jpeg&quot;         
+##  [77] &quot;l01_lists.html&quot;                           &quot;l01_lists.Rmd&quot;                           
+##  [79] &quot;linkedin.png&quot;                             &quot;Logo-2C-21px-TM.png&quot;                     
+##  [81] &quot;machinery.png&quot;                            &quot;media.html&quot;                              
+##  [83] &quot;media.Rmd&quot;                                &quot;MilanoR2019.png&quot;                         
+##  [85] &quot;MilicaDjurkovic175px.jpg&quot;                 &quot;MilovanMinic175px.jpeg&quot;                  
+##  [87] &quot;MilovanovicVreme.jpg&quot;                     &quot;MLSS03_ConvexFunctions.png&quot;              
+##  [89] &quot;MLSS03_NeuralNetwork.png&quot;                 &quot;MLSS03_WebPage_Notebook_Banner.png&quot;      
+##  [91] &quot;MLSS03_WebPageBanner.png&quot;                 &quot;n00_installations.html&quot;                  
+##  [93] &quot;n00_installations.Rmd&quot;                    &quot;n00_intro_session.html&quot;                  
+##  [95] &quot;n00_intro_session.html.R&quot;                 &quot;n00_intro_session.R&quot;                     
+##  [97] &quot;n00_intro_session.txt.R&quot;                  &quot;n01_intro_session.R&quot;                     
+##  [99] &quot;NedaRadibratovic175px.jpg&quot;                &quot;Netokracija2023.png&quot;                     
+## [101] &quot;NetokracijaIntervju2023.png&quot;              &quot;PE_banner_2024.png&quot;                      
+## [103] &quot;PE_GeneralBanner.png&quot;                     &quot;PE_GeneralBanner02_web.png&quot;              
+## [105] &quot;PE_GeneralBanner02.png&quot;                   &quot;PE_GeneralBannerDecember2023.png&quot;        
+## [107] &quot;PE_sep2023.png&quot;                           &quot;prerequisites.html&quot;                      
+## [109] &quot;prerequisites.nb.html&quot;                    &quot;prerequisites.Rmd&quot;                       
+## [111] &quot;RadmilaVelickovic175px.png&quot;               &quot;RadovanSimikic175px.jpg&quot;                 
+## [113] &quot;regression_mle.png&quot;                       &quot;renv&quot;                                    
+## [115] &quot;renv.lock&quot;                                &quot;resources.html&quot;                          
+## [117] &quot;resources.Rmd&quot;                            &quot;Rlogo.png&quot;                               
+## [119] &quot;s00_installations.html&quot;                   &quot;s00_installations.Rmd&quot;                   
+## [121] &quot;S01_01_Functions.jpeg&quot;                    &quot;S01_02_Arrays_and_Lists.jpeg&quot;            
+## [123] &quot;s01_introduction_to_r.nb.html&quot;            &quot;s01_introduction_to_r.Rmd&quot;               
+## [125] &quot;S02_01_DataFrames.jpeg&quot;                   &quot;s02_dataframe.Rmd&quot;                       
+## [127] &quot;S03_01_FunctionalProgramming.jpeg&quot;        &quot;S04_01_RProgramming.jpeg&quot;                
+## [129] &quot;S07_01_ProbabilityFunctions.jpeg&quot;         &quot;S17_01_ROC.jpeg&quot;                         
+## [131] &quot;S17_02_LikelihoodFunction.jpeg&quot;           &quot;S21_01_RandomForest.jpeg&quot;                
+## [133] &quot;S22_01_Bias-Variance_Tradeoff.jpeg&quot;       &quot;session00_logos.png&quot;                     
+## [135] &quot;site_libs&quot;                                &quot;sitelinks1.jpg&quot;                          
+## [137] &quot;sitelinks2.jpg&quot;                           &quot;sitelinks3.jpg&quot;                          
+## [139] &quot;sitelinks4.jpg&quot;                           &quot;skc_kahneman_delfi_2015.jpg&quot;             
+## [141] &quot;startit_add_dsss2022_800.jpeg&quot;            &quot;StartitMeetup2016_InfRetreival.png&quot;      
+## [143] &quot;StartitMeetup2016.png&quot;                    &quot;talasAI.png&quot;                             
+## [145] &quot;twitter.png&quot;                              &quot;undp_machinery2023.jpg&quot;                  
+## [147] &quot;UvodR_startit_banner.jpg&quot;                 &quot;video.Rmd&quot;                               
+## [149] &quot;VladimirMijatovic175px.jpg&quot;               &quot;wd_thinkpad_official.png&quot;                
+## [151] &quot;webit2023.jpeg&quot;                           &quot;WikidataCon2019.png&quot;                     
+## [153] &quot;WikidataCon2021.png&quot;                      &quot;wikimediablog2018.jpg&quot;</code></pre>
+<p>Take a look at <code>list.files(getwd())</code> carefully. We have
+already learned that <code>getwd()</code> is an R function. That
+function takes <strong>no input</strong>, and returns one
+<strong>output</strong>: the path towards the current working directory.
+Now, <code>list.files(getwd())</code> <em>composes</em> two R functions:
+<code>getwd()</code> is the first one, and <code>list.files()</code> is
+the second one. The later takes <strong>one input</strong> - that being
+the results of <code>getwd()</code> - and returns <strong>one
+output</strong>, namely the list of files found in the directory on the
+path returned by a previous <code>getwd()</code> call. In programming, R
+represents and instance of something called a <strong>functional
+programming language</strong>. Right now, this means very little to you,
+so we can simply say just the following: you will be using a tons of
+functions in R and combine them in crazy ways. And that is why it is
+important to develop an intuition about functions since the very
+beginning.</p>
+<p><strong>WARNING.</strong> I can code, but I cannot draw. This is how
+I envision functions and their composition:</p>
+<p><img src="S01_01_Functions.jpeg" /></p>
+<p>Ok, <code>list.files(getwd())</code> returned a list of
+<em>files</em> found under our working directory that we have in turn
+obtained from <code>getwd()</code>. There is more: we know that the
+current working directory is</p>
+<pre class="r"><code>getwd()</code></pre>
+<pre><code>## [1] &quot;/Users/goransm/Work/___DataKolektiv/__freeDataKolektiv/_devsify&quot;</code></pre>
+<p>and now we ask: what is found in
+<code>C:/Users/goran/___DataKolektiv/__EDU/01_IntroDataScience_Non-Tech/_Code/</code>,
+the directory right above our current working directory where we find
+the <code>.Rmd</code> R Notebook file (the one that we are now
+using)?</p>
+<pre class="r"><code># THIS IS A COMMENT: This chunk of code makes use of the `list.files()` R function
+list.files(&#39;/Users/goransm/Work/___DataKolektiv/_EDU/DSSVol01_IntroRNonTech2021-22/_Code/IntroDataScience_NonTech_S01&#39;)</code></pre>
+<pre><code>## [1] &quot;IntroDataScience_NonTech_S01.nb.html&quot; &quot;IntroDataScience_NonTech_S01.Rmd&quot;    
+## [3] &quot;session01.R&quot;</code></pre>
+<p>Ok, we find one file (e.g. <code>_Code.Rproj</code>) and many
+directories (<code>img</code>,
+<code>IntroDataScience_NonTech_S00</code>,
+<code>IntroDataScience_NonTech_S01</code>, etc.). Now, imagine I want to
+work in
+<code>C:/Users/goran/___DataKolektiv/__EDU/01_IntroDataScience_Non-Tech/_Code/</code>
+instead of working in:</p>
+<pre class="r"><code>getwd()</code></pre>
+<pre><code>## [1] &quot;/Users/goransm/Work/___DataKolektiv/__freeDataKolektiv/_devsify&quot;</code></pre>
+<p>How does one change a working directory in R? We have a function (of
+course) to do that:</p>
+<pre class="r"><code>setwd(&#39;/Users/goransm/Work/___DataKolektiv/_EDU/DSSVol01_IntroRNonTech2021-22/_Code/IntroDataScience_NonTech_S01&#39;)</code></pre>
+<p>Now, we need to be very careful because we are working from R
+Markdown: type <code>getwd()</code> in the console and take a look at
+its output. Now execute the following chunk of R code here:</p>
+<pre class="r"><code>getwd()</code></pre>
+<pre><code>## [1] &quot;/Users/goransm/Work/___DataKolektiv/__freeDataKolektiv/_devsify&quot;</code></pre>
+<p>So, nothing changed. The moral of the story: changing a directory
+<em>inside an R Markdown code chunk</em> will change the working
+directory only until the code in the chunk executes, but it will not
+change the working directory for any subsequent chunks. If we did this
+in a console, or in an R script - and both are different from executing
+the code from an R Markdown Notebook - once called, <code>setwd()</code>
+would change the working directory until something else changes it
+again. That is why R Markdown complained after out <code>setwd()</code>
+call.</p>
+</div>
+<div id="functions-variables-hello-world." class="section level3">
+<h3>2. Functions? Variables? Hello, World.</h3>
+<p>Let’s learn something about the in-built functions R. Those are the R
+functions - again, think of them simply as pieces of R code that does
+something - that are placed under your availability as soon as you have
+installed R. Also, we need to start learning about <em>variables</em>
+and their corresponding <em>types</em> in R.</p>
+<p>You know the famous <code>Hello, World.</code> message in
+programming? Typically an exemplar of someone’s first code in a newly
+discovered programming language… Let’s try:</p>
+<pre class="r"><code>Hello, World.</code></pre>
+<p>Well, that didn’t work. How about:</p>
+<pre class="r"><code>print(&#39;Hello, World.&#39;)</code></pre>
+<pre><code>## [1] &quot;Hello, World.&quot;</code></pre>
+<p>And here it is. Ok, <code>'Hello, World.'</code>, and what about:
+<code>"Hello, World."</code>? (Mind the difference, please)</p>
+<pre class="r"><code>print(&quot;Hello, World.&quot;)</code></pre>
+<pre><code>## [1] &quot;Hello, World.&quot;</code></pre>
+<p>So, <em>strings</em> in R (technically called:
+<code>characters</code>) can be encompassed by <code>'</code> or
+<code>"</code> whatsoever: it’s the same. However, It is a good manner
+of coding practice to choose which one will you use and be consistent in
+that decision. <strong>Note:</strong> use <code>"</code> wherever
+possible.</p>
+<p>Wait, <code>'Hello, World.'</code> are two words, right:</p>
+<pre class="r"><code>word1 &lt;- &quot;Hello&quot;
+word2 &lt;- &quot;World&quot;
+print(word1)</code></pre>
+<pre><code>## [1] &quot;Hello&quot;</code></pre>
+<pre class="r"><code>print(word2)</code></pre>
+<pre><code>## [1] &quot;World&quot;</code></pre>
+<p>Ok, that is not what we wanted, but let’s learn a few things. We have
+instantiated one variable in R, <code>word1</code>, and then another
+one, <code>word2</code>. By using the R <em>assignment operator</em> -
+<code>&lt;-</code> - we have assigned the character value of
+<code>"Hello"</code> to <code>word1</code> and the value of
+<code>"World"</code> to <code>word2</code>. Then we have called the
+function <code>print()</code> twice to print out the values of the two
+variables.</p>
+<p><strong>NOTE.</strong> You can use <code>=</code> as an assignment
+operator in R, of course, try: <code>word = "Hello"</code>, for example.
+However, <strong>we do not do it by convention in R: we prefer to use
+the <code>&lt;-</code> assignment operator</strong>. Use <code>=</code>
+instead and you will easily confuse any mature R programmer that you
+eventually need to work with. Don’t do it.</p>
+<p>Let’s get closer to the result that we were looking for:</p>
+<pre class="r"><code>word1 &lt;- &quot;Hello&quot;
+word2 &lt;- &quot;World&quot;
+paste(word1, word2, sep = &quot;, &quot;)</code></pre>
+<pre><code>## [1] &quot;Hello, World&quot;</code></pre>
+<p>Close. We need an <code>.</code> at the end, so let’s try:</p>
+<pre class="r"><code>word1 &lt;- &quot;Hello&quot;
+word2 &lt;- &quot;World&quot;
+paste(word1, word2, &quot;.&quot;, sep = &quot;, &quot;)</code></pre>
+<pre><code>## [1] &quot;Hello, World, .&quot;</code></pre>
+<p>and that is not it, right? Right. We need to start learning something
+about the logic of R functions like <code>paste()</code> that puts
+strings together, obviously. First question, how many <em>arguments</em>
+did we pass to <code>paste()</code> in
+<code>paste(word1, word2, ".", sep = ", ")</code>?</p>
+<p>Answer: four (4) arguments. Let’s see: <code>word1</code> is the
+first, <code>word2</code> the second, now, full stop, <code>.</code>, is
+the third, and finally the value for the separator, <code>sep</code>
+which we have set to <code>", "</code>, is the fourth.
+<code>paste()</code> functions by putting together all its first, string
+arguments, separating them by the value of the <code>sep</code>
+argument. But we didn’t need a full stop placed between
+<code>word1</code> and <code>word2</code>! What we do?</p>
+<p>We call <code>paste()</code> twice:</p>
+<pre class="r"><code>word1 &lt;- &quot;Hello&quot;
+word2 &lt;- &quot;World&quot;
+paste(
+  paste(word1, word2, sep = &quot;, &quot;),
+  &quot;.&quot;
+)</code></pre>
+<pre><code>## [1] &quot;Hello, World .&quot;</code></pre>
+<p>Almost. What we do not like is the empty space between the end of
+<code>word2</code> and <code>.</code>:</p>
+<pre class="r"><code>word1 &lt;- &quot;Hello&quot;
+word2 &lt;- &quot;World&quot;
+paste(
+  paste(word1, word2, sep = &quot;, &quot;),
+  &quot;.&quot;, 
+  sep = &quot;&quot;
+)</code></pre>
+<pre><code>## [1] &quot;Hello, World.&quot;</code></pre>
+<p>What have we learned: that the <code>sep</code> argument of
+<code>paste</code> has a <em>default</em> value of <code>" "</code> - an
+empty space. Only when we have explicitly instructed
+<code>paste()</code> to use <code>sep = ""</code> - an empty string -
+the results was what we have looked for. As I told you: programming
+languages are very strict when it comes to communication, they have
+their inner rules and logic, and one needs to learn and understand that
+logic completely (or almost completely) to be in full command of a
+programming language. Also, we have learned that some arguments in some
+R functions have <em>default values</em>: if we do not specify a value
+of the argument that we want to use, the function will use its default
+value.</p>
+</div>
+<div id="lists-arrays-and-a-bit-more-complicated-functions."
+class="section level3">
+<h3>2. Lists, arrays, and a bit more complicated functions.</h3>
+<p>What R functions have we seen thus far? Let’s see:
+<code>print()</code>, <code>paste()</code>, <code>list.files()</code>,
+<code>getwd()</code>, <code>setwd()</code>. There are tons of them, I
+assure you. Take a look at this one, for example:</p>
+<pre class="r"><code>word &lt;- &#39;Hello World&#39;
+strsplit(word, split = &quot; &quot;)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;Hello&quot; &quot;World&quot;</code></pre>
+<p>Ok, the meaning of <code>strsplit()</code> is, obviously
+<code>string split</code>, and it somehow breaks the strings in pieces,
+obviously using the <code>split</code> argument to learn what separator
+do we want to use to decompose a string, but… But the output looks
+strange, doesn’t it?</p>
+<p>What is <code>[[1]]</code>, and why does the result follows only
+after it and an additional <code>[1]</code>? This is so because
+<code>strsplit()</code> returns a <strong>list</strong>, which is a very
+important data type in R. Things in R - call them variables - have a
+data type associated. A thing can be an integer, or a real number, or
+perhaps a string (again, that data type is called <code>character</code>
+in R)… But they can also be a bit more complicated, like <em>arrays</em>
+and <em>lists</em>. Now, let’s start with lists, very important in R.
+What is a list?</p>
+<pre class="r"><code>word &lt;- &#39;Hello World&#39;
+s &lt;- strsplit(word, split = &quot; &quot;)
+class(s)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<p>Yes, I have assigned the output of
+<code>strsplit(word, split = " ")</code> to <code>s</code>, and then
+used the <code>class()</code> function to ask for a data type of
+<code>s</code> - and it is a list indeed. Let’s
+<code>print(s)</code>:</p>
+<pre class="r"><code>print(s)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;Hello&quot; &quot;World&quot;</code></pre>
+<p>Again! But, what if …</p>
+<pre class="r"><code>print(s[[1]])</code></pre>
+<pre><code>## [1] &quot;Hello&quot; &quot;World&quot;</code></pre>
+<p>Interesting. Here is what is happening:</p>
+<ul>
+<li><code>s</code> is a list of length one, which means that it has only
+one element;</li>
+<li>that first element of <code>s</code> is found by using the [[1]]
+index; for lists, the index is always placed in <strong>double square
+brackets</strong>: <code>[[</code> and <code>]]</code>, like in:
+<code>s[[1]]</code>;</li>
+<li>then there is the <code>[1] "Hello" "World"</code> and that is an
+<strong>array</strong> - which we can also call a
+<strong>vector</strong> - of length two (because it has two elements,
+<code>Hello</code> and <code>World</code>), and <code>[1]</code> is
+simply the index of the first element of that array.</li>
+</ul>
+<p>This can all sound really complicated at this point, but it is really
+not. Let’s now start moving one step at the time.</p>
+<pre class="r"><code>mySequence &lt;- 1:100
+print(mySequence)</code></pre>
+<pre><code>##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23
+##  [24]  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46
+##  [47]  47  48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69
+##  [70]  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92
+##  [93]  93  94  95  96  97  98  99 100</code></pre>
+<p>Demystifying the <code>[1]</code> part of the <code>strsplit()</code>
+output - the one for which I’ve explained that is the index of the first
+element in the array composed of two following elements:
+<code>"Hello"</code> and “<code>World</code>”:</p>
+<ul>
+<li>by <code>mySequence &lt;- 1:100</code> I have created an array, a
+sequence of numbers from 1 to 100, using the <code>:</code> operator in
+R; by assignment <code>&lt;-</code> that sequence becomes the value of
+the variable <code>mySequence</code>;</li>
+<li>the <code>print(mySequence)</code> line is self-explanatory,
+and</li>
+<li>from the output we can see that the indices found under square
+brackets (single! - they are array indices, not list indices) are simply
+the ordinal numbers of the first element of the <code>mySequence</code>
+array in each row of the output - nothing more than that.</li>
+</ul>
+<p>That is exactly what happens in the <code>[1] "Hello" "World"</code>
+part of the output. Now, about those double square brackets,
+<code>[[</code> and <code>]]</code> that are used in lists; take a look
+at this:</p>
+<pre class="r"><code>myList &lt;- list()
+myList[[1]] &lt;- 1:10
+myList[[2]] &lt;- 11:20
+myList</code></pre>
+<pre><code>## [[1]]
+##  [1]  1  2  3  4  5  6  7  8  9 10
+## 
+## [[2]]
+##  [1] 11 12 13 14 15 16 17 18 19 20</code></pre>
+<p>Does it make more sense now? The <code>myList</code> list encompasses
+two arrays, and those two arrays have indices <code>[[1]]</code> and
+<code>[[2]]</code>, of course. So we use <code>[[</code> and
+<code>]]</code> to index lists in R, and <code>[</code> and
+<code>]</code> to index arrays. To illustrate, again, with more
+numbers:</p>
+<pre class="r"><code>myList &lt;- list()
+myList[[1]] &lt;- 1:100
+myList[[2]] &lt;- 101:200
+myList</code></pre>
+<pre><code>## [[1]]
+##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23
+##  [24]  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46
+##  [47]  47  48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69
+##  [70]  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92
+##  [93]  93  94  95  96  97  98  99 100
+## 
+## [[2]]
+##   [1] 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123
+##  [24] 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146
+##  [47] 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169
+##  [70] 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192
+##  [93] 193 194 195 196 197 198 199 200</code></pre>
+<p>Do you now understand how list and array indices are used in the R
+output?</p>
+<p><strong>WARNING.</strong> My drawing, again: this is how I envision
+the difference between lists and arrays in R.</p>
+<p><img src="S01_02_Arrays_and_Lists.jpeg" /></p>
+<p>Let me try to explain:</p>
+<ul>
+<li>arrays encompass only elements of the same data type: numbers,
+characters, logicals, etc.;</li>
+<li>I envision arrays as elements that are directly related to each
+other, “chained” to follow one another;</li>
+<li>lists, on the other hand, I envision as a chain of boxes, and each
+box can contain anything irrespective of what is found in other
+boxes;</li>
+<li>I need to unpack a box - i.e. access an element of list by
+<code>[[</code> and <code>]]</code> - to find out what is in a box, and
+I can find various arrays living there;</li>
+<li>Also, something that we will begin to study very soon: a box can
+live inside a box. In other words: a list can be an element of another
+list. We call them <em>nested lists</em> in R.</li>
+</ul>
+<p>I have used a previously unused function in this Notebook:
+<code>list()</code>. There are R functions that are meant to create
+variables of a certain data type, and <code>list()</code> is one of
+them:</p>
+<pre class="r"><code>a &lt;- list()
+a</code></pre>
+<pre><code>## list()</code></pre>
+<p>What is <code>a</code>?</p>
+<pre class="r"><code>class(a)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<p>Of course. What else can I create?</p>
+<pre class="r"><code>a &lt;- numeric()
+a</code></pre>
+<pre><code>## numeric(0)</code></pre>
+<p>Ok, it is a <code>numeric</code> type of length(0). Now:</p>
+<pre class="r"><code>a &lt;- numeric(5)
+a</code></pre>
+<pre><code>## [1] 0 0 0 0 0</code></pre>
+<p>Now this is an <em>array</em>, or a <em>vector</em> if you like (a
+and one-dimensional vector, to be precise), of length 5: it has five
+elements, all <code>0</code> valued as per default.</p>
+<p>Wait:</p>
+<pre class="r"><code>a &lt;- character(5)
+a</code></pre>
+<pre><code>## [1] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot;</code></pre>
+<p>Ok, the empty string <code>""</code> is the default for creating
+character arrays with <code>character()</code>. I’ve been mentioning the
+word <code>length</code> for a while. Look:</p>
+<pre class="r"><code>a &lt;- c(1, 2, 3)
+length(a)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p>Now we understand the R function <code>length()</code>: tell me how
+many elements there are in an array. <strong>NOTE.</strong> The
+<code>c()</code> function, of the most commonly used things in R, puts
+thing together in an array. Nothing else.</p>
+<p>But <strong>why</strong> do we have lists and arrays: both seem to be
+collections of things that are indexed? Here is the fundamental
+difference:</p>
+<ul>
+<li><em>arrays</em> can contain data that all must be of the
+<strong>same</strong> type, while</li>
+<li><em>lists</em> can put up together just
+<strong>anything</strong>.</li>
+</ul>
+<p>The serious game of R data types begins now.</p>
+</div>
+<div id="elementary-truths-about-data-types-in-r"
+class="section level3">
+<h3>3. Elementary truths about data types in R</h3>
+<p>Look:</p>
+<pre class="r"><code>myArray1 &lt;- c(1,2,3,4)
+myArray2 &lt;- c(1,&quot;2&quot;,3,4)
+print(myArray1)</code></pre>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<pre class="r"><code>print(myArray2)</code></pre>
+<pre><code>## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot;</code></pre>
+<p>What? What has just happened? Well, to understand what happened, you
+need to keep in your mind the fact that R arrays can encompass only
+elements of the same data type. The first one - <code>myArray1</code> -
+is not problematic: it encompasses only things of <code>integer</code>
+(or <code>numeric</code> in R, as you will see) type. But the second
+one, <code>myArray2</code> is strange: we produced it by combining three
+numbers (<code>1</code>, <code>2</code>, and <code>3</code>), and one
+<em>character</em> type (<code>"2"</code>; never forget, writing out a
+number to a computer, like <code>2</code>, means you want to use a
+number, while writing out something quoted, like <code>"2"</code> means
+you want to use a character, a string, a text - and that is not the
+same). What did R do? As we can see from the output:
+<code>[1] "1" "2" "3" "4"</code> - R has <strong>converted</strong>
+everything to a <code>character</code> type. So, two things to remember:
+(1) R automatically does type conversion, so for example when it sees
+you trying to put together numbers and characters, it will default to
+convert everything to characters, and (2) some data types are “older”
+than the others, for example <code>character</code> is obviously “older”
+than <code>numeric</code> since R did not try to convert
+<code>"2"</code> to a number (as you might have expected) but in turn
+decided to convert <code>1</code>, <code>2</code>, and <code>3</code> to
+characters. You will get use to this, don’t worry.</p>
+<p>But what if we wanted R to understand that by
+<code>myArray2 &lt;- c(1,"2",3,4)</code> we mean numbers? Then:</p>
+<pre class="r"><code>myArray2 &lt;- as.numeric(c(1,&quot;2&quot;,3,4))
+print(myArray2)</code></pre>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<p>So, if we want to override R’s <strong>implicit</strong>,
+<strong>automatic</strong> type conversion, which implies that numbers
+will be automatically converted to characters and not vice versa, we
+need to instruct R that we want an <strong>explicit</strong> type
+conversion by using the appropriate function, <code>as.numeric()</code>
+in this case.</p>
+<p>For example:</p>
+<pre class="r"><code>logic &lt;- c(0,1,1,0)
+as.logical(logic)</code></pre>
+<pre><code>## [1] FALSE  TRUE  TRUE FALSE</code></pre>
+<p>What have we learned: there is a data type called
+<code>logical</code> in R (also known as <em>Boolean</em>), and it can
+take only two values: <code>TRUE</code> and <code>FALSE</code>
+(<strong>note:</strong> always capitalized in R). So, <code>1</code> is
+always <code>TRUE</code>, while <code>0</code> is always
+<code>FALSE</code>, right? No:</p>
+<pre class="r"><code>logic &lt;- c(0,3,1,0)
+as.logical(logic)</code></pre>
+<pre><code>## [1] FALSE  TRUE  TRUE FALSE</code></pre>
+<p>When converting numbers to logicals in R, <code>0</code> is always
+<code>FALSE</code>. Try <code>as.logical(-4)</code>, or
+<code>as.logical(3.14)</code> to make sure.</p>
+<p>Now, what if we want to maintain a collection of data of various
+types? Then lists come into play:</p>
+<pre class="r"><code>myList &lt;- list(1, 2, &quot;3&quot;, 4)
+print(myList)</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 2
+## 
+## [[3]]
+## [1] &quot;3&quot;
+## 
+## [[4]]
+## [1] 4</code></pre>
+<p>Now:</p>
+<ul>
+<li>the list has four elements: <code>[[1]]</code>, <code>[[2]]</code>,
+<code>[[3]]</code>, and <code>[[4]]</code>;</li>
+<li>each element contains an array of length one: <code>1</code>,
+<code>2</code>, <code>"3"</code>, and <code>4</code>, and</li>
+<li>their data types are:</li>
+</ul>
+<pre class="r"><code>class(myList)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<p>Oh, no, <code>class()</code> returned the data type of the whole
+list! R has functions - a very important and powerful set of functions
+indeed - to work with lists. Look:</p>
+<pre class="r"><code>lapply(myList, class)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;numeric&quot;
+## 
+## [[2]]
+## [1] &quot;numeric&quot;
+## 
+## [[3]]
+## [1] &quot;character&quot;
+## 
+## [[4]]
+## [1] &quot;numeric&quot;</code></pre>
+<p><code>lapply()</code> is an R function that (1) for a given function
+as its second argument (<code>class()</code> in this example) (2)
+returns a result of that function’s call, taking each element of its
+first argument - which is a list, <code>myList</code> in our example -
+as the respective function’s input, and (3) returns a result as a list
+of the length equal to the length of the input list.</p>
+<p>Let’s experiment to understand <code>lapply()</code>, a function of
+extreme importance in R programming, better:</p>
+<pre class="r"><code>myList &lt;- list(1, 2, &quot;3&quot;, 4)
+lapply(myList, as.numeric)</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 2
+## 
+## [[3]]
+## [1] 3
+## 
+## [[4]]
+## [1] 4</code></pre>
+<p>So, <code>lapply()</code> called <code>as.numeric()</code> on each
+element in <code>myList</code> and returned a converted value.
+Again:</p>
+<pre class="r"><code>myList &lt;- list(1, 2, &quot;3&quot;, 4)
+lapply(myList, as.character)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;1&quot;
+## 
+## [[2]]
+## [1] &quot;2&quot;
+## 
+## [[3]]
+## [1] &quot;3&quot;
+## 
+## [[4]]
+## [1] &quot;4&quot;</code></pre>
+<p>And again for <code>as.logical</code>:</p>
+<pre class="r"><code>myList &lt;- list(1, 2, &quot;3&quot;, 4)
+lapply(myList, as.logical)</code></pre>
+<pre><code>## [[1]]
+## [1] TRUE
+## 
+## [[2]]
+## [1] TRUE
+## 
+## [[3]]
+## [1] NA
+## 
+## [[4]]
+## [1] TRUE</code></pre>
+<p>Wait, what is the <code>NA</code> value in <code>[[3]]</code>? The
+third element of the <code>myList</code> list is a character,
+<code>"3"</code>. We asked <code>lapply()</code> to apply
+<code>as.logical()</code> to all members of <code>myList</code>. It did
+well for the numbers (all positive, so all <code>TRUE</code>), but it
+failed for <code>"3"</code> which is a character - and R does not know
+how to treat a character value under <code>as.logical</code> - should it
+be <code>TRUE</code> or <code>FALSE</code>. Since a conversion of that
+kind is not defined in R, it returned <code>NA</code>, short for
+<code>Not Available</code>. You will see <code>NA</code> used a lot in
+Data Science in R, anytime the value is, for some reason,
+<em>missing</em>.</p>
+</div>
+<div id="our-own-r-functions" class="section level3">
+<h3>4. Our own R functions</h3>
+<p>Remember how it started: I’ve told you that you should think of R
+functions simply as collections of R code that does something for us.
+For example, repetitive things: there is something that can be done with
+data, but the data can vary while what can be done to it remains the
+same - and then we need a function. It is a piece of code that always
+does one and the same thing over it <em>inputs</em>: the things that we
+pass to it. Say, we pass <code>3</code> and <code>4</code> to some R
+function called <code>muFun()</code> and we want to it to return the
+result of <code>3+4</code>, but we do not want to change it just to be
+able to do the same for <code>1</code> and <code>2</code>, or
+<code>1000</code> and <code>3.14</code>.</p>
+<p>We have seen that R has many in-built functions. When we start adding
+R packages to our work in the next session you will see that it actually
+has an unknown, very, very large number of them. But can we define our
+own functions in R? Of course. It is simple:</p>
+<pre class="r"><code>myFun &lt;- function(a, b) {
+  summa &lt;- a + b
+  return(summa)
+}</code></pre>
+<p>Nothing happens? We need to <strong>call</strong> a function from R
+in order to make it work. Look:</p>
+<pre class="r"><code>myFun(5, 6)</code></pre>
+<pre><code>## [1] 11</code></pre>
+<p>Let us analyze the function code, line by line:</p>
+<ul>
+<li><code>myFun &lt;- function(a, b)</code> is the very function
+definition: it tells R that we want to define a function that takes two
+input arguments, <code>a</code> and <code>b</code>;</li>
+<li><code>{</code> that follows is it signifies the begging of a
+<strong>code block</strong> - a collection of R instructions, new
+function calls, operations, iterations, etc. that process the function’s
+arguments <code>a</code> and <code>b</code> in some way;</li>
+<li><code>summa &lt;- a + b</code>: we instantiate a new variable called
+<code>summa</code> in the function <code>myFun</code> and assign it the
+value of the expression <code>a + b</code>;</li>
+<li><code>return(summa)</code> tells the function to stop its execution
+and sends back the argument of the function <code>return()</code> to the
+caller - the R expression that has made the call to <code>myFun</code>;
+and finally,</li>
+<li><code>}</code> closes the code block previously opened with
+<code>{</code>.</li>
+</ul>
+<p>What happens when we do:</p>
+<pre class="r"><code>myResult &lt;- myFun(2.5, 2.6)
+print(myResult)</code></pre>
+<pre><code>## [1] 5.1</code></pre>
+<p>is the following flow of events:</p>
+<ul>
+<li>the value of <code>2.5</code> binds to the function’s <code>a</code>
+argument;</li>
+<li>the value of <code>2.6</code> binds to the function’s <code>b</code>
+argument;</li>
+<li><code>a + b</code> is executed inside the function and assigned to
+<code>summa</code>;</li>
+<li><code>summa</code> is returned to the caller
+<code>myResult &lt;- myFun(2.5,2.6)</code> where the output of
+<code>myFun</code> - and that is what <code>return(summa)</code> defines
+- binds to myResult;</li>
+<li><code>myResult</code> is printed by <code>print()</code> outside the
+function.</li>
+</ul>
+<p>Remember <code>lapply()</code>? Let’s play a bit:</p>
+<pre class="r"><code>myList &lt;- list(
+  &#39;New York, USA&#39;,
+  &#39;Belgrade, Serbia&#39;,
+  &#39;Moscow, Russia&#39;,
+  &#39;Berlin, Germany&#39;,
+  &#39;London, UK&#39;,
+  &#39;Paris, France&#39;,
+  &#39;Rome, Italy&#39;
+)
+print(myList)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;New York, USA&quot;
+## 
+## [[2]]
+## [1] &quot;Belgrade, Serbia&quot;
+## 
+## [[3]]
+## [1] &quot;Moscow, Russia&quot;
+## 
+## [[4]]
+## [1] &quot;Berlin, Germany&quot;
+## 
+## [[5]]
+## [1] &quot;London, UK&quot;
+## 
+## [[6]]
+## [1] &quot;Paris, France&quot;
+## 
+## [[7]]
+## [1] &quot;Rome, Italy&quot;</code></pre>
+<p>Ok, we have a list. I want to write out a function that will return
+separately the city and the country in which it resides from
+<code>myList</code>. Here is a way to do it with our mighty friend,
+<code>lapply()</code>:</p>
+<pre class="r"><code>lapply(myList, strsplit, split = &quot;, &quot;)</code></pre>
+<pre><code>## [[1]]
+## [[1]][[1]]
+## [1] &quot;New York&quot; &quot;USA&quot;     
+## 
+## 
+## [[2]]
+## [[2]][[1]]
+## [1] &quot;Belgrade&quot; &quot;Serbia&quot;  
+## 
+## 
+## [[3]]
+## [[3]][[1]]
+## [1] &quot;Moscow&quot; &quot;Russia&quot;
+## 
+## 
+## [[4]]
+## [[4]][[1]]
+## [1] &quot;Berlin&quot;  &quot;Germany&quot;
+## 
+## 
+## [[5]]
+## [[5]][[1]]
+## [1] &quot;London&quot; &quot;UK&quot;    
+## 
+## 
+## [[6]]
+## [[6]][[1]]
+## [1] &quot;Paris&quot;  &quot;France&quot;
+## 
+## 
+## [[7]]
+## [[7]][[1]]
+## [1] &quot;Rome&quot;  &quot;Italy&quot;</code></pre>
+<p>Oh, only that the output looks even more complicated now, what is
+this:</p>
+<pre><code>[[7]]
+[[7]][[1]]
+[1] &quot;Rome&quot;  &quot;Italy&quot;</code></pre>
+<p>I know that this now really feels uncomfortable, but I promise you
+that it is not that difficult at all.</p>
+<p>It reads in R in the following way: it is the seventh
+(<code>[[7]]</code>) element of the output from <code>lapply</code>, and
+that seventh element contains one list (<code>[[7]][[1]]</code>), and
+than that list contains an array with the following elements:
+<code>"Rome"</code>, and `“Italy”.</p>
+<p>Why so complicated? Because of what we have already learned:
+<code>lapply()</code> returns a list, but <code>strsplit()</code>
+<em>also</em> returns a list, so the result is, naturally, a <em>list of
+lists</em>.</p>
+<p><strong>NOTE.</strong> You will need to manage such complicated,
+nested data structures in R a lot if you are about to enter Data
+Science. Don’t be scared: it is only practice that you are missing at
+this point.</p>
+<p>Take a careful look to our call to <code>lapply()</code> again:</p>
+<pre class="r"><code>lapply(myList, strsplit, split = &quot;, &quot;)</code></pre>
+<pre><code>## [[1]]
+## [[1]][[1]]
+## [1] &quot;New York&quot; &quot;USA&quot;     
+## 
+## 
+## [[2]]
+## [[2]][[1]]
+## [1] &quot;Belgrade&quot; &quot;Serbia&quot;  
+## 
+## 
+## [[3]]
+## [[3]][[1]]
+## [1] &quot;Moscow&quot; &quot;Russia&quot;
+## 
+## 
+## [[4]]
+## [[4]][[1]]
+## [1] &quot;Berlin&quot;  &quot;Germany&quot;
+## 
+## 
+## [[5]]
+## [[5]][[1]]
+## [1] &quot;London&quot; &quot;UK&quot;    
+## 
+## 
+## [[6]]
+## [[6]][[1]]
+## [1] &quot;Paris&quot;  &quot;France&quot;
+## 
+## 
+## [[7]]
+## [[7]][[1]]
+## [1] &quot;Rome&quot;  &quot;Italy&quot;</code></pre>
+<p>We have asked R to <code>lapply()</code> the function
+<code>strsplit</code> to <code>myList</code>, and in the end passed the
+argument <code>split</code> which is actually an argument meant for
+<code>strsplit()</code>, not <code>lapply()</code>. This is very handy
+when you need to <code>lapply()</code> other functions, but with a
+specific value for some argument that they might use.</p>
+<p>Let’s now try to simplify the result of this operation a bit:</p>
+<pre class="r"><code>separateCities &lt;- function(string) {
+  return(
+    strsplit(string, split = &quot;, &quot;)[[1]]
+  )
+}
+lapply(myList, separateCities)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;New York&quot; &quot;USA&quot;     
+## 
+## [[2]]
+## [1] &quot;Belgrade&quot; &quot;Serbia&quot;  
+## 
+## [[3]]
+## [1] &quot;Moscow&quot; &quot;Russia&quot;
+## 
+## [[4]]
+## [1] &quot;Berlin&quot;  &quot;Germany&quot;
+## 
+## [[5]]
+## [1] &quot;London&quot; &quot;UK&quot;    
+## 
+## [[6]]
+## [1] &quot;Paris&quot;  &quot;France&quot;
+## 
+## [[7]]
+## [1] &quot;Rome&quot;  &quot;Italy&quot;</code></pre>
+<p>Now that is similar to what we have seen from <code>lapply()</code>
+before. How did we achieve this? Let’ analyze our
+<code>separateCities()</code> function:</p>
+<pre><code>separateCities &lt;- function(string) {
+  return(
+    strsplit(string, split = &quot;, &quot;)[[1]]
+  )
+}</code></pre>
+<p>In this case, there is no separate “process” and “return output”
+step: I have nested the processing of the function’s <code>string</code>
+input in the <code>return()</code> call by doing:
+<code>return(strsplit(string, split = ", ")[[1]])</code>. I simply found
+it to be more convenient; for a function with a more complicated code, I
+would probably avoid doing something likes this. Now, let’s take a look
+at the <code>strsplit(string, split = ", ")[[1]]</code> part: what it
+does is that it calls <code>strsplit()</code>, passing
+<code>string</code> as an input, and defining the value of the
+<code>split</code> argument to be <code>", "</code>, but I have also
+added something: <code>[[1]]</code> at the end of the call to
+<code>strsplit()</code>. Why? Because I know that
+<code>strsplit()</code> returns a list that will encompass an array with
+the results that I expect, so that by saying to R something like
+<code>return(strsplit(x, split = ", ")[[1]])</code> I am asking for what
+is <strong>inside</strong> the list returned by <code>strsplit</code>,
+and not the direct result of <code>strsplit(x, split = ", ")</code>. And
+what is inside that list is an array. If you still ask yourself where
+did the output list came from in our <code>lapply()</code> call: don’t
+forget that <code>lapply()</code> returns a list by itself.</p>
+<p>Three things and tricks to remember:</p>
+<ul>
+<li><ol style="list-style-type: decimal">
+<li><code>lapply()</code> returns a list; <code>strsplit()</code>
+returns a list; and many other R functions as well; if you compose a
+call to one with a call to another, don’t expect to get anything else
+back but a list of lists;</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: decimal">
+<li>the output of <code>lapply()</code> can be simplified by a call to
+its sister function called <code>sapply()</code>, like this:</li>
+</ol></li>
+</ul>
+<pre class="r"><code>separateCities &lt;- function(string) {
+  return(
+    strsplit(string, split = &quot;, &quot;)[[1]]
+  )
+}
+sapply(myList, separateCities)</code></pre>
+<pre><code>##      [,1]       [,2]       [,3]     [,4]      [,5]     [,6]     [,7]   
+## [1,] &quot;New York&quot; &quot;Belgrade&quot; &quot;Moscow&quot; &quot;Berlin&quot;  &quot;London&quot; &quot;Paris&quot;  &quot;Rome&quot; 
+## [2,] &quot;USA&quot;      &quot;Serbia&quot;   &quot;Russia&quot; &quot;Germany&quot; &quot;UK&quot;     &quot;France&quot; &quot;Italy&quot;</code></pre>
+<p>Now, this looks better <em>somehow</em> (it’s a sort of a tabular
+structure, the cities are in the first row, the countries in the second
+row) but we still do not get to understand exactly how
+<code>sapply()</code> achieved this. More on data structures like this
+one will be presented and discussed in our next sessions, especially
+when we start talking about vectors, matrices, and code vectorization in
+R.</p>
+<ul>
+<li><ol start="3" style="list-style-type: decimal">
+<li>Finally, if you want to strip the list of the result of a function
+that returns a list by its definition, simply pick it up by
+<code>[[</code> and <code>]]</code>, as we did in our
+<code>strsplit()</code> call:
+<code>strsplit(string, split = ", ")[[1]]</code>.</li>
+</ol></li>
+</ul>
+<p>To end this session with an understanding of nested lists in R,
+because I can imagine many will be confused by that:</p>
+<pre class="r"><code>a &lt;- list()
+a[[1]] &lt;- 5
+a[[2]] &lt;- 7
+print(a)</code></pre>
+<pre><code>## [[1]]
+## [1] 5
+## 
+## [[2]]
+## [1] 7</code></pre>
+<p>Ok, let’ say this is a <em>simple list</em>: it has two elements,
+each element has one numeric in it. Now:</p>
+<pre class="r"><code>a &lt;- list()
+a[[1]] &lt;- list(5, 7)
+a[[2]] &lt;- list(1, 3)
+print(a)</code></pre>
+<pre><code>## [[1]]
+## [[1]][[1]]
+## [1] 5
+## 
+## [[1]][[2]]
+## [1] 7
+## 
+## 
+## [[2]]
+## [[2]][[1]]
+## [1] 1
+## 
+## [[2]][[2]]
+## [1] 3</code></pre>
+<p>Let’s read it out:</p>
+<ul>
+<li><code>a</code> has two elements, indexed as <code>[[1]]</code> (the
+first one) and <code>[[2]]</code> (the second one);</li>
+<li>the first element of <code>a</code>, which we refer to in R as
+<code>a[[1]]</code>, is a list itself, and has two elements, against
+referenced as <code>[[1]]</code> and <code>[[2]]</code>, the first
+containing a numeric <code>5</code> and the second containing a numeric
+<code>7</code>;</li>
+<li>the two lists nested in <code>a[[1]]</code> can be acessed by
+<code>a[[1]][[1]]</code> and <code>a[[1]][[2]]</code> respectively:</li>
+</ul>
+<pre class="r"><code>a[[1]]</code></pre>
+<pre><code>## [[1]]
+## [1] 5
+## 
+## [[2]]
+## [1] 7</code></pre>
+<pre class="r"><code>a[[1]][[1]]</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>a[[1]][[2]]</code></pre>
+<pre><code>## [1] 7</code></pre>
+<p>and the same can be done for <code>a[[2]]</code>:</p>
+<pre class="r"><code>a[[2]][[1]]</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>a[[2]][[2]]</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p>Nested lists are not complicated at all, it is just a matter of
+getting used to the way the R syntax is used to access their
+elements.</p>
+<p>For arrays, we only use <code>[</code> and <code>]</code> to access
+their elements:</p>
+<pre class="r"><code>a &lt;- 1:100
+a[50]</code></pre>
+<pre><code>## [1] 50</code></pre>
+<p>And, <strong>very important</strong>, we can slice out elements of
+arrays:</p>
+<pre class="r"><code>a[25:50]</code></pre>
+<pre><code>##  [1] 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50</code></pre>
+<p>Once again, to access an element of a list, use <code>[[</code> and
+<code>]]</code>:</p>
+<pre class="r"><code>a &lt;- list(1,2,3,4,5)
+a[[4]]</code></pre>
+<pre><code>## [1] 4</code></pre>
+<p>But to slice out a part of the list - a range of its elements,
+<strong>do not use</strong> <code>[[</code> and <code>]]</code>, but
+only <code>[</code> and <code>]</code>:</p>
+<pre class="r"><code>a &lt;- list(1,2,3,4,5)
+a[3:4]</code></pre>
+<pre><code>## [[1]]
+## [1] 3
+## 
+## [[2]]
+## [1] 4</code></pre>
+<p>Finally, you will love the fact that things like
+<code>lapply()</code> can be used on vectors too:</p>
+<pre class="r"><code>a &lt;- c(1,2,3,4)
+lapply(a, &quot;^&quot;, 2)</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 4
+## 
+## [[3]]
+## [1] 9
+## 
+## [[4]]
+## [1] 16</code></pre>
+<p>Did you like it? Here is what I did:</p>
+<ul>
+<li>there is an array <code>a</code>,</li>
+<li>then a <code>lapply()</code> call to call the function “^” (other
+languages would call “^” an operator - some reasons why I simply adore R
+and its functional nature) and pass it a second parameter
+<code>2</code>.</li>
+</ul>
+<p>The results is a list of elements in <code>a</code> all raised on
+power of <code>2</code>.</p>
+<pre class="r"><code>a[[3]]</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>a[[3]]^2</code></pre>
+<pre><code>## [1] 9</code></pre>
+<p>Enjoy this:</p>
+<pre class="r"><code>5^2 </code></pre>
+<pre><code>## [1] 25</code></pre>
+<pre class="r"><code>&quot;^&quot;(5, 2) </code></pre>
+<pre><code>## [1] 25</code></pre>
+</div>
+<div id="data.frame" class="section level3">
+<h3>5. <code>data.frame</code></h3>
+<p>Lists are not the only beings in R that can hold together things of
+different types.</p>
+<p>Introducing <code>data.frame</code>, the data type that makes Data
+Science possible:</p>
+<pre class="r"><code># - Comment: the population data represent the most recently updated figures
+# - from Wikidata: https://www.wikidata.org/
+
+# - let&#39;s produce several vectors:
+cities &lt;- c(&#39;New York&#39;, &#39;Belgrade&#39;, &#39;Moscow&#39;, &#39;Paris&#39;, &#39;Rome&#39;, &#39;Berlin&#39;)
+countries &lt;- c(&#39;USA&#39;, &#39;Serbia&#39;, &#39;Russia&#39;, &#39;France&#39;, &#39;Italy&#39;, &#39;Germany&#39;)
+populations &lt;- c(8405837,  1378682, 12692466, 2187526, 2872800, 3644826)
+lattitudes &lt;- c(40.730610,  44.787197, 55.751244, 48.864716,  41.902782, 52.520008)
+longitudes &lt;- c(-73.935242, 20.457273, 37.618423, 2.349014, 12.496366, 13.404954)
+
+# - now let&#39;s have a data.frame:
+myCities &lt;- data.frame(city = cities,
+                       country = countries, 
+                       population = populations, 
+                       lat = lattitudes, 
+                       lon = longitudes, 
+                       stringsAsFactors = FALSE)
+
+# - display myCities:
+print(myCities)</code></pre>
+<pre><code>##       city country population      lat        lon
+## 1 New York     USA    8405837 40.73061 -73.935242
+## 2 Belgrade  Serbia    1378682 44.78720  20.457273
+## 3   Moscow  Russia   12692466 55.75124  37.618423
+## 4    Paris  France    2187526 48.86472   2.349014
+## 5     Rome   Italy    2872800 41.90278  12.496366
+## 6   Berlin Germany    3644826 52.52001  13.404954</code></pre>
+<p>How do we access different columns in a <code>data.frame</code>?
+Easy:</p>
+<pre class="r"><code>myCities$city</code></pre>
+<pre><code>## [1] &quot;New York&quot; &quot;Belgrade&quot; &quot;Moscow&quot;   &quot;Paris&quot;    &quot;Rome&quot;     &quot;Berlin&quot;</code></pre>
+<pre class="r"><code>myCities$population</code></pre>
+<pre><code>## [1]  8405837  1378682 12692466  2187526  2872800  3644826</code></pre>
+<pre class="r"><code>print(myCities[ , c(&#39;lat&#39;, &#39;lon&#39;)])</code></pre>
+<pre><code>##        lat        lon
+## 1 40.73061 -73.935242
+## 2 44.78720  20.457273
+## 3 55.75124  37.618423
+## 4 48.86472   2.349014
+## 5 41.90278  12.496366
+## 6 52.52001  13.404954</code></pre>
+<p><strong>NOTE.</strong> Mind the usage of <code>[ ,</code> in the
+previous <strong>subsetting</strong> of the <code>myCities</code>
+<code>data.frame</code>: what if I asked for
+<code>myCities[1, c('lat', 'lon')]</code> only:</p>
+<pre class="r"><code>myCities[1, c(&#39;lat&#39;, &#39;lon&#39;)]</code></pre>
+<pre><code>##        lat       lon
+## 1 40.73061 -73.93524</code></pre>
+<p>And what if asked for:</p>
+<pre class="r"><code>myCities[1:2, c(&#39;lat&#39;, &#39;lon&#39;)]</code></pre>
+<pre><code>##        lat       lon
+## 1 40.73061 -73.93524
+## 2 44.78720  20.45727</code></pre>
+<p>But when I say <code>[ , c('lat', 'lon')]</code>, that means that I
+want <strong>all</strong> the rows, and only the
+<code>c('lat', 'lon')</code> columns:</p>
+<pre class="r"><code>myCities[ , c(&#39;lat&#39;, &#39;lon&#39;)]</code></pre>
+<pre><code>##        lat        lon
+## 1 40.73061 -73.935242
+## 2 44.78720  20.457273
+## 3 55.75124  37.618423
+## 4 48.86472   2.349014
+## 5 41.90278  12.496366
+## 6 52.52001  13.404954</code></pre>
+<p>We will be learning <strong>a lot</strong> about
+<code>data.frames</code> in our future sessions.</p>
+</div>
+<div id="the-shape-of-things-to-come-beauty-and-simplicity"
+class="section level3">
+<h3>6. The shape of things to come: beauty and simplicity</h3>
+<div id="a-example-interactive-geo-visualization-in-9-lines-of-code"
+class="section level4">
+<h4>6.A Example: Interactive geo-visualization in 9 lines of code</h4>
+<p>Now, allow me to show you how powerful R really is. How many lines of
+R code do I need to create an interactive map that singles out cities
+found in the <code>myCities</code> <code>data.frame</code> by markers
+that display information on them when clicked upon? Let’s see:</p>
+<pre class="r"><code># - Setup
+# - Install {leaflet} if not installed;
+# - install.packages(&#39;leaflet&#39;)
+# - {dplyr} should be present already
+
+# - load R packages
+library(leaflet)
+library(dplyr)
+# a single icon is declared
+awesome &lt;- makeAwesomeIcon(
+  icon = &quot;info&quot;, iconColor = &quot;black&quot;, markerColor = &quot;blue&quot;, library = &quot;fa&quot;
+)
+leaflet(data = myCities) %&gt;%
+  addTiles() %&gt;%
+  addAwesomeMarkers(~lon, ~lat, icon = awesome, 
+                    popup = ~as.character(population),
+                   label = ~as.character(city))</code></pre>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-3ffa7d1cb97fa6160a6e" style="width:864px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-3ffa7d1cb97fa6160a6e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addAwesomeMarkers","args":[[40.73061,44.787197,55.751244,48.864716,41.902782,52.520008],[-73.935242,20.457273,37.618423,2.349014,12.496366,13.404954],{"icon":"info","markerColor":"blue","iconColor":"black","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["8405837","1378682","12692466","2187526","2872800","3644826"],null,null,null,["New York","Belgrade","Moscow","Paris","Rome","Berlin"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[40.73061,55.751244],"lng":[-73.935242,37.618423]}},"evals":[],"jsHooks":[]}</script>
+<p>That would be ten (10) lines of code, not counting the comments of
+course.</p>
+</div>
+<div id="b-example-rapid-visualizations-w.-ggplot2"
+class="section level4">
+<h4>6.B Example: Rapid visualizations w. {ggplot2}</h4>
+<p>A famous dataset used in Data Science trainings, <code>mtcars</code>,
+enters, together with the industrial standard visualization library
+<code>{ggplot2}</code>:</p>
+<pre class="r"><code># - install {ggplot2} if not installed
+# - install.packages(&#39;ggplot2&#39;)
+# - install {ggrepel} if not installed
+# - install.packages(&#39;ggrepel&#39;)
+library(ggplot2)
+library(ggrepel)
+data(mtcars)
+mtcars$model &lt;- row.names(mtcars)
+mtcars$gear &lt;- as.factor(mtcars$gear)
+print(mtcars)</code></pre>
+<pre><code>##                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb               model
+## Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4           Mazda RX4
+## Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4       Mazda RX4 Wag
+## Datsun 710          22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1          Datsun 710
+## Hornet 4 Drive      21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1      Hornet 4 Drive
+## Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2   Hornet Sportabout
+## Valiant             18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1             Valiant
+## Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4          Duster 360
+## Merc 240D           24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2           Merc 240D
+## Merc 230            22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2            Merc 230
+## Merc 280            19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4            Merc 280
+## Merc 280C           17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4           Merc 280C
+## Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3          Merc 450SE
+## Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3          Merc 450SL
+## Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3         Merc 450SLC
+## Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4  Cadillac Fleetwood
+## Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4 Lincoln Continental
+## Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4   Chrysler Imperial
+## Fiat 128            32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1            Fiat 128
+## Honda Civic         30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2         Honda Civic
+## Toyota Corolla      33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1      Toyota Corolla
+## Toyota Corona       21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1       Toyota Corona
+## Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2    Dodge Challenger
+## AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2         AMC Javelin
+## Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4          Camaro Z28
+## Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2    Pontiac Firebird
+## Fiat X1-9           27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1           Fiat X1-9
+## Porsche 914-2       26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2       Porsche 914-2
+## Lotus Europa        30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2        Lotus Europa
+## Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4      Ford Pantera L
+## Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6        Ferrari Dino
+## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8       Maserati Bora
+## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2          Volvo 142E</code></pre>
+<pre class="r"><code>ggplot(data = mtcars, 
+       aes(x = mpg, y = qsec,
+           label = model, 
+           group = gear, 
+           color = gear)) + 
+  geom_point() + 
+  scale_color_discrete() + 
+  geom_smooth(method = &quot;lm&quot;, 
+              size = .15) + 
+  geom_text_repel(size = 3) + 
+  ggtitle(&quot;mpg vs. qsec in the mtcars dataset, per gear.&quot;) + 
+  theme_bw() + 
+  theme(plot.title = element_text(size = 10)) + 
+  theme(panel.border = element_blank())</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: The following aesthetics were dropped during statistical transformation: label.
+## ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
+## ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?</code></pre>
+<p><img src="s01_introduction_to_r_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
+<p>But if you want to be sure that you can use this power in a
+responsible way, you need to get along with vectors, lists, nested
+lists, functions, code vectorization, and many other things as well.</p>
+<p>Stay tuned. We didn’t even start the dance yet.</p>
+</div>
+</div>
+<div id="further-readings" class="section level3">
+<h3>Further Readings</h3>
+<ul>
+<li><a
+href="https://monashdatafluency.github.io/r-intro-2/starting-out-in-r.html#saving-code-in-an-r-script">Chapter
+1 Starting out in R from Introduction to R, version</a></li>
+<li><a
+href="https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/">Chapter
+Data Types and Structures from Programming with R</a></li>
+<li><a href="https://r4ds.had.co.nz/workflow-basics.html">Chapter 4
+Workflow: basics from R for Data Science</a></li>
+</ul>
+</div>
+<div id="highly-recommended-to-do" class="section level3">
+<h3>Highly Recommended To Do</h3>
+<ul>
+<li>Read <a href="https://r4ds.had.co.nz/">Chapters 1 to 3 from R for
+Data Science, Hadley Wickham &amp; Garrett Grolemund</a></li>
+<li>Read <a
+href="https://www.google.com/search?client=firefox-b-d&amp;channel=trow2&amp;sxsrf=ALeKk03T_qLCMzRICYWj5UHqFBHnvfV6Uw%3A1607220795553&amp;ei=Oz7MX8aeIYK6kwWc5JbgAw&amp;q=Norman+Matloff+The+Art+of+R+Programming+pdf&amp;oq=Norman+Matloff+The+Art+of+R+Programming+pdf&amp;gs_lcp=CgZwc3ktYWIQAzIFCAAQyQM6BwgjEMkDECc6AgguUJk9WOdAYKRBaABwAHgAgAGHAYgB9QOSAQMwLjSYAQCgAQGqAQdnd3Mtd2l6wAEB&amp;sclient=psy-ab&amp;ved=0ahUKEwiGqOCEpLjtAhUC3aQKHRyyBTwQ4dUDCAw&amp;uact=5">Chapters
+1 to 5 from Norman Matloff’s The Art of R Programming</a></li>
+</ul>
+</div>
+<div id="r-markdown" class="section level3">
+<h3>R Markdown</h3>
+<p><a href="https://rmarkdown.rstudio.com/">R Markdown</a> is what I
+have used to produce this beautiful Notebook. We will learn more about
+it near the end of the course, but if you already feel ready to dive
+deep, here’s a book: <a href="https://bookdown.org/yihui/rmarkdown/">R
+Markdown: The Definitive Guide, Yihui Xie, J. J. Allaire, Garrett
+Grolemunds.</a></p>
+<hr />
+<p>License: <a href="http://www.gnu.org/licenses/gpl-3.0.txt">GPLv3</a>
+This Notebook is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or (at your
+option) any later version. This Notebook is distributed in the hope that
+it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details. You should have received a
+copy of the GNU General Public License along with this Notebook. If not,
+see <a href="http://www.gnu.org/licenses/"
+class="uri">http://www.gnu.org/licenses/</a>.</p>
+</div>
+</div>
+
+<hr>
+<p style="text-align:center;">
+  <img src="DK_Logo_White_150.png">
+</p>
+<p style="font-size:13px;text-align:center;">
+  <b>Contact: </b><a href = "mailto: goran.milovanovic@datakolektiv.com">goran.milovanovic@datakolektiv.com</a><br><br><a href="https://github.com/datakolektiv"><img src="github.png"></a>&nbsp;&nbsp;<a href="https://www.linkedin.com/in/gmilovanovic/"><img src="linkedin.png"></a>
+</p>
+<p style="font-size:11px;text-align:center;"><b>Impressum</b><br>
+<b>Data Kolektiv, 2004, Belgrade.</b></p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

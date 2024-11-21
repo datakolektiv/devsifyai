@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Learning Resources</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><img id="logo" style="width: 30px;" src="DK_Logo_White_NoTitle_25.png" /></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Sessions
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="s00_installations.html">S00. R and Python Installations</a>
+    </li>
+    <li>
+      <a href="s01_introduction_to_r.html">S01. Introduction to R</a>
+    </li>
+    <li>
+      <a href="s02_dataframe.html">S02. I/O, Packages, and data.frame</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="l01_lists.html">L01. Data Types, Lists</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Notes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="n00_installations.html">N00. R and Python Installations</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="video.html">Video</a>
+</li>
+<li>
+  <a href="resources.html">Resources</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="media.html">Media</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Learning Resources</h1>
+<h4 class="author">Goran S. Milovanovic, PhD</h4>
+
+</div>
+
+
+<hr />
+<p><strong>Feedback</strong> should be send to
+<code>goran.milovanovic@datakolektiv.com</code>.</p>
+<hr />
+<div id="r-rstudio-desktop-installations" class="section level3">
+<h3>R + RStudio Desktop Installations</h3>
+<p><strong>NOTE.</strong> Please take care to install <strong>the latest
+available versions</strong>. At the time of this writing, those
+were:</p>
+<ul>
+<li>Programming language R: <code>R-4.0.3</code>, <a
+href="https://cran.r-project.org/bin/windows/base/">available here for
+Windows</a>, <a href="https://cran.r-project.org/bin/macosx/">here for
+Mac</a>, and <a
+href="https://cran.r-project.org/bin/linux/ubuntu/README.html">here for
+Linux</a>.</li>
+<li>RStudio Desktop: <code>RStudio Desktop 1.3.1093</code>, available <a
+href="https://rstudio.com/products/rstudio/download/">here</a>.</li>
+</ul>
+<p>Please follow the instructions provided here:</p>
+<p><a
+href="https://www.earthdatascience.org/courses/earth-analytics/document-your-science/setup-r-rstudio/">Earth
+Data Analytics Online Certificate, Lesson 1. Install &amp; Set Up R and
+RStudio on Your Computer</a></p>
+<p>Essentially, there are two installation steps:</p>
+<ul>
+<li>install R (the programming language)</li>
+<li>install RStudio (your IDE, i.e. your working environment, where you
+write code, inspect data, etc.)</li>
+</ul>
+<p><strong>For Windows users:</strong> <a
+href="https://www.youtube.com/watch?v=9-RrkJQQYqY&amp;t=262s">Video
+Instructions</a></p>
+<p><strong>For Mac users:</strong> <a
+href="https://www.youtube.com/watch?v=Y20P3u3c_1c">Video
+Instructions</a></p>
+<p><strong>For Linux users:</strong></p>
+<ul>
+<li><a
+href="https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04-quickstart">Install
+R Instructions</a></li>
+<li><a
+href="https://linuxconfig.org/how-to-install-rstudio-on-ubuntu-20-04-focal-fossa-linux">Install
+RStudio Instructions</a></li>
+</ul>
+<hr />
+</div>
+<div id="learn-r-programming" class="section level3">
+<h3>Learn R programming</h3>
+<ul>
+<li><a href="https://r4ds.had.co.nz/">R for Data Science, Hadley Wickham
+&amp; Garrett Grolemund</a></li>
+<li><a href="https://www.youtube.com/c/RProgrammingDDS">R Programming -
+Dynamic Data Script</a>: especially their <a
+href="https://www.youtube.com/watch?v=BvKETZ6kr9Q">R Programming for
+Beginners | Complete Tutorial | R &amp; RStudio</a> intro course</li>
+<li><a
+href="https://www.google.com/search?client=firefox-b-d&amp;channel=trow2&amp;sxsrf=ALeKk03T_qLCMzRICYWj5UHqFBHnvfV6Uw%3A1607220795553&amp;ei=Oz7MX8aeIYK6kwWc5JbgAw&amp;q=Norman+Matloff+The+Art+of+R+Programming+pdf&amp;oq=Norman+Matloff+The+Art+of+R+Programming+pdf&amp;gs_lcp=CgZwc3ktYWIQAzIFCAAQyQM6BwgjEMkDECc6AgguUJk9WOdAYKRBaABwAHgAgAGHAYgB9QOSAQMwLjSYAQCgAQGqAQdnd3Mtd2l6wAEB&amp;sclient=psy-ab&amp;ved=0ahUKEwiGqOCEpLjtAhUC3aQKHRyyBTwQ4dUDCAw&amp;uact=5">Norman
+Matloff’s The Art of R Programming</a></li>
+<li><a href="https://adv-r.hadley.nz/">Advanced R, Hadley Wickham</a>
+<strong>NOTE.</strong> Definitely not an introductory material.</li>
+<li><a href="https://www.tutorialspoint.com/r/index.htm">Tutorialspoint:
+Learn R Programming</a></li>
+<li><a
+href="https://www.oreilly.com/library/view/r-in-a/9781449358204/">R in a
+Nutshell, 2nd Edition, by Joseph Adler</a></li>
+<li><a
+href="https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf">An
+Introduction to R - Notes on R: A Programming Environment for Data
+Analysis and Graphics, Version 4.1.1 (2021-08-10)</a></li>
+<li><a href="https://www.statmethods.net/r-tutorial/index.html">R
+Tutorial from Quick-R</a></li>
+</ul>
+<hr />
+</div>
+<div id="computational-statistics-and-machine-learning-general"
+class="section level3">
+<h3>Computational Statistics and Machine Learning: General</h3>
+<ul>
+<li><a
+href="https://link.springer.com/book/10.1007/978-0-387-21736-9">All of
+Statistics: A Concise Course in Statistical Inference, Larry
+Wasserman</a></li>
+<li><a href="https://www.springer.com/gp/book/9780387251455">All of
+Nonparametric Statistics, Larry Wasserman</a></li>
+<li><a href="https://learningstatisticswithr.com/book/">Learning
+statistics with R: A tutorial for psychology students and other
+beginners, Danielle Navarro</a></li>
+<li><a href="http://faculty.marshall.usc.edu/gareth-james/ISL/">An
+Introduction to Statistical Learning with Applications in R, Gareth
+James, Daniela Witten, Trevor Hastie and Robert Tibshirani</a></li>
+<li><a href="http://www.modernstatisticswithr.com/">Modern Statistics
+with R - From wrangling and exploring data to inference and predictive
+modelling, Måns Thulin, 2021-08-04 - Version 1.0.0</a></li>
+<li><a
+href="https://www.manning.com/books/practical-data-science-with-r">Practical
+Data Science with R, Nina Zumel and John Mount</a></li>
+<li><a href="http://www.john-ros.com/Rcourse/">R (BGU course), Jonathan
+D. Rosenblatt, 2019-10-10</a></li>
+<li><a href="https://bookdown.org/ndirienzo/ista_321_data_mining/">ISTA
+321 - Data Mining, Nicholas DiRienzo, 2020-08-24</a></li>
+<li><a href="https://www.econometrics-with-r.org/">Introduction to
+Econometrics with R, Christoph Hanck, Martin Arnold, Alexander Gerber,
+and Martin Schmelzer, 2021-10-06</a></li>
+<li><a href="https://lgatto.github.io/IntroMachineLearningWithR/">An
+Introduction to Machine Learning with R, Laurent Gatto,
+2020-02-28</a></li>
+</ul>
+<hr />
+</div>
+<div id="simple-and-multiple-linear-regression-models-in-r"
+class="section level3">
+<h3>Simple and Multiple Linear Regression Models in R</h3>
+<ul>
+<li><a
+href="https://www.econometrics-with-r.org/4-lrwor.html">Introduction to
+Econometrics with R, Christoph Hanck, Martin Arnold, Alexander Gerber,
+and Martin Schmelzer, 2021-10-06, 4 Linear Regression with One
+Regressor</a></li>
+<li><a
+href="https://www.econometrics-with-r.org/6-rmwmr.html">Introduction to
+Econometrics with R, Christoph Hanck, Martin Arnold, Alexander Gerber,
+and Martin Schmelzer, 2021-10-06, 6 Regression Models with Multiple
+Regressors</a></li>
+<li><a
+href="https://socialsciences.mcmaster.ca/jfox/Books/Companion/">An R
+Companion to Applied Regression, Third Edition, John Fox and Sanford
+Weisberg, 2019</a></li>
+<li><a href="https://conservancy.umn.edu/handle/11299/189222">Linear
+Regression Using R: An Introduction to Data Modeling, Lilja, David
+J</a></li>
+<li><a
+href="https://peopleanalytics-regression-book.org/index.html">Handbook
+of Regression Modeling in People Analytics, Keith McNulty</a></li>
+<li><a
+href="http://r-statistics.co/Linear-Regression.html">r-statistics.co,
+Selva Prabhakaran - Linear-Regression</a></li>
+<li><a
+href="https://www.machinelearningplus.com/machine-learning/complete-introduction-linear-regression-r/">Complete
+Introduction to Linear Regression in R, Selva Prabhakaran</a></li>
+</ul>
+<hr />
+</div>
+<div id="generalized-linear-models-in-r" class="section level3">
+<h3>Generalized Linear Models in R</h3>
+<ul>
+<li><a href="http://www.john-ros.com/Rcourse/glm.html">R (BGU course),
+Jonathan D. Rosenblatt, 2019-10-10, Chapter 7: Generalized Linear
+Models</a></li>
+<li><a href="https://sscc.wisc.edu/sscc/pubs/glm-r/">Generalized Linear
+Models in R, Social Science Computing Cooperative, University of
+Wisconsin–Madison</a></li>
+<li><a
+href="http://users.stat.umn.edu/~helwig/notes/generalized-linear-models.html">Generalized
+Linear Models in R, Nathaniel E. Helwig, January 17, 2021</a></li>
+<li><a
+href="https://www.amazon.com/Generalized-Linear-Examples-Springer-Statistics/dp/1441901175">Generalized
+Linear Models With Examples in R (Springer Texts in Statistics), Peter
+K. Dunn, Gordon K. Smyth</a></li>
+<li><a
+href="https://www.econometrics-with-r.org/11-rwabdv.html">Introduction
+to Econometrics with R, Christoph Hanck, Martin Arnold, Alexander
+Gerber, and Martin Schmelzer, 2021-10-06, 11 Regression with a Binary
+Dependent Variable</a></li>
+</ul>
+<hr />
+</div>
+<div id="decision-tree-and-random-forest-models-in-r"
+class="section level3">
+<h3>Decision Tree and Random Forest Models in R</h3>
+<ul>
+<li><a href="https://www.springer.com/gp/book/9783030564841">Random
+Forests with R, Genuer, Robin, Poggi, Jean-Michel</a></li>
+<li><a
+href="https://www.manning.com/books/machine-learning-with-r-the-tidyverse-and-mlr">Machine
+Learning with R, the tidyverse, and mlr, Hefin I. Rhys, Chapter 7.
+Classifying with decision trees</a></li>
+<li><a
+href="https://bookdown.org/ndirienzo/ista_321_data_mining/decision-trees-and-random-forests.html">ISTA
+321 - Data Mining, Nicholas DiRienzo, 2020-08-24, 13 Decision Trees and
+Random Forests</a></li>
+<li><a
+href="https://www.listendata.com/2014/11/random-forest-with-r.html">A
+Complete Guide to Random Forest in R, Listen Data, Deepanshu
+Bhalla</a></li>
+<li><a
+href="http://www.woodwellclimate.org/wp-content/uploads/2016/02/Horning_DecisionTrees_RandomForest.pdf">Introduction
+to decision trees and random forests, Ned Horning, American Museum of
+Natural History’s, Center for Biodiversity and Conservation</a></li>
+<li><a href="https://www.edureka.co/blog/random-forest-classifier/">A
+Comprehensive Guide To Random Forest In R, Zulaikha Lateef</a></li>
+</ul>
+<hr />
+</div>
+<div id="data-visualization-in-r" class="section level3">
+<h3>Data Visualization in R</h3>
+<ul>
+<li><a href="https://socviz.co/">Data Visualization - A practical
+introduction, Kieran Healy</a></li>
+<li><a href="https://rkabacoff.github.io/datavis/">Data Visualization
+with R, Rob Kabacoff, 2020-12-01</a></li>
+<li><a href="https://r4ds.had.co.nz/data-visualisation.html">R for Data
+Science, Hadley Wickham &amp; Garrett Grolemund, 3 Data
+visualisation</a></li>
+<li><a href="https://r4ds.had.co.nz/graphics-for-communication.html">R
+for Data Science, Hadley Wickham &amp; Garrett Grolemund, 28 Graphics
+for communication</a></li>
+<li><a href="https://r-graphics.org/">R Graphics Cookbook, 2nd edition,
+Winston Chang, 2021-09-23</a></li>
+<li><a href="https://www.htmlwidgets.org/">htmlwidgets for R</a></li>
+</ul>
+<hr />
+</div>
+<div id="learn-r-markdown" class="section level3">
+<h3>Learn R Markdown</h3>
+<ul>
+<li><a href="https://bookdown.org/yihui/rmarkdown/">R Markdown: The
+Definitive Guide, Yihui Xie, J. J. Allaire, Garrett Grolemunds.</a></li>
+</ul>
+<hr />
+</div>
+<div id="data-sets" class="section level3">
+<h3>Data Sets</h3>
+<div id="inside-airbnb" class="section level4">
+<h4><a href="http://insideairbnb.com/get-the-data/">Inside
+Airbnb</a></h4>
+<p>This is a collection of frequently updated public Airbnb data sets
+which are nicely suited to practice basic data visualization and
+Exploratory Data Analysis (EDA).</p>
+</div>
+<div id="wikimedia-foundation-product-analyticscomparison-datasets"
+class="section level4">
+<h4><a
+href="https://www.mediawiki.org/wiki/Product_Analytics/Comparison_datasets">Wikimedia
+Foundation Product Analytics/Comparison datasets</a></h4>
+<p>Data collected by Wikimedia Foundation’s Product Analytics team on
+the development of different language versions of Wikipedia, the free
+encyclopedia.</p>
+</div>
+<div
+id="ucla-statistical-methods-and-data-analysis---logit-regression-data-set"
+class="section level4">
+<h4><a href="https://stats.idre.ucla.edu/stat/data/binary.csv">UCLA
+Statistical Methods and Data Analysis - LOGIT REGRESSION data
+set</a></h4>
+<p>A classic binary classification problem: predict a binary response
+variable <code>admit</code> from <code>gre</code>, <code>gpa</code>, and
+<code>rank</code>.</p>
+</div>
+<div
+id="household-size-in-the-philippines-case-study-data-set-from-beyond-multiple-linear-regression-applied-generalized-linear-models-and-multilevel-models-in-r-paul-roback-and-julie-legler"
+class="section level4">
+<h4><a
+href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html">Household
+Size in the Philippines case study data set</a> from Beyond Multiple
+Linear Regression: Applied Generalized Linear Models and Multilevel
+Models in R, Paul Roback and Julie Legler</h4>
+<p>An excellent data set to practice Poisson Regression from a classic
+GLM book in R.</p>
+</div>
+<div id="kaggle-the-boston-housing-dataset" class="section level4">
+<h4><a
+href="https://www.kaggle.com/code/prasadperera/the-boston-housing-dataset">Kaggle:
+The Boston Housing Dataset</a></h4>
+<p>The Boston Housing Dataset is a derived from information collected by
+the U.S. Census Service concerning housing in the area of Boston MA. We
+will use it to practice Random Forest models for regression
+problems.</p>
+</div>
+<div id="kaggle-airqualityuci" class="section level4">
+<h4><a
+href="https://www.kaggle.com/datasets/anveshparashar/airqualityuci">Kaggle:
+AirQualityUCI</a></h4>
+<p>Predict Air Quality from the data recorede by a gas multisensor
+device deployed on the field.</p>
+</div>
+<div id="kaggle-fish-market" class="section level4">
+<h4><a
+href="https://www.kaggle.com/datasets/anveshparashar/airqualityuci">Kaggle:
+Fish market</a></h4>
+<p>Database of common fish species for fish market: build a predictive
+model to estimate if the weight of fish can be predicted.</p>
+</div>
+<div id="multiple-linear-regression-house-sales-in-king-county-usa."
+class="section level4">
+<h4><a
+href="https://www.kaggle.com/code/divan0/multiple-linear-regression/data">Multiple
+Linear Regression: House Sales in King County, USA</a>.</h4>
+<p>Predict the pricing of a property.</p>
+</div>
+<div id="uci-machine-learning-repository-wine-quality-data-set"
+class="section level4">
+<h4><a
+href="https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/">UCI
+Machine Learning repository: Wine Quality data set</a></h4>
+<p>The goal of the exercise in which we use the Wine Quality dataset is
+to train a regularized Multinomial Regression model to predict the wine
+quality class.</p>
+</div>
+<div id="kaggle-bank-customer-churn-prediction" class="section level4">
+<h4><a
+href="https://www.kaggle.com/code/kmalit/bank-customer-churn-prediction">Kaggle:
+Bank Customer Churn Prediction</a></h4>
+<p>The task is to predict the <code>Exited</code> variable, making this
+pretty much a churn prediction problem.</p>
+</div>
+<div
+id="uci-machine-learning-repository-online-news-popularity-data-set.-e"
+class="section level4">
+<h4><a
+href="https://archive.ics.uci.edu/ml/datasets/Online+News+Popularity">UCI
+Machine Learning Repository: Online News Popularity Data Set</a>. E</h4>
+<p>The task is to predict the <strong>web popularity</strong> of a post:
+the number of <em>shares</em> a post receives once it is published.</p>
+</div>
+</div>
+<div id="additional-data-resources" class="section level3">
+<h3>Additional Data Resources</h3>
+<div
+id="rdatasets-rdatasets-is-a-collection-of-1892-datasets-which-were-originally-distributed-alongside-the-statistical-software-environment-r-and-some-of-its-add-on-packages.-the-goal-is-to-make-these-data-more-broadly-accessible-for-teaching-and-statistical-software-development."
+class="section level4">
+<h4><a
+href="https://vincentarelbundock.github.io/Rdatasets/">Rdatasets</a>:
+Rdatasets is a collection of 1892 datasets which were originally
+distributed alongside the statistical software environment R and some of
+its add-on packages. The goal is to make these data more broadly
+accessible for teaching and statistical software development.</h4>
+<hr />
+<p>License: <a href="http://www.gnu.org/licenses/gpl-3.0.txt">GPLv3</a>
+This Notebook is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or (at your
+option) any later version. This Notebook is distributed in the hope that
+it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details. You should have received a
+copy of the GNU General Public License along with this Notebook. If not,
+see <a href="http://www.gnu.org/licenses/"
+class="uri">http://www.gnu.org/licenses/</a>.</p>
+</div>
+</div>
+
+<hr>
+<p style="text-align:center;">
+  <img src="DK_Logo_White_150.png">
+</p>
+<p style="font-size:13px;text-align:center;">
+  <b>Contact: </b><a href = "mailto: goran.milovanovic@datakolektiv.com">goran.milovanovic@datakolektiv.com</a><br><br><a href="https://github.com/datakolektiv"><img src="github.png"></a>&nbsp;&nbsp;<a href="https://www.linkedin.com/in/gmilovanovic/"><img src="linkedin.png"></a>
+</p>
+<p style="font-size:11px;text-align:center;"><b>Impressum</b><br>
+<b>Data Kolektiv, 2004, Belgrade.</b></p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

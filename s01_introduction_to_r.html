@@ -346,6 +346,9 @@ div.tocify {
     <li>
       <a href="s02_dataframe.html">S02. I/O, Packages, and data.frame</a>
     </li>
+    <li>
+      <a href="s03_dataframe.html">S03. Functional programming + Control flow in R</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -408,8 +411,7 @@ Things to Come</h1>
 <div id="session-01-feeling-r-basics-intuitive-understanding-of-r"
 class="section level1">
 <h1>Session 01: Feeling R: Basics + Intuitive Understanding of R</h1>
-<p><strong>Feedback</strong> should be send to
-<code>goran.milovanovic@datakolektiv.com</code>. ***</p>
+<hr />
 <div id="welcome-to-r" class="section level3">
 <h3>Welcome to R!</h3>
 <p><img src="Rlogo.png" width="300" /></p>
@@ -456,7 +458,7 @@ language - that will let you know what is your current working
 directory. If you write any R code and decide to save it for later use,
 and do not specify the directory where you want it to live, R will use
 your current working directory as a destination folder. That function is
-<code>get_wd()</code></p>
+<code>getwd()</code></p>
 <pre class="r"><code>getwd()</code></pre>
 <pre><code>## [1] &quot;/Users/goransm/Work/___DataKolektiv/__freeDataKolektiv/_devsify&quot;</code></pre>
 <p><strong>Note.</strong> As you can see, the file paths in R are a bit
@@ -525,34 +527,35 @@ directory:</p>
 ##  [93] &quot;n00_installations.Rmd&quot;                    &quot;n00_intro_session.html&quot;                  
 ##  [95] &quot;n00_intro_session.html.R&quot;                 &quot;n00_intro_session.R&quot;                     
 ##  [97] &quot;n00_intro_session.txt.R&quot;                  &quot;n01_intro_session.R&quot;                     
-##  [99] &quot;NedaRadibratovic175px.jpg&quot;                &quot;Netokracija2023.png&quot;                     
-## [101] &quot;NetokracijaIntervju2023.png&quot;              &quot;PE_banner_2024.png&quot;                      
-## [103] &quot;PE_GeneralBanner.png&quot;                     &quot;PE_GeneralBanner02_web.png&quot;              
-## [105] &quot;PE_GeneralBanner02.png&quot;                   &quot;PE_GeneralBannerDecember2023.png&quot;        
-## [107] &quot;PE_sep2023.png&quot;                           &quot;prerequisites.html&quot;                      
-## [109] &quot;prerequisites.nb.html&quot;                    &quot;prerequisites.Rmd&quot;                       
-## [111] &quot;RadmilaVelickovic175px.png&quot;               &quot;RadovanSimikic175px.jpg&quot;                 
-## [113] &quot;regression_mle.png&quot;                       &quot;renv&quot;                                    
-## [115] &quot;renv.lock&quot;                                &quot;resources.html&quot;                          
-## [117] &quot;resources.Rmd&quot;                            &quot;Rlogo.png&quot;                               
-## [119] &quot;s00_installations.html&quot;                   &quot;s00_installations.Rmd&quot;                   
-## [121] &quot;S01_01_Functions.jpeg&quot;                    &quot;S01_02_Arrays_and_Lists.jpeg&quot;            
-## [123] &quot;s01_introduction_to_r.nb.html&quot;            &quot;s01_introduction_to_r.Rmd&quot;               
-## [125] &quot;S02_01_DataFrames.jpeg&quot;                   &quot;s02_dataframe.Rmd&quot;                       
-## [127] &quot;S03_01_FunctionalProgramming.jpeg&quot;        &quot;S04_01_RProgramming.jpeg&quot;                
-## [129] &quot;S07_01_ProbabilityFunctions.jpeg&quot;         &quot;S17_01_ROC.jpeg&quot;                         
-## [131] &quot;S17_02_LikelihoodFunction.jpeg&quot;           &quot;S21_01_RandomForest.jpeg&quot;                
-## [133] &quot;S22_01_Bias-Variance_Tradeoff.jpeg&quot;       &quot;session00_logos.png&quot;                     
-## [135] &quot;site_libs&quot;                                &quot;sitelinks1.jpg&quot;                          
-## [137] &quot;sitelinks2.jpg&quot;                           &quot;sitelinks3.jpg&quot;                          
-## [139] &quot;sitelinks4.jpg&quot;                           &quot;skc_kahneman_delfi_2015.jpg&quot;             
-## [141] &quot;startit_add_dsss2022_800.jpeg&quot;            &quot;StartitMeetup2016_InfRetreival.png&quot;      
-## [143] &quot;StartitMeetup2016.png&quot;                    &quot;talasAI.png&quot;                             
-## [145] &quot;twitter.png&quot;                              &quot;undp_machinery2023.jpg&quot;                  
-## [147] &quot;UvodR_startit_banner.jpg&quot;                 &quot;video.Rmd&quot;                               
-## [149] &quot;VladimirMijatovic175px.jpg&quot;               &quot;wd_thinkpad_official.png&quot;                
-## [151] &quot;webit2023.jpeg&quot;                           &quot;WikidataCon2019.png&quot;                     
-## [153] &quot;WikidataCon2021.png&quot;                      &quot;wikimediablog2018.jpg&quot;</code></pre>
+##  [99] &quot;n01_introR_session.R&quot;                     &quot;NedaRadibratovic175px.jpg&quot;               
+## [101] &quot;Netokracija2023.png&quot;                      &quot;NetokracijaIntervju2023.png&quot;             
+## [103] &quot;PE_banner_2024.png&quot;                       &quot;PE_GeneralBanner.png&quot;                    
+## [105] &quot;PE_GeneralBanner02_web.png&quot;               &quot;PE_GeneralBanner02.png&quot;                  
+## [107] &quot;PE_GeneralBannerDecember2023.png&quot;         &quot;PE_sep2023.png&quot;                          
+## [109] &quot;prerequisites.html&quot;                       &quot;prerequisites.nb.html&quot;                   
+## [111] &quot;prerequisites.Rmd&quot;                        &quot;RadmilaVelickovic175px.png&quot;              
+## [113] &quot;RadovanSimikic175px.jpg&quot;                  &quot;regression_mle.png&quot;                      
+## [115] &quot;renv&quot;                                     &quot;renv.lock&quot;                               
+## [117] &quot;resources.html&quot;                           &quot;resources.Rmd&quot;                           
+## [119] &quot;Rlogo.png&quot;                                &quot;s00_installations.html&quot;                  
+## [121] &quot;s00_installations.Rmd&quot;                    &quot;S01_01_Functions.jpeg&quot;                   
+## [123] &quot;S01_02_Arrays_and_Lists.jpeg&quot;             &quot;s01_introduction_to_r.nb.html&quot;           
+## [125] &quot;s01_introduction_to_r.Rmd&quot;                &quot;S02_01_DataFrames.jpeg&quot;                  
+## [127] &quot;s02_dataframe.Rmd&quot;                        &quot;S03_01_FunctionalProgramming.jpeg&quot;       
+## [129] &quot;s03_functional.Rmd&quot;                       &quot;S04_01_RProgramming.jpeg&quot;                
+## [131] &quot;S07_01_ProbabilityFunctions.jpeg&quot;         &quot;S17_01_ROC.jpeg&quot;                         
+## [133] &quot;S17_02_LikelihoodFunction.jpeg&quot;           &quot;S21_01_RandomForest.jpeg&quot;                
+## [135] &quot;S22_01_Bias-Variance_Tradeoff.jpeg&quot;       &quot;session00_logos.png&quot;                     
+## [137] &quot;site_libs&quot;                                &quot;sitelinks1.jpg&quot;                          
+## [139] &quot;sitelinks2.jpg&quot;                           &quot;sitelinks3.jpg&quot;                          
+## [141] &quot;sitelinks4.jpg&quot;                           &quot;skc_kahneman_delfi_2015.jpg&quot;             
+## [143] &quot;startit_add_dsss2022_800.jpeg&quot;            &quot;StartitMeetup2016_InfRetreival.png&quot;      
+## [145] &quot;StartitMeetup2016.png&quot;                    &quot;talasAI.png&quot;                             
+## [147] &quot;twitter.png&quot;                              &quot;undp_machinery2023.jpg&quot;                  
+## [149] &quot;UvodR_startit_banner.jpg&quot;                 &quot;video.Rmd&quot;                               
+## [151] &quot;VladimirMijatovic175px.jpg&quot;               &quot;wd_thinkpad_official.png&quot;                
+## [153] &quot;webit2023.jpeg&quot;                           &quot;WikidataCon2019.png&quot;                     
+## [155] &quot;WikidataCon2021.png&quot;                      &quot;wikimediablog2018.jpg&quot;</code></pre>
 <p>Take a look at <code>list.files(getwd())</code> carefully. We have
 already learned that <code>getwd()</code> is an R function. That
 function takes <strong>no input</strong>, and returns one
@@ -771,11 +774,10 @@ simply the index of the first element of that array.</li>
 not. Let’s now start moving one step at the time.</p>
 <pre class="r"><code>mySequence &lt;- 1:100
 print(mySequence)</code></pre>
-<pre><code>##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23
-##  [24]  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46
-##  [47]  47  48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69
-##  [70]  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92
-##  [93]  93  94  95  96  97  98  99 100</code></pre>
+<pre><code>##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26
+##  [27]  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52
+##  [53]  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77  78
+##  [79]  79  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100</code></pre>
 <p>Demystifying the <code>[1]</code> part of the <code>strsplit()</code>
 output - the one for which I’ve explained that is the index of the first
 element in the array composed of two following elements:
@@ -816,18 +818,16 @@ myList[[1]] &lt;- 1:100
 myList[[2]] &lt;- 101:200
 myList</code></pre>
 <pre><code>## [[1]]
-##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23
-##  [24]  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46
-##  [47]  47  48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69
-##  [70]  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92
-##  [93]  93  94  95  96  97  98  99 100
+##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26
+##  [27]  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52
+##  [53]  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77  78
+##  [79]  79  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100
 ## 
 ## [[2]]
-##   [1] 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123
-##  [24] 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146
-##  [47] 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169
-##  [70] 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192
-##  [93] 193 194 195 196 197 198 199 200</code></pre>
+##   [1] 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126
+##  [27] 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152
+##  [53] 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178
+##  [79] 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200</code></pre>
 <p>Do you now understand how list and array indices are used in the R
 output?</p>
 <p><strong>WARNING.</strong> My drawing, again: this is how I envision
@@ -1564,8 +1564,8 @@ leaflet(data = myCities) %&gt;%
   addAwesomeMarkers(~lon, ~lat, icon = awesome, 
                     popup = ~as.character(population),
                    label = ~as.character(city))</code></pre>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-25ced5c9ed041de243b7" style="width:864px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-25ced5c9ed041de243b7">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addAwesomeMarkers","args":[[40.73061,44.787197,55.751244,48.864716,41.902782,52.520008],[-73.935242,20.457273,37.618423,2.349014,12.496366,13.404954],{"icon":"info","markerColor":"blue","iconColor":"black","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["8405837","1378682","12692466","2187526","2872800","3644826"],null,null,null,["New York","Belgrade","Moscow","Paris","Rome","Berlin"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[40.73061,55.751244],"lng":[-73.935242,37.618423]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-add1ad6ef9321cc43ba0" style="width:864px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-add1ad6ef9321cc43ba0">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addAwesomeMarkers","args":[[40.73061,44.787197,55.751244,48.864716,41.902782,52.520008],[-73.935242,20.457273,37.618423,2.349014,12.496366,13.404954],{"icon":"info","markerColor":"blue","iconColor":"black","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["8405837","1378682","12692466","2187526","2872800","3644826"],null,null,null,["New York","Belgrade","Moscow","Paris","Rome","Berlin"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[40.73061,55.751244],"lng":[-73.935242,37.618423]}},"evals":[],"jsHooks":[]}</script>
 <p>That would be ten (10) lines of code, not counting the comments of
 course.</p>
 </div>

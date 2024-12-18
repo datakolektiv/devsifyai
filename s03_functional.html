@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Session03 Functional programming + Control flow in R</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><img id="logo" style="width: 30px;" src="DK_Logo_White_NoTitle_25.png" /></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Sessions
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="s00_installations.html">S00. R and Python Installations</a>
+    </li>
+    <li>
+      <a href="s01_introduction_to_r.html">S01. Introduction to R</a>
+    </li>
+    <li>
+      <a href="s02_dataframe.html">S02. I/O, Packages, and data.frame</a>
+    </li>
+    <li>
+      <a href="s03_dataframe.html">S03. Functional programming + Control flow in R</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="l01_lists.html">L01. Data Types, Lists</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Notes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="n00_installations.html">N00. R and Python Installations</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="video.html">Video</a>
+</li>
+<li>
+  <a href="resources.html">Resources</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="media.html">Media</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Session03 Functional programming + Control
+flow in R</h1>
+<h4 class="author">Goran S. Milovanovic, PhD</h4>
+
+</div>
+
+
+<p><img src="DK_Logo_100.png" /></p>
+<hr />
+<div id="functional-programming-control-flow-in-r"
+class="section level1">
+<h1>Functional programming + Control flow in R</h1>
+<hr />
+<div id="what-do-we-want-to-do-today" class="section level3">
+<h3>What do we want to do today?</h3>
+<p>We study a practical problem of dealing with many dataframes with
+identical (or nearly identical) columns: that would be similar to a set
+of tables with identical schemata in the world of <a
+href="https://en.wikipedia.org/wiki/Relational_database">Relational
+Database Management Systems (RDBMS)</a>. In the near future we will
+start drawing parallels between working with dataframes in R and the
+relationally structured tables in RDBMS like <a
+href="https://www.mysql.com/">MySQL</a>, <a
+href="https://mariadb.org/">MariaDB</a>, <a
+href="https://www.postgresql.org/">PostgreSQL</a>, and similar. While
+learning how to manage a set of dataframes we start introducing the R
+<em>control flow</em>: various iterations like <em>for</em>,
+<em>repeat</em>, and <em>while</em> loops, and decision making with
+<em>if … else</em> and <em>switch</em>. Of course, we recognize the
+nature of R as a functional and vectorized programming language, so we
+immediately show how to avoid using a loop when <code>lapply()</code> or
+any of its sisters - like <code>Reduce()</code> that we will introduce
+in this session - can do the job. We want our code to be a series of
+mappings from input data through various transformations onto the
+results, and consider everything else to be what is called <em>a glue
+code</em>. We will later show how {dplyr}, {tidyr}, and other packages
+are perfectly suited for that purpose.</p>
+</div>
+<div id="prerequisits." class="section level3">
+<h3>0. Prerequisits.</h3>
+<ul>
+<li>Create a directory named <code>_data</code> in the directory where
+you want to store your R code for this session.</li>
+<li>In your <code>_data</code> directory, create a new directory:
+<code>_listings</code></li>
+<li>Go to the <a href="http://insideairbnb.com/get-the-data.html">Inside
+Airbnb</a> page and download the following <code>.csv</code> files:
+<ol style="list-style-type: decimal">
+<li><a
+href="https://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2024-09-05/visualisations/listings.csv"><code>listings_amsterdam.csv</code></a>
+<code>csv</code> file (under the <em>Amsterdam, North Holland, The
+Netherlands</em> section);</li>
+<li><a
+href="https://data.insideairbnb.com/belgium/vlg/antwerp/2024-09-26/visualisations/listings.csv"><code>listings_antwerp.csv</code></a>
+<code>csv</code> file (under the <em>Antwerp, Flemish Region,
+Belgium</em> section);</li>
+<li><a
+href="https://data.insideairbnb.com/united-states/nc/asheville/2024-09-17/visualisations/listings.csv"><code>listings_asheville.csv</code></a>
+<code>csv</code> file (under the <em>Asheville, North Carolina, United
+States</em> section);</li>
+<li><a
+href="https://data.insideairbnb.com/greece/attica/athens/2024-09-23/visualisations/listings.csv"><code>listings_athens.csv</code></a>
+<code>csv</code> file (under the <em>Athens, Attica, Greece</em>
+section).</li>
+</ol></li>
+<li>Rename the files in the order of their download in the following
+way: (1) <code>listings_amsterdam.csv</code>, (2)
+<code>listings_antwerp.csv</code>, (3)
+<code>listings_asheville.csv</code>, and (4)
+<code>listings_athens.csv</code>. Remember: all files should reside in
+your <code>_data/_listings/</code> directory.</li>
+</ul>
+</div>
+<div
+id="read-several-dataframes-and-then-compose-one-large-dataframe-for-loops-lapply-and-reduce"
+class="section level3">
+<h3>1. Read several dataframes and then compose one large dataframe:
+<code>for</code> loops, <code>lapply()</code>, and
+<code>Reduce()</code></h3>
+<p>All the <code>listings_*.csv</code> files should be found in your
+<code>_data</code> directory for this session:</p>
+<pre class="r"><code>dataDir &lt;- paste0(getwd(), &quot;/_data/_listings/&quot;)
+list.files(dataDir)</code></pre>
+<pre><code>## [1] &quot;listings_amsterdam.csv&quot; &quot;listings_antwerp.csv&quot;   &quot;listings_asheville.csv&quot; &quot;listings_athens.csv&quot;</code></pre>
+<p>Good. There is highly typical situation in Data Science in which some
+data collection systems have a regular data production update: for
+example, the datasets encompassing some observations that need to be
+analyzed are produced every hour on a company server, but the analysis
+and reporting need to take place only once a day. That means that every
+time a Data Scientist needs to analyze the new observations - most
+probably by relying on a highly automated data processing, modeling, and
+visualization pipeline that they have carefully designed and tested -
+they need to load 24 (i.e. one per hour) datasets for processing. In
+this example we are assuming that all such datasets have the same
+structure, and that means: the column names and the respective data
+types are always the same (we will see how to deal with the violations
+of this assumption later).</p>
+<p>The first approach to acquire multiple tabular data at once in R is
+to use <em>iterations</em>. In R, we have the <code>for</code> loop, the
+<code>repeat</code> loop, and the <code>while</code> loop at our
+disposal. Let’s start with the <code>for</code> loop - probably the most
+common one.</p>
+<pre class="r"><code># - how many files to read from /_data
+num_files &lt;- length(list.files(dataDir))
+num_files</code></pre>
+<pre><code>## [1] 4</code></pre>
+<p>So there are currently <code>{r num_files}</code> <code>.csv</code>
+files there. Ok:</p>
+<div id="the-for-loop" class="section level4">
+<h4>1.1 The <code>for</code> loop</h4>
+<pre class="r"><code># - list files
+files &lt;- list.files(dataDir)
+# - how many files there are:
+num_files &lt;- length(list.files(dataDir))
+# - prepare a list to store the dataframes
+dataSet &lt;- list()
+# - load all datasets, one by one, in a for loop:
+for (index in 1:num_files) {
+  dataSet[[index]] &lt;- read.csv(paste0(dataDir, files[index]),
+                               header = TRUE,
+                               check.names = FALSE,
+                               stringsAsFactors = FALSE)
+}</code></pre>
+<p>The <code>dataSet</code> variable is now a list with four elements,
+each of them encompassing one dataframe: the result of a
+<code>read.csv</code> call over <code>files[1]</code>,
+<code>files[2]</code>, <code>files[3]</code>, and <code>files[4]</code>.
+We will get back to our data soon. Let’s discuss the <code>for</code>
+loop in R first: it is simple.</p>
+<p>The <code>(i in 1:num_files)</code> part of the <code>for</code> loop
+syntax tells R that <code>i</code> needs to take values from
+<code>c(1,2,3,4)</code> exactly in that order, because:</p>
+<pre class="r"><code>1:num_files</code></pre>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<p>We use the <code>index</code> variable in the <code>for</code> loop
+to single out exactly what file name from the <code>files</code> vector
+do we need in each iteration: that is the
+<code>paste0(dataDir, files[i]</code> part that presents the first
+argument to <code>read.csv()</code>. What is found between
+<code>{</code> and <code>}</code> is a <strong>code block</strong>: that
+is what will be executed in each iteration of the <code>for</code> loop,
+all the way until <code>i == num_files</code> is <code>TRUE</code>.</p>
+<p>In effect, R has started from <code>index = 1</code> and increased
+<code>index</code> until it reached the value of <code>num_files</code>,
+each time executing what is found in the code block following the
+definition of the <code>for</code> loop, and using <code>index</code> as
+a parameter to alter what <code>read.csv()</code> will do. In each
+iteration, <code>index</code> was also used to index an element of the
+<code>dataSet</code> list: <code>dataSet[[i]]</code>. Finally,
+<code>dataSet</code> became a list with four elements, each being a
+dataframe holding one dataset from our <code>_data</code> directory.</p>
+<p><code>For</code> loops are really simple:</p>
+<pre class="r"><code>for (a in 1:10) print(a)</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7
+## [1] 8
+## [1] 9
+## [1] 10</code></pre>
+<pre class="r"><code>names &lt;- c(&#39;Maria&#39;, &#39;Ann&#39;, &#39;Peter&#39;, &#39;Jovan&#39;, &#39;Ilke&#39;)
+for (x in 1:length(names)) {
+  print(
+    paste0(&quot;This is a beatiful name: &quot;, 
+           names[x])
+  )
+}</code></pre>
+<pre><code>## [1] &quot;This is a beatiful name: Maria&quot;
+## [1] &quot;This is a beatiful name: Ann&quot;
+## [1] &quot;This is a beatiful name: Peter&quot;
+## [1] &quot;This is a beatiful name: Jovan&quot;
+## [1] &quot;This is a beatiful name: Ilke&quot;</code></pre>
+<p>Do you remember <code>lapply()</code>?</p>
+</div>
+<div
+id="the-for-loop-vs.-lapply-and-when-are-the-for-loops-inefficient-in-r"
+class="section level4">
+<h4>1.2 The <code>for</code> loop vs. <code>lapply()</code> and when are
+the <code>for</code> loops inefficient in R</h4>
+<pre class="r"><code>files &lt;- list.files(dataDir)
+dataSet &lt;- lapply(paste0(dataDir, files), 
+                  read.csv, 
+                  header = T, stringsAsFactors = F)</code></pre>
+<p>Yes, we need <code>for</code> loops here and there, but <strong>this
+^^ is the R way of doing things</strong>:</p>
+<ul>
+<li><code>files</code> is a vector encompassing the filenames of the
+<code>.csv</code> datasets that we need</li>
+<li><code>lapply()</code> is an R function that applies a given function
+- <code>read.csv()</code> - to all elements of the list or a vector
+given as its first argument (<code>paste0(dataDir, files)</code> in this
+example)</li>
+<li>each function’s call result will be assigned to an output list - the
+result of a <code>lapply()</code> call</li>
+<li>and the output is finally assigned to <code>dataSet</code>.</li>
+</ul>
+<p>There is a myth saying that <code>for</code> loops in R are slow.
+Well, they can be. But using <code>lapply()</code> in a functional
+programming language like R is not just a matter of efficiency: look how
+code with <code>lapply()</code> is elegant and concise in comparison to
+iterations like the <code>for</code> loop!</p>
+<p>When <strong>not to</strong> use the <code>for</code> loop in R (if
+you ask me: never, if you don’t have to)?</p>
+<p>The typical context that slows down R code execution is the one in
+which a data structure will <strong>grow</strong> inside the loop:</p>
+<pre class="r"><code>numbers &lt;- numeric()
+for (i in 1:100) {
+  numbers[i] &lt;- i
+}</code></pre>
+<p>First, there is absolutely no need to do such things in a vectorized
+language like R:</p>
+<pre class="r"><code>numbers &lt;- 1:100</code></pre>
+<p>is enough, of course. The more important thing is that growing data
+structures in loops slows down the code execution and significantly in
+some situations (when the data structure is really large, for example).
+How can we use a more efficient <code>for</code> loop if we have to grow
+a data structure in it? Tell R how much memory is needed to hold the
+respective data structure:</p>
+<pre class="r"><code># - list files
+files &lt;- list.files(dataDir)
+# - how many files?
+num_files &lt;- length(list.files(dataDir))
+# - prepare a list to store the dataframes
+dataSet &lt;- vector(mode = &quot;list&quot;, length = num_files)
+# - iterate:
+for (i in 1:num_files) {
+  dataSet[[i]] &lt;- read.csv(paste0(dataDir, files[i]), 
+                           header = T, 
+                           stringsAsFactors = F)
+}</code></pre>
+<p>We have used <code>vector(mode = "list", length = num_files)</code>
+to create an empty list of length <code>num_files</code>:</p>
+<pre class="r"><code>emptyList &lt;- vector(mode = &quot;list&quot;, length = 4)
+emptyList</code></pre>
+<pre><code>## [[1]]
+## NULL
+## 
+## [[2]]
+## NULL
+## 
+## [[3]]
+## NULL
+## 
+## [[4]]
+## NULL</code></pre>
+<p>And <code>NULL</code> means <em>this does not exist</em> in R,
+different from <code>NA</code> in vectors and dataframes which means: we
+expect and element in this place but we do not observe one.</p>
+</div>
+<div
+id="compose-one-dataframe-from-several-dataframes-stored-in-a-list-reduce"
+class="section level4">
+<h4>1.3 Compose one dataframe from several dataframes stored in a list:
+<code>Reduce()</code></h4>
+<p>We know that <code>dataSet</code> has four elements and that each of
+them is an <code>data.frame</code>:</p>
+<pre class="r"><code>lapply(dataSet, class)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;data.frame&quot;
+## 
+## [[2]]
+## [1] &quot;data.frame&quot;
+## 
+## [[3]]
+## [1] &quot;data.frame&quot;
+## 
+## [[4]]
+## [1] &quot;data.frame&quot;</code></pre>
+<p>Now, say that the analyst needs to put all these dataframes together
+in a single dataframe for the purposes of statistical modeling. Take a
+look at the following code first and than we will discuss it in
+detail:</p>
+<pre class="r"><code>listings &lt;- Reduce(rbind, dataSet)
+dim(listings)</code></pre>
+<pre><code>## [1] 29629    18</code></pre>
+<p>Do the four datasets have <code>29629</code> rows in total?</p>
+<pre class="r"><code>sum(sapply(dataSet, function(x) dim(x)[1]))</code></pre>
+<pre><code>## [1] 29629</code></pre>
+<p>Yes, they do: <code>listings</code> is now the dataframe that we
+need. But what was that <code>Reduce()</code> thing?</p>
+<blockquote>
+<p>“Reduce() takes a function f of two arguments and a list or vector x
+which is to be ‘reduced’ using f. The function is first called on the
+first two components of x, then with the result of that as the first
+argument and the third component of x as the second argument, then again
+with the result of the second step as first argument and the fourth
+component of x as the second argument etc. The process is continued
+until all elements of x have been processed.” - From <strong>R: Reduce()
+– apply’s lesser known brother</strong>, the <a
+href="https://blog.zhaw.ch/datascience/r-reduce-applys-lesser-known-brother/">Data
+Science made in Switzerland</a> blog.</p>
+</blockquote>
+<p>Let’ see:</p>
+<pre class="r"><code>numbers &lt;- c(1, 2, 3, 4)
+Reduce(&#39;^&#39;, numbers)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>Of course, because: <code>1^2 = 1</code>, <code>1^3 = 1</code>,
+<code>1^4 = 1</code>, but <strong>it does work that way</strong>, I
+assure you:</p>
+<pre class="r"><code>numbers &lt;- c(4, 3, 2, 1)
+Reduce(&quot;^&quot;, numbers)</code></pre>
+<pre><code>## [1] 4096</code></pre>
+<p>because <code>4^3 = 64</code>, <code>64^2 = 4096</code>, and
+<code>4096^1 = 4096</code>.</p>
+<p>If you are interested to see the intermediate results of
+<code>Reduce()</code>, set its <code>accumulate</code> argument to
+<code>TRUE</code>:</p>
+<pre class="r"><code>numbers &lt;- c(4, 3, 2, 1)
+Reduce(&quot;^&quot;, numbers, accumulate = T)</code></pre>
+<pre><code>## [1]    4   64 4096 4096</code></pre>
+<p>So what happened in our
+<code>listings &lt;- Reduce(rbind, dataSet)</code> call is the
+following: (a) <code>dataSet</code> is a list of four dataframes, (b)
+<code>rbind</code> is a function that takes two arguments, both
+dataframes, and puts them on top of each other (mind the column names!),
+so (c) <code>Reduce()</code> began by binding the first two elements of
+<code>dataSet</code> together, then used the resulting dataframe as its
+next input together with the third element of <code>dataSet</code>, and
+finally used that resulting dataframe as its first argument together
+with the fourth element of <code>dataSet</code> as its second argument
+to produce the <code>listings</code>.</p>
+<p><strong>Note.</strong> You have noticed that I have used the
+<code>^</code> operator in R as if it were a function in
+<code>Reduce('^', numbers)</code>. That is because it is a function in
+R, look:</p>
+<pre class="r"><code>&#39;^&#39;(2, 3)</code></pre>
+<pre><code>## [1] 8</code></pre>
+<p>Similarly,</p>
+<pre class="r"><code>&#39;+&#39;(2, 3)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<p>That is why we call it a <em>functional</em> programming language -
+and a beautiful one indeed.</p>
+</div>
+<div
+id="a-concise-overview-of-some-r-functions-used-in-functional-programming"
+class="section level4">
+<h4>1.4 A concise overview of some R functions used in functional
+programming</h4>
+<p>Here is a schematic overview of some R functions that are typically
+used in functional programming. The one at the bottom -
+<code>Map(f, ...)</code> - we have not used yet. But we will, at some
+point, and it is also pretty intuitive, e.g. for two lists,
+<code>x</code>, <code>y</code>, and a binary function
+<code>f(x,y</code>), <code>Map(f, x, y)</code> returns
+<code>f(x[[1]], y[[1]]), f(x[[2]], y[[2]]), .., f(x[[n]], y[[n]])</code>.
+<code>Map()</code> can use n-ary functions, i.e. <code>f</code> can have
+as many arguments as needed.</p>
+<p><img src="S03_01_FunctionalProgramming.jpeg" /></p>
+</div>
+<div
+id="enter-a-new-column-into-each-dataframe-and-compose-strsplit-and-gsub"
+class="section level4">
+<h4>1.5 Enter a new column into each dataframe and compose:
+<code>strsplit()</code> and <code>gsub()</code></h4>
+<p>Finally, there is one problem with <code>listings</code>: we do have
+all the data in one place, but we do not know from which original
+dataset (Amsterdam, Antwerp, Asheville, Athens) do the data come from.
+Let’s fix this. Remember that we have the filenames in
+<code>files</code>:</p>
+<pre class="r"><code>files</code></pre>
+<pre><code>## [1] &quot;listings_amsterdam.csv&quot; &quot;listings_antwerp.csv&quot;   &quot;listings_asheville.csv&quot; &quot;listings_athens.csv&quot;</code></pre>
+<p>What happens if…</p>
+<pre class="r"><code>strsplit(files[1], split = &quot;_&quot;)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;listings&quot;      &quot;amsterdam.csv&quot;</code></pre>
+<p>Ok, so <code>strsplit()</code> takes a string (<code>files[1]</code>)
+in this example) and splits it up where it finds the character provided
+in its <code>split</code> argument (and that would be <code>"_"</code>
+in this example) - and returns a list.</p>
+<p>Ok, and what happens if…</p>
+<pre class="r"><code>gsub(&quot;.csv&quot;, 
+     &quot;&quot;, 
+     strsplit(files[1], split = &quot;_&quot;)[[1]], 
+     fixed = TRUE)</code></pre>
+<pre><code>## [1] &quot;listings&quot;  &quot;amsterdam&quot;</code></pre>
+<p><code>gsub()</code> - a relative of <code>grepl()</code> will
+substitute its first argument by its second argument in a given
+string:</p>
+<pre class="r"><code>gsub(&quot;A&quot;, &quot;E&quot;, &quot;Amelia&quot;)</code></pre>
+<pre><code>## [1] &quot;Emelia&quot;</code></pre>
+<p>So</p>
+<pre class="r"><code>gsub(&quot;.csv&quot;, &quot;&quot;, strsplit(files[1], split = &quot;_&quot;)[[1]], fixed = T)</code></pre>
+<pre><code>## [1] &quot;listings&quot;  &quot;amsterdam&quot;</code></pre>
+<p>will first <code>strsplit</code> the <code>files[1]</code> string by
+“_“, and we use [[1]] in order to grab the result because it returns a
+list; <code>gsub()</code> then replaces <code>".csv"</code> with an
+empty string <code>""</code>, and we need to specify
+<code>fixed = T</code> to inform <code>gsub()</code> that we do not wish
+the <code>.</code> to be interpreted as <code>regex</code> (where it
+means: <em>any character</em>) but literally as a <code>.</code>
+character. The remaining thing to do is to pick up the city which is
+found in the second position of the output vector:</p>
+<pre class="r"><code>gsub(&quot;.csv&quot;, &quot;&quot;, strsplit(files[1], split = &quot;_&quot;)[[1]], fixed = T)[2]</code></pre>
+<pre><code>## [1] &quot;amsterdam&quot;</code></pre>
+<p>And we could have accomplished the same by:</p>
+<pre class="r"><code>gsub(&quot;.csv&quot;, &quot;&quot;, strsplit(files[1], split = &quot;_&quot;)[[1]][2], fixed = T)</code></pre>
+<pre><code>## [1] &quot;amsterdam&quot;</code></pre>
+<p>because <code>strsplit</code> returns a list of length two
+(<code>[[1]] 'listings' 'amsterdam.csv'</code> in this example).</p>
+<p>So here is how we get to the cities that we need for our
+datasets:</p>
+<pre class="r"><code>cities &lt;- sapply(files, function(x) {
+  gsub(&quot;.csv&quot;, &quot;&quot;, strsplit(x, split = &quot;_&quot;)[[1]][2], fixed = T)
+})
+cities</code></pre>
+<pre><code>## listings_amsterdam.csv   listings_antwerp.csv listings_asheville.csv    listings_athens.csv 
+##            &quot;amsterdam&quot;              &quot;antwerp&quot;            &quot;asheville&quot;               &quot;athens&quot;</code></pre>
+<p>It is named vector, with names returned from the
+<code>sapply()</code> call. We can <code>unname()</code> that:</p>
+<pre class="r"><code>cities &lt;- unname(cities)
+cities</code></pre>
+<pre><code>## [1] &quot;amsterdam&quot; &quot;antwerp&quot;   &quot;asheville&quot; &quot;athens&quot;</code></pre>
+<p>Now, we need to produce <code>listings</code> with a new column:
+<code>listings$city</code>. How do we accomplish that?</p>
+<pre class="r"><code>for (i in 1:length(cities)) {
+  dataSet[[i]]$city &lt;- cities[i]
+}
+listings &lt;- Reduce(rbind, dataSet)
+table(listings$city)</code></pre>
+<pre><code>## 
+## amsterdam   antwerp asheville    athens 
+##      9659      2803      3030     14137</code></pre>
+<p>And now we can answer questions like: what is the average price per
+AirBnB listing per city, and similar:</p>
+<pre class="r"><code>library(dplyr)
+listings %&gt;% 
+  dplyr::select(city, price) %&gt;%
+  dplyr::group_by(city) %&gt;% 
+  dplyr::summarise(mean_price = mean(price))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   city      mean_price
+##   &lt;chr&gt;          &lt;dbl&gt;
+## 1 amsterdam         NA
+## 2 antwerp           NA
+## 3 asheville         NA
+## 4 athens            NA</code></pre>
+<p>Ooops, what is <code>{dplyr}</code>? That comes later. What I wanted
+to do this in base R?</p>
+<pre class="r"><code>city &lt;- unique(listings$city)
+mean_price &lt;- unname(sapply(city, function(x) {
+  w &lt;- which(listings$city == x)
+  return(
+    mean(listings$price[w], na.rm = TRUE)
+    )
+}))
+data.frame(city, mean_price)</code></pre>
+<pre><code>##        city mean_price
+## 1 amsterdam   289.6391
+## 2   antwerp   119.5503
+## 3 asheville   177.4988
+## 4    athens   105.7959</code></pre>
+<p>But the beauty of {dplyr}! You will see..!</p>
+</div>
+</div>
+<div id="beyond-for-while-and-repeat-loops-next-and-break"
+class="section level3">
+<h3>2 Beyond <code>for</code>: <code>while</code> and
+<code>repeat</code> loops, <code>next</code> and <code>break</code></h3>
+<p>As many other programming languages, R makes use of
+<code>while</code> loops and <code>repeat</code> loops as well. Let’s
+see how do they differ from the <code>for</code> loop by means of very
+simple examples only:</p>
+<pre class="r"><code>counter &lt;- 0
+
+while (counter &lt;= 100) {
+  
+  counter &lt;- counter + 1
+  
+  if (counter %% 10 == 0) {
+    
+    print(counter)
+  
+  }
+
+}</code></pre>
+<pre><code>## [1] 10
+## [1] 20
+## [1] 30
+## [1] 40
+## [1] 50
+## [1] 60
+## [1] 70
+## [1] 80
+## [1] 90
+## [1] 100</code></pre>
+<p>In the <code>while</code> loop, we begin by checking if the loop
+<em>exit condition</em> is satisfied <em>before</em> executing the code
+block in an iteration. We began by setting <code>counter</code> to zero;
+then we ask if it is less or equal than <code>100</code>, and if that
+condition is true we execute the code block, increase the value of
+<code>counter</code> only <em>inside</em> the block.</p>
+<p>We have also used our first <code>if</code> in R:</p>
+<pre class="r"><code>if (counter %% 10 == 0) {
+    
+  print(counter)
+
+}</code></pre>
+<p>And this expression does not print anything because
+<code>counter</code> has already reached <code>101</code> in the
+<code>while</code> loop (why?), while the condition
+<code>counter %% 10 ==</code> specifies that only if the remainder after
+dividing <code>counter</code> with <code>10</code> is equal to zero.</p>
+<p>The <code>repeat</code> loop, to the contrary, begins by executing
+what is in its code block and stops only if a certain condition in the
+block is satisfied:</p>
+<pre class="r"><code>counter &lt;- 0
+
+repeat {
+  
+  # - increase counter by 1
+  counter &lt;- counter + 1
+  
+  # - ask if the remainder of counter/10 is 0
+  if (counter %% 10 == 0) {
+    # - print counter
+    print(counter)
+  }
+  
+ # - exit condition:
+  if (counter &gt; 100) {
+    break
+  }
+  
+}</code></pre>
+<pre><code>## [1] 10
+## [1] 20
+## [1] 30
+## [1] 40
+## [1] 50
+## [1] 60
+## [1] 70
+## [1] 80
+## [1] 90
+## [1] 100</code></pre>
+<p>Remember: you <strong>have to</strong> <code>break</code> the
+<code>repeat</code> loop in R somehow: specify a condition, and if the
+condition is satisfied, end the loop execution by <code>break</code>!
+Unless you are able to break it will run FOREVER and inflate the
+Universe with computing!</p>
+<p>We can also use <code>break</code> in a <code>for</code> loop to exit
+altogether:</p>
+<pre class="r"><code>for (counter in 1:100) {
+  
+  # - if statement
+  if (counter %% 10 == 0) {
+    print(counter)
+  }
+  
+  # - exit condition
+  if (counter &gt; 50) {
+    break
+  }
+  
+}</code></pre>
+<pre><code>## [1] 10
+## [1] 20
+## [1] 30
+## [1] 40
+## [1] 50</code></pre>
+<p>The loop would iterate until <code>counter</code> reaches
+<code>100</code>, as specified in <code>for (counter in 1:100)</code>,
+but we have introduced an exit condition by
+<code>if (counter &gt; 50) {break}</code> so it did not.</p>
+<p>Finally, there is <code>next</code>, telling the loop to abandon the
+execution of the current iteration and start the next one if some
+condition is satisfied:</p>
+<pre class="r"><code>for (counter in 1:100) {
+  
+  if (!(counter %% 10 == 0)) {
+    
+    next
+    
+  } else {
+    
+    print(counter)
+    
+  }
+  
+  print(&quot;Remainder is zero!&quot;)
+  
+}</code></pre>
+<pre><code>## [1] 10
+## [1] &quot;Remainder is zero!&quot;
+## [1] 20
+## [1] &quot;Remainder is zero!&quot;
+## [1] 30
+## [1] &quot;Remainder is zero!&quot;
+## [1] 40
+## [1] &quot;Remainder is zero!&quot;
+## [1] 50
+## [1] &quot;Remainder is zero!&quot;
+## [1] 60
+## [1] &quot;Remainder is zero!&quot;
+## [1] 70
+## [1] &quot;Remainder is zero!&quot;
+## [1] 80
+## [1] &quot;Remainder is zero!&quot;
+## [1] 90
+## [1] &quot;Remainder is zero!&quot;
+## [1] 100
+## [1] &quot;Remainder is zero!&quot;</code></pre>
+<p>The result is similar to what we have seen before, but the code is
+modified. The <code>!</code> unary operator in R is <em>negation</em>,
+so <code>(!(counter %% 10 == 0))</code> means: the remainder of division
+by ten of <code>counter</code> is not equal to zero. And if that is so,
+we want to skip the current iteration (and that is why
+<code>print("Remainder is zero!")</code> does not execute) and start the
+next one. Of course, <code>break</code> and <code>next</code> can be
+combined in a single loop.</p>
+<p>Also, we have used to <code>if ... else</code> syntax to make a
+decision in R. We will next discuss decisions in control flow more
+closely.</p>
+</div>
+<div id="decisions-if...else-switch-and-ifelse" class="section level3">
+<h3>3 Decisions: <code>if...else</code>, <code>switch()</code>, and
+<code>ifelse()</code></h3>
+<div id="if...else-is-simple" class="section level4">
+<h4>3.1 <code>if...else</code> is simple</h4>
+<p>The usage of <code>if ... else</code> in R is really simple. Let’s
+begin with:</p>
+<pre class="r"><code>num_rows &lt;- dim(listings)[1]
+
+if (num_rows &gt;= 10000) {
+  print(&quot;Listings have more than 10,000 rows!&quot;)
+} else {
+  print(&quot;Listings is a very small dataset.&quot;)
+}</code></pre>
+<pre><code>## [1] &quot;Listings have more than 10,000 rows!&quot;</code></pre>
+<p>The <code>if ... else</code> constructs can be nested:</p>
+<pre class="r"><code>num_rows &lt;- dim(listings)[1]
+num_cols &lt;- dim(listings)[2]
+
+if (num_rows &gt;= 10000) {
+  print(&quot;Listings have more than 10,000 rows!&quot;)
+  if (num_cols &gt; 10) {
+    print(&quot;And it has more than ten columns!&quot;)
+  } else {
+    print(&quot;But it has less than ten columns!&quot;)
+  }
+} else {
+  print(&quot;Listings is a very small dataset.&quot;)
+  if (num_cols &gt; 10) {
+    print(&quot;And it has more than ten columns!&quot;)
+  } else {
+    print(&quot;But it has less than ten columns!&quot;)
+  }
+}</code></pre>
+<pre><code>## [1] &quot;Listings have more than 10,000 rows!&quot;
+## [1] &quot;And it has more than ten columns!&quot;</code></pre>
+<p>And we can chain <code>if ... else</code> indefinitely:</p>
+<pre class="r"><code>this_number &lt;- 5
+if (this_number &gt; 10) {
+  print(&quot;This number is less than ten...&quot;)
+} else if (this_number &lt; 5) {
+  print(&quot;This number is less than five.&quot;)
+}</code></pre>
+<p>Nothing happens, of course, because <code>this_number</code> is
+exactly five. However,</p>
+<pre class="r"><code>this_number &lt;- 5
+if (this_number &gt; 10) {
+  print(&quot;This number is less than ten...&quot;)
+} else if (this_number &lt;= 5) {
+  print(&quot;This number is less or equal to five.&quot;)
+}</code></pre>
+<pre><code>## [1] &quot;This number is less or equal to five.&quot;</code></pre>
+</div>
+<div id="switch-for-multiple-checks-ifelse-for-binary-decisions"
+class="section level4">
+<h4>3.2 <code>switch()</code> for multiple checks +
+<code>ifelse()</code> for binary decisions</h4>
+<p>Is <code>this_animal</code> a dog, an elephant, a cat, or a
+tiger?</p>
+<pre class="r"><code>this_animal &lt;- &#39;tiger&#39;
+
+switch(this_animal,
+       &quot;dog&quot; = &quot;It&#39;s a dog!&quot;,
+       &quot;elephant&quot; = &quot;It&#39;s an elephant!&quot;, 
+       &quot;cat&quot; = &quot;Meow!&quot;, 
+       &quot;tiger&quot; = &quot;A tiger? In Africa?&quot;)</code></pre>
+<pre><code>## [1] &quot;A tiger? In Africa?&quot;</code></pre>
+<p>Let’s analyze how this works. First, <code>this_animal</code> was set
+to <code>'tiger'</code>. Then it was used as an expression in
+<code>switch()</code> which searches through the list of provided
+alternatives and returns the result from the match. In this case, a
+match between <code>this_animal</code> and <code>"tiger"</code>
+determined that the response should be
+<code>"A tiger? In Africa?"</code></p>
+<p>Let’s invoke a <code>"Meow!</code> response from a
+<code>"cat"</code>:</p>
+<pre class="r"><code>this_animal &lt;- &#39;cat&#39;
+switch(this_animal,
+       dog = &quot;It&#39;s a dog!&quot;,
+       elephant = &quot;It&#39;s an elephant!&quot;, 
+       cat = &quot;Meow!&quot;, 
+       tiger = &quot;A tiger? In Africa?&quot;)</code></pre>
+<pre><code>## [1] &quot;Meow!&quot;</code></pre>
+<p>And let’s try with some numbers:</p>
+<pre class="r"><code>this_number &lt;- 1
+switch(this_number,
+       &quot;It&#39;s the first one!&quot;,
+       &quot;It&#39;s the second one!&quot;, 
+       &quot;It&#39;s the third one one!&quot;,
+       &quot;It&#39;s the fourth one!&quot;)</code></pre>
+<pre><code>## [1] &quot;It&#39;s the first one!&quot;</code></pre>
+<pre class="r"><code>this_number &lt;- 4
+switch(this_number,
+       &quot;It&#39;s the first one!&quot;,
+       &quot;It&#39;s the second one!&quot;, 
+       &quot;It&#39;s the third one one!&quot;,
+       &quot;It&#39;s the fourth one!&quot;)</code></pre>
+<pre><code>## [1] &quot;It&#39;s the fourth one!&quot;</code></pre>
+<p>You can use code blocks in <code>switch()</code>, of course:</p>
+<pre class="r"><code>some_expression = &#39;hey&#39;
+switch(some_expression, 
+       hey = { 
+         print(2 + 2)
+         print(&#39;Hey!&#39;) 
+         },
+       hi = { 
+         print(5 + 5)
+         print(&#39;Hi!&#39;)
+         },
+       {
+         print(6 * 3)
+         print(&#39;Default case!&#39;)
+         }
+       )</code></pre>
+<pre><code>## [1] 4
+## [1] &quot;Hey!&quot;</code></pre>
+<p>The default case is triggered if <code>switch()</code> cannot find a
+match:</p>
+<pre class="r"><code>some_expression = &#39;Ciao&#39;
+switch(some_expression, 
+       hey = { 
+         print(2 + 2)
+         print(&#39;Hey!&#39;) 
+         },
+       hi = { 
+         print(5 + 5)
+         print(&#39;Hi!&#39;)
+         },
+       {
+         print(6 * 3)
+         print(&#39;Default case!&#39;)
+         }
+       )</code></pre>
+<pre><code>## [1] 18
+## [1] &quot;Default case!&quot;</code></pre>
+<p>A practical application of <code>switch()</code>? Let’s check if all
+dataframes in <code>dataSet</code> have the same column names and report
+accordingly:</p>
+<pre class="r"><code>columns &lt;- lapply(dataSet, colnames)
+columns</code></pre>
+<pre><code>## [[1]]
+##  [1] &quot;id&quot;                             &quot;name&quot;                           &quot;host_id&quot;                       
+##  [4] &quot;host_name&quot;                      &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
+##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                      &quot;room_type&quot;                     
+## [10] &quot;price&quot;                          &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
+## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;              &quot;calculated_host_listings_count&quot;
+## [16] &quot;availability_365&quot;               &quot;number_of_reviews_ltm&quot;          &quot;license&quot;                       
+## [19] &quot;city&quot;                          
+## 
+## [[2]]
+##  [1] &quot;id&quot;                             &quot;name&quot;                           &quot;host_id&quot;                       
+##  [4] &quot;host_name&quot;                      &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
+##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                      &quot;room_type&quot;                     
+## [10] &quot;price&quot;                          &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
+## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;              &quot;calculated_host_listings_count&quot;
+## [16] &quot;availability_365&quot;               &quot;number_of_reviews_ltm&quot;          &quot;license&quot;                       
+## [19] &quot;city&quot;                          
+## 
+## [[3]]
+##  [1] &quot;id&quot;                             &quot;name&quot;                           &quot;host_id&quot;                       
+##  [4] &quot;host_name&quot;                      &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
+##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                      &quot;room_type&quot;                     
+## [10] &quot;price&quot;                          &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
+## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;              &quot;calculated_host_listings_count&quot;
+## [16] &quot;availability_365&quot;               &quot;number_of_reviews_ltm&quot;          &quot;license&quot;                       
+## [19] &quot;city&quot;                          
+## 
+## [[4]]
+##  [1] &quot;id&quot;                             &quot;name&quot;                           &quot;host_id&quot;                       
+##  [4] &quot;host_name&quot;                      &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
+##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                      &quot;room_type&quot;                     
+## [10] &quot;price&quot;                          &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
+## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;              &quot;calculated_host_listings_count&quot;
+## [16] &quot;availability_365&quot;               &quot;number_of_reviews_ltm&quot;          &quot;license&quot;                       
+## [19] &quot;city&quot;</code></pre>
+<p>Learn about <code>identical()</code>:</p>
+<pre class="r"><code>identical(columns[[1]], columns[[2]])</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Are all pairs in <code>columns</code> identical? Learn about
+<code>combn()</code>:</p>
+<pre class="r"><code>combn(1:4, m = 2)</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,]    1    1    1    2    2    3
+## [2,]    2    3    4    3    4    4</code></pre>
+<p>Let’s coordinate now:</p>
+<pre class="r"><code>search &lt;- combn(1:length(columns), 2)
+
+apply(search, 2, function(x) {
+  
+  identical(columns[x[1]], columns[x[2]])
+  
+  }
+
+)</code></pre>
+<pre><code>## [1] TRUE TRUE TRUE TRUE TRUE TRUE</code></pre>
+<p>This was our first usage of <code>apply()</code>: take a matrix like
+<code>search</code>, apply(<code>X</code>, <code>MARGIN</code>,
+<code>FUN</code>) where we apply <code>FUN</code> across rows with
+<code>MARGIN = 1</code> and across columns with <code>MARGIN = 2</code>.
+To obtain row sums, for example:</p>
+<pre class="r"><code>apply(search, 1, sum)</code></pre>
+<pre><code>## [1] 10 20</code></pre>
+<p>And to obtain sums across the columns:</p>
+<pre class="r"><code>apply(search, 2, sum)</code></pre>
+<pre><code>## [1] 3 4 5 5 6 7</code></pre>
+<p>And of course R has functions for this: <code>rowSums()</code> and
+<code>colSums()</code> - you can try them out if you wish.</p>
+<p>So, let’s report if all of the column names of the dataframes in
+<code>dataSet</code> are identical:</p>
+<pre class="r"><code>columns &lt;- lapply(dataSet, colnames)
+search &lt;- combn(1:length(columns), 2)
+check &lt;- apply(search, 2, function(x) {
+  identical(columns[x[1]], columns[x[2]])
+})
+num_pairs &lt;- dim(search)[2]
+dataFramesCheck &lt;- ifelse(num_pairs == sum(check), 1, 2)
+switch(dataFramesCheck, 
+       &quot;All dataframes have the same columns; you can proceed with code execution.&quot;, 
+       &quot;Inconsistent column names; try using datatable::rbindlist() with fill = T.&quot;)</code></pre>
+<pre><code>## [1] &quot;All dataframes have the same columns; you can proceed with code execution.&quot;</code></pre>
+<p><strong>NOTE.</strong> the <code>ifelse()</code> function in R is
+new. It is a vectorized function that first checks for the condition in
+its first argument (which needs to evaluate to <code>TRUE</code> or
+<code>FALSE</code>), and then if <code>TRUE</code> executes the
+expression found in its second argument, and otherwise executes what is
+found in its third argument:</p>
+<pre class="r"><code>ifelse(10 &lt; 5, 
+       &quot;I do not understand basic arithmetics.&quot;, 
+       &quot;Ok I got at least that one right.&quot;
+       )</code></pre>
+<pre><code>## [1] &quot;Ok I got at least that one right.&quot;</code></pre>
+<p><strong>NOTE.</strong> Obviously, we could have used just
+<code>ifelse()</code> for this task:</p>
+<pre class="r"><code>columns &lt;- lapply(dataSet, colnames)
+search &lt;- combn(1:length(columns), 2)
+check &lt;- apply(search, 2, function(x) {
+  identical(columns[x[1]], columns[x[2]])
+})
+num_pairs &lt;- dim(search)[2]
+ifelse(num_pairs == sum(check), 
+       &quot;All dataframes have the same columns; you can proceed with code execution.&quot;, 
+       &quot;Inconsistent column names; try using datatable::rbindlist() with fill = T.&quot;)</code></pre>
+<pre><code>## [1] &quot;All dataframes have the same columns; you can proceed with code execution.&quot;</code></pre>
+<hr />
+<p><strong>SUMMARY.</strong> We have learned about the basics of R
+programming in this session. The focus was twofold: (a) we have learned
+about the control flow, which is similar in R and in almost any other
+programming language: <code>for</code>, <code>while</code>,
+<code>repeat</code> loops, and decision making with
+<code>if ... else</code>, <code>switch()</code>, and
+<code>ifelse()</code>; on the other hand, we have touched upon
+functional programming in R with <code>apply()</code>,
+<code>lapply()</code>, <code>sapply()</code>, <code>Reduce()</code>. Do
+not forget: we really love functional programming in R. It makes the
+code more consistent and elegant, if anything. Functional programming is
+perfectly suited for Data Science projects because it allows us to
+formulate and solve the problem as a chain of functional transformations
+across the input data. An ideal Data Science code - not something that
+can be always achieved - is nothing more than that.</p>
+<hr />
+</div>
+</div>
+<div id="further-readings" class="section level3">
+<h3>Further Readings</h3>
+<ul>
+<li><a
+href="https://www.google.com/search?client=firefox-b-d&amp;channel=trow2&amp;sxsrf=ALeKk03T_qLCMzRICYWj5UHqFBHnvfV6Uw%3A1607220795553&amp;ei=Oz7MX8aeIYK6kwWc5JbgAw&amp;q=Norman+Matloff+The+Art+of+R+Programming+pdf&amp;oq=Norman+Matloff+The+Art+of+R+Programming+pdf&amp;gs_lcp=CgZwc3ktYWIQAzIFCAAQyQM6BwgjEMkDECc6AgguUJk9WOdAYKRBaABwAHgAgAGHAYgB9QOSAQMwLjSYAQCgAQGqAQdnd3Mtd2l6wAEB&amp;sclient=psy-ab&amp;ved=0ahUKEwiGqOCEpLjtAhUC3aQKHRyyBTwQ4dUDCAw&amp;uact=5">Chapters
+7.1 to 7.6 from Norman Matloff’s The Art of R Programming</a></li>
+<li><a
+href="https://www.r-bloggers.com/2015/12/how-to-write-the-first-for-loop-in-r/">How
+to write the first for loop in R from R-bloggers</a></li>
+<li><a href="https://www.guru99.com/r-while-loop.html">While Loop in R
+with Example from Guru99</a></li>
+<li><a href="https://www.tutorialspoint.com/r/r_repeat_loop.htm">R -
+Repeat Loop from Tutorials Point</a></li>
+</ul>
+</div>
+<div id="highly-recommended-to-do" class="section level3">
+<h3>Highly Recommended To Do</h3>
+<ul>
+<li><a href="https://r4ds.had.co.nz/functions.html">Chapter 19 Functions
+from R for Data Science</a></li>
+<li><a href="https://r4ds.had.co.nz/vectors.html">Chapter 20 Vectors
+from R for Data Science</a></li>
+<li><a href="https://r4ds.had.co.nz/iteration.html">Chapter 21
+Iterations from R for Data Science</a></li>
+</ul>
+</div>
+<div id="important-sources-documentation-etc." class="section level3">
+<h3>Important sources, documentation, etc.</h3>
+<ul>
+<li><a href="https://www.statmethods.net/">Quick-R</a> - An excellent
+set of concise R tutorials.</li>
+<li><a href="https://cran.r-project.org/">CRAN: The Comprehensive R
+Archive Network</a> - This is were the official versions of R packages
+live</li>
+<li><a
+href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;ved=2ahUKEwjXhNPIu_TtAhVSkMMKHRx6A3QQFjABegQIAhAC&amp;url=http%3A%2F%2Fwww.stat.columbia.edu%2F~tzheng%2Ffiles%2FRcolor.pdf&amp;usg=AOvVaw1XIn-mwZ73RgG8bxh4Lan4">Colors
+in R (PDF)</a></li>
+<li><a href="https://ggplot2.tidyverse.org/reference/">ggplot2
+Reference</a></li>
+<li><a href="https://www.rdocumentation.org/">RDocumentation: Search all
+21,217 CRAN, Bioconductor and GitHub packages</a></li>
+</ul>
+</div>
+<div id="r-markdown" class="section level3">
+<h3>R Markdown</h3>
+<p><a href="https://rmarkdown.rstudio.com/">R Markdown</a> is what I
+have used to produce this beautiful Notebook. We will learn more about
+it near the end of the course, but if you already feel ready to dive
+deep, here’s a book: <a href="https://bookdown.org/yihui/rmarkdown/">R
+Markdown: The Definitive Guide, Yihui Xie, J. J. Allaire, Garrett
+Grolemunds.</a></p>
+</div>
+<div id="exercises" class="section level3">
+<h3>Exercises</h3>
+<ul>
+<li><p><strong>E1.</strong> In the beginning of this session we have
+used the <code>for</code> loop to load four datasets into a list of
+dataframes in R. Do the same, but use the <code>repeat</code> loop
+instead.</p></li>
+<li><p><strong>E2.</strong> Same as <strong>E1</strong> but use the
+<code>while</code> loop in place of <code>repeat</code>.</p></li>
+<li><p><strong>E3.</strong> Produce a new column of logicals
+(<code>TRUE</code>, <code>FALSE</code>),
+<code>listings$priceClass</code> in <code>listings</code> that is
+<code>TRUE</code> if <code>listings$price</code> is above or equal to
+its median, and <code>FALSE</code> if it is strictly lower than its
+median. <strong>Hint:</strong> Use <code>ifelse</code> to create the new
+column. Try to summarize your data by using <code>summary()</code> on
+<code>listings$price</code>. What does <code>summary(listings)</code>
+look like?</p></li>
+<li><p><strong>E4.</strong> Produce a new column in
+<code>listings</code>: <code>listings$priceNightsRation</code>, which is
+the ratio of <code>listings$minimum_nights</code> and
+<code>listings$price</code>.</p></li>
+<li><p><strong>E5.</strong> Take a look at the following R
+code:</p></li>
+</ul>
+<pre class="r"><code>set &lt;- 1:100
+for (i in 1:length(set)) {
+  if(i == 100) {
+    break
+    } else {
+      if ((i == 1)) {
+        z = set[i] + set[i+1]
+        print(z)
+        } else {
+          z = z + set[i+1]
+          print(z)
+        }
+    }
+  }</code></pre>
+<p>Use <code>Reduce()</code> to accomplish the same in a one-liner.
+<strong>Remember</strong> the <code>accumulate</code> argument!</p>
+<hr />
+<p>Goran S. Milovanović</p>
+<p>DataKolektiv, 2020/21</p>
+<p>contact: <a href="mailto:goran.milovanovic@datakolektiv.com"
+class="email">goran.milovanovic@datakolektiv.com</a></p>
+<p><img src="../_img/DK_Logo_100.png" /></p>
+<hr />
+<p>License: <a href="http://www.gnu.org/licenses/gpl-3.0.txt">GPLv3</a>
+This Notebook is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or (at your
+option) any later version. This Notebook is distributed in the hope that
+it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details. You should have received a
+copy of the GNU General Public License along with this Notebook. If not,
+see <a href="http://www.gnu.org/licenses/"
+class="uri">http://www.gnu.org/licenses/</a>.</p>
+<hr />
+</div>
+</div>
+
+<hr>
+<p style="text-align:center;">
+  <img src="DK_Logo_White_150.png">
+</p>
+<p style="font-size:13px;text-align:center;">
+  <b>Contact: </b><a href = "mailto: goran.milovanovic@datakolektiv.com">goran.milovanovic@datakolektiv.com</a><br><br><a href="https://github.com/datakolektiv"><img src="github.png"></a>&nbsp;&nbsp;<a href="https://www.linkedin.com/in/gmilovanovic/"><img src="linkedin.png"></a>
+</p>
+<p style="font-size:11px;text-align:center;"><b>Impressum</b><br>
+<b>Data Kolektiv, 2004, Belgrade.</b></p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

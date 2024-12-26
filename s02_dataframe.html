@@ -537,7 +537,8 @@ directory. Let’s pronounce the <code>_data</code> directory in R:</p>
 dataDir &lt;- paste0(rootDir, &#39;/_data/&#39;)
 analyticsDir &lt;- paste0(rootDir, &quot;/_analytics/&quot;)
 list.files(dataDir)</code></pre>
-<pre><code>## [1] &quot;_listings&quot;              &quot;listings_selection.csv&quot; &quot;listings.csv&quot;           &quot;listings.xlsx&quot;</code></pre>
+<pre><code>## [1] &quot;_listings&quot;              &quot;listings_selection.csv&quot; &quot;listings.csv&quot;          
+## [4] &quot;listings.xlsx&quot;</code></pre>
 <p>^^ And here is the <code>listings.csv</code> file. It represents the
 Airbnb summary information and metrics for listings in Amsterdam. We
 will use it to practice our data frame skills in R.</p>
@@ -611,39 +612,50 @@ head(listings, 10)</code></pre>
 ## 9                 60  2020-03-07              4.31                              1                0
 ## 10                61  2018-02-18              0.50                              2              184</code></pre>
 <pre class="r"><code>tail(listings, 10)</code></pre>
-<pre><code>##             id                                               name   host_id host_name neighbourhood_group
-## 18513 46910585                           luxurious 2bdr apartment 378943951    Martin                  NA
-## 18514 46911127                                       FELICE house 373125933     Dario                  NA
-## 18515 46912324                studio In Amsterdam shared bathroom 375398295    Danila                  NA
-## 18516 46913926 Room for 2 facing private patio - Amsterdam centre 104495359 Sebastian                  NA
-## 18517 46937483        ♛♝♕ WOW 3 BD APT - Oosterpark Amsterdam ♛♝♕ 379277730      Jean                  NA
-## 18518 46938808                                      NiceAmsterdam 379294518 Elizabeth                  NA
-## 18519 46940774           Fantastic Apartment with beautiful views 279181956     Ramon                  NA
-## 18520 46944602                        cozy apartment in amsterdam 375398295    Danila                  NA
-## 18521 46953753           Great luxurious apartment in city centre 379498141      Lisa                  NA
-## 18522 46960026         Classic houseboat in Amsterdam city centre 213284349    Jochum                  NA
-##                                neighbourhood latitude longitude       room_type price minimum_nights
-## 18513                           Centrum-Oost 52.37867   4.90730 Entire home/apt   130              3
-## 18514                           Centrum-West 52.37706   4.89396 Entire home/apt    46              1
-## 18515                De Pijp - Rivierenbuurt 52.34381   4.90639 Entire home/apt    50              3
-## 18516                           Centrum-West 52.37495   4.89378    Private room    40              1
-## 18517                               Oud-Oost 52.35830   4.92186 Entire home/apt   275              3
-## 18518                           Centrum-Oost 52.36978   4.91443 Entire home/apt   330              3
-## 18519                           Centrum-Oost 52.36404   4.87967 Entire home/apt   350              4
-## 18520                De Pijp - Rivierenbuurt 52.34071   4.90854 Entire home/apt    60             28
-## 18521                           Centrum-Oost 52.36003   4.89317    Private room    67              2
-## 18522 Oostelijk Havengebied - Indische Buurt 52.37701   4.91797    Private room    96              2
-##       number_of_reviews last_review reviews_per_month calculated_host_listings_count availability_365
-## 18513                 0                            NA                              1              347
-## 18514                 0                            NA                              7              135
-## 18515                 0                            NA                              2              163
-## 18516                 0                            NA                              1               13
-## 18517                 0                            NA                              1              350
-## 18518                 0                            NA                              1              362
-## 18519                 0                            NA                              1               21
-## 18520                 0                            NA                              2              346
-## 18521                 0                            NA                              1              179
-## 18522                 0                            NA                              2               89</code></pre>
+<pre><code>##             id                                               name   host_id host_name
+## 18513 46910585                           luxurious 2bdr apartment 378943951    Martin
+## 18514 46911127                                       FELICE house 373125933     Dario
+## 18515 46912324                studio In Amsterdam shared bathroom 375398295    Danila
+## 18516 46913926 Room for 2 facing private patio - Amsterdam centre 104495359 Sebastian
+## 18517 46937483        ♛♝♕ WOW 3 BD APT - Oosterpark Amsterdam ♛♝♕ 379277730      Jean
+## 18518 46938808                                      NiceAmsterdam 379294518 Elizabeth
+## 18519 46940774           Fantastic Apartment with beautiful views 279181956     Ramon
+## 18520 46944602                        cozy apartment in amsterdam 375398295    Danila
+## 18521 46953753           Great luxurious apartment in city centre 379498141      Lisa
+## 18522 46960026         Classic houseboat in Amsterdam city centre 213284349    Jochum
+##       neighbourhood_group                          neighbourhood latitude longitude       room_type
+## 18513                  NA                           Centrum-Oost 52.37867   4.90730 Entire home/apt
+## 18514                  NA                           Centrum-West 52.37706   4.89396 Entire home/apt
+## 18515                  NA                De Pijp - Rivierenbuurt 52.34381   4.90639 Entire home/apt
+## 18516                  NA                           Centrum-West 52.37495   4.89378    Private room
+## 18517                  NA                               Oud-Oost 52.35830   4.92186 Entire home/apt
+## 18518                  NA                           Centrum-Oost 52.36978   4.91443 Entire home/apt
+## 18519                  NA                           Centrum-Oost 52.36404   4.87967 Entire home/apt
+## 18520                  NA                De Pijp - Rivierenbuurt 52.34071   4.90854 Entire home/apt
+## 18521                  NA                           Centrum-Oost 52.36003   4.89317    Private room
+## 18522                  NA Oostelijk Havengebied - Indische Buurt 52.37701   4.91797    Private room
+##       price minimum_nights number_of_reviews last_review reviews_per_month
+## 18513   130              3                 0                            NA
+## 18514    46              1                 0                            NA
+## 18515    50              3                 0                            NA
+## 18516    40              1                 0                            NA
+## 18517   275              3                 0                            NA
+## 18518   330              3                 0                            NA
+## 18519   350              4                 0                            NA
+## 18520    60             28                 0                            NA
+## 18521    67              2                 0                            NA
+## 18522    96              2                 0                            NA
+##       calculated_host_listings_count availability_365
+## 18513                              1              347
+## 18514                              7              135
+## 18515                              2              163
+## 18516                              1               13
+## 18517                              1              350
+## 18518                              1              362
+## 18519                              1               21
+## 18520                              2              346
+## 18521                              1              179
+## 18522                              2               89</code></pre>
 <p>We use <code>str()</code> to obtain a description of the data frame -
 its columns and the respective data types:</p>
 <pre class="r"><code>str(listings)</code></pre>
@@ -704,12 +716,14 @@ head(someList, 3)</code></pre>
 ## [1] &quot;00&quot;</code></pre>
 <p>If we are interested in the column names of the data frame only:</p>
 <pre class="r"><code>colnames(listings)</code></pre>
-<pre><code>##  [1] &quot;id&quot;                             &quot;name&quot;                           &quot;host_id&quot;                       
-##  [4] &quot;host_name&quot;                      &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
-##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                      &quot;room_type&quot;                     
-## [10] &quot;price&quot;                          &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
-## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;              &quot;calculated_host_listings_count&quot;
-## [16] &quot;availability_365&quot;</code></pre>
+<pre><code>##  [1] &quot;id&quot;                             &quot;name&quot;                          
+##  [3] &quot;host_id&quot;                        &quot;host_name&quot;                     
+##  [5] &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
+##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                     
+##  [9] &quot;room_type&quot;                      &quot;price&quot;                         
+## [11] &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
+## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;             
+## [15] &quot;calculated_host_listings_count&quot; &quot;availability_365&quot;</code></pre>
 <p>Later we will see how to use <code>colnames()</code> to set our own
 column names on the existing data frame.</p>
 <p>In the next step I want to change the <code>listings</code> data
@@ -739,21 +753,21 @@ class="section level3">
 <p>If you want to see what objects do you have instantiated in the
 current R session, use <code>ls()</code>:</p>
 <pre class="r"><code>ls()</code></pre>
-<pre><code>##  [1] &quot;a&quot;                  &quot;analyticsDir&quot;       &quot;awesome&quot;            &quot;check&quot;              &quot;cities&quot;            
-##  [6] &quot;city&quot;               &quot;columns&quot;            &quot;counter&quot;            &quot;countries&quot;          &quot;d&quot;                 
-## [11] &quot;dataDir&quot;            &quot;dataFramesCheck&quot;    &quot;dataSet&quot;            &quot;emptyList&quot;          &quot;filename&quot;          
-## [16] &quot;files&quot;              &quot;freqHosts&quot;          &quot;i&quot;                  &quot;index&quot;              &quot;iris&quot;              
-## [21] &quot;lattitudes&quot;         &quot;listings&quot;           &quot;listings_5&quot;         &quot;listings_selection&quot; &quot;ll&quot;                
-## [26] &quot;logic&quot;              &quot;longitudes&quot;         &quot;mean_price&quot;         &quot;mtcars&quot;             &quot;my_list&quot;           
-## [31] &quot;my_vector&quot;          &quot;myArray1&quot;           &quot;myArray2&quot;           &quot;myCities&quot;           &quot;myFun&quot;             
-## [36] &quot;myList&quot;             &quot;myResult&quot;           &quot;mySequence&quot;         &quot;names&quot;              &quot;num_cols&quot;          
-## [41] &quot;num_files&quot;          &quot;num_host_listings&quot;  &quot;num_hosts&quot;          &quot;num_pairs&quot;          &quot;num_rows&quot;          
-## [46] &quot;numbers&quot;            &quot;person&quot;             &quot;persons&quot;            &quot;populations&quot;        &quot;roomType&quot;          
-## [51] &quot;roomTypes&quot;          &quot;rootDir&quot;            &quot;s&quot;                  &quot;search&quot;             &quot;separateCities&quot;    
-## [56] &quot;some_expression&quot;    &quot;someDataFrame&quot;      &quot;someList&quot;           &quot;someVector&quot;         &quot;string&quot;            
-## [61] &quot;strings&quot;            &quot;testDataFrame&quot;      &quot;testHosts&quot;          &quot;this_animal&quot;        &quot;this_number&quot;       
-## [66] &quot;top_listings&quot;       &quot;urlData&quot;            &quot;vec&quot;                &quot;word&quot;               &quot;word1&quot;             
-## [71] &quot;word2&quot;              &quot;x&quot;</code></pre>
+<pre><code>##  [1] &quot;a&quot;                  &quot;analyticsDir&quot;       &quot;awesome&quot;            &quot;check&quot;             
+##  [5] &quot;cities&quot;             &quot;city&quot;               &quot;columns&quot;            &quot;counter&quot;           
+##  [9] &quot;countries&quot;          &quot;dataDir&quot;            &quot;dataFramesCheck&quot;    &quot;dataSet&quot;           
+## [13] &quot;emptyList&quot;          &quot;filename&quot;           &quot;files&quot;              &quot;i&quot;                 
+## [17] &quot;index&quot;              &quot;iris&quot;               &quot;l&quot;                  &quot;lattitudes&quot;        
+## [21] &quot;listings&quot;           &quot;listings_selection&quot; &quot;ll&quot;                 &quot;logic&quot;             
+## [25] &quot;longitudes&quot;         &quot;mean_price&quot;         &quot;mtcars&quot;             &quot;my_list&quot;           
+## [29] &quot;my_vector&quot;          &quot;myArray1&quot;           &quot;myArray2&quot;           &quot;myCities&quot;          
+## [33] &quot;myFun&quot;              &quot;myList&quot;             &quot;myResult&quot;           &quot;mySequence&quot;        
+## [37] &quot;names&quot;              &quot;num_cols&quot;           &quot;num_files&quot;          &quot;num_pairs&quot;         
+## [41] &quot;num_rows&quot;           &quot;numbers&quot;            &quot;person&quot;             &quot;persons&quot;           
+## [45] &quot;populations&quot;        &quot;rootDir&quot;            &quot;s&quot;                  &quot;search&quot;            
+## [49] &quot;separateCities&quot;     &quot;set&quot;                &quot;some_expression&quot;    &quot;someList&quot;          
+## [53] &quot;this_animal&quot;        &quot;this_number&quot;        &quot;top_listings&quot;       &quot;word&quot;              
+## [57] &quot;word1&quot;              &quot;word2&quot;              &quot;x&quot;                  &quot;z&quot;</code></pre>
 <p>Some of them we do not need anymore and we want to remove them.
 <strong>Note.</strong> In real Data Science practice, most of the time
 we really need to look carefully after memory usage, because we
@@ -769,21 +783,18 @@ session are rather small:</p>
 anymore, so let’s remove it with <code>rm()</code>:</p>
 <pre class="r"><code>rm(listings_selection)
 ls()</code></pre>
-<pre><code>##  [1] &quot;a&quot;                 &quot;analyticsDir&quot;      &quot;awesome&quot;           &quot;check&quot;             &quot;cities&quot;           
-##  [6] &quot;city&quot;              &quot;columns&quot;           &quot;counter&quot;           &quot;countries&quot;         &quot;d&quot;                
-## [11] &quot;dataDir&quot;           &quot;dataFramesCheck&quot;   &quot;dataSet&quot;           &quot;emptyList&quot;         &quot;filename&quot;         
-## [16] &quot;files&quot;             &quot;freqHosts&quot;         &quot;i&quot;                 &quot;index&quot;             &quot;iris&quot;             
-## [21] &quot;lattitudes&quot;        &quot;listings&quot;          &quot;listings_5&quot;        &quot;ll&quot;                &quot;logic&quot;            
-## [26] &quot;longitudes&quot;        &quot;mean_price&quot;        &quot;mtcars&quot;            &quot;my_list&quot;           &quot;my_vector&quot;        
-## [31] &quot;myArray1&quot;          &quot;myArray2&quot;          &quot;myCities&quot;          &quot;myFun&quot;             &quot;myList&quot;           
-## [36] &quot;myResult&quot;          &quot;mySequence&quot;        &quot;names&quot;             &quot;num_cols&quot;          &quot;num_files&quot;        
-## [41] &quot;num_host_listings&quot; &quot;num_hosts&quot;         &quot;num_pairs&quot;         &quot;num_rows&quot;          &quot;numbers&quot;          
-## [46] &quot;person&quot;            &quot;persons&quot;           &quot;populations&quot;       &quot;roomType&quot;          &quot;roomTypes&quot;        
-## [51] &quot;rootDir&quot;           &quot;s&quot;                 &quot;search&quot;            &quot;separateCities&quot;    &quot;some_expression&quot;  
-## [56] &quot;someDataFrame&quot;     &quot;someList&quot;          &quot;someVector&quot;        &quot;string&quot;            &quot;strings&quot;          
-## [61] &quot;testDataFrame&quot;     &quot;testHosts&quot;         &quot;this_animal&quot;       &quot;this_number&quot;       &quot;top_listings&quot;     
-## [66] &quot;urlData&quot;           &quot;vec&quot;               &quot;word&quot;              &quot;word1&quot;             &quot;word2&quot;            
-## [71] &quot;x&quot;</code></pre>
+<pre><code>##  [1] &quot;a&quot;               &quot;analyticsDir&quot;    &quot;awesome&quot;         &quot;check&quot;           &quot;cities&quot;         
+##  [6] &quot;city&quot;            &quot;columns&quot;         &quot;counter&quot;         &quot;countries&quot;       &quot;dataDir&quot;        
+## [11] &quot;dataFramesCheck&quot; &quot;dataSet&quot;         &quot;emptyList&quot;       &quot;filename&quot;        &quot;files&quot;          
+## [16] &quot;i&quot;               &quot;index&quot;           &quot;iris&quot;            &quot;l&quot;               &quot;lattitudes&quot;     
+## [21] &quot;listings&quot;        &quot;ll&quot;              &quot;logic&quot;           &quot;longitudes&quot;      &quot;mean_price&quot;     
+## [26] &quot;mtcars&quot;          &quot;my_list&quot;         &quot;my_vector&quot;       &quot;myArray1&quot;        &quot;myArray2&quot;       
+## [31] &quot;myCities&quot;        &quot;myFun&quot;           &quot;myList&quot;          &quot;myResult&quot;        &quot;mySequence&quot;     
+## [36] &quot;names&quot;           &quot;num_cols&quot;        &quot;num_files&quot;       &quot;num_pairs&quot;       &quot;num_rows&quot;       
+## [41] &quot;numbers&quot;         &quot;person&quot;          &quot;persons&quot;         &quot;populations&quot;     &quot;rootDir&quot;        
+## [46] &quot;s&quot;               &quot;search&quot;          &quot;separateCities&quot;  &quot;set&quot;             &quot;some_expression&quot;
+## [51] &quot;someList&quot;        &quot;this_animal&quot;     &quot;this_number&quot;     &quot;top_listings&quot;    &quot;word&quot;           
+## [56] &quot;word1&quot;           &quot;word2&quot;           &quot;x&quot;               &quot;z&quot;</code></pre>
 <p><code>someList</code> is really small and we do not care to remove
 it.</p>
 <div id="install-a-package-to-read-data-from-excel"
@@ -814,16 +825,17 @@ files:</p>
 ## • `` -&gt; `...17`</code></pre>
 <pre class="r"><code>head(listings)</code></pre>
 <pre><code>## # A tibble: 6 × 17
-##      id name             host_id host_name neighbourhood_group neighbourhood latitude longitude room_type price
-##   &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;               &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;
-## 1  2818 Quiet Garden Vi… 3159    Daniel    &lt;NA&gt;                Oostelijk Ha… 52.36575      4.94 Private … 59   
-## 2 20168 Studio with pri… 59484   Alexander &lt;NA&gt;                Centrum-Oost  52.36509      4.89 Private … 236  
-## 3 25428 Lovely apt in C… 56142   Joan      &lt;NA&gt;                Centrum-West  52.37297      4.88 Entire h… 125  
-## 4 27886 Romantic, styli… 97647   Flip      &lt;NA&gt;                Centrum-West  52.38761      4.89 Private … 135  
-## 5 28871 Comfortable dou… 124245  Edwin     &lt;NA&gt;                Centrum-Oost  52.3661       4.89 Private … 75   
-## 6 29051 Comfortable sin… 124245  Edwin     &lt;NA&gt;                Centrum-Oost  52.36607      4.89 Private … 55   
+##      id name  host_id host_name neighbourhood_group neighbourhood latitude longitude room_type price
+##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;               &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;
+## 1  2818 Quie… 3159    Daniel    &lt;NA&gt;                Oostelijk Ha… 52.36575      4.94 Private … 59   
+## 2 20168 Stud… 59484   Alexander &lt;NA&gt;                Centrum-Oost  52.36509      4.89 Private … 236  
+## 3 25428 Love… 56142   Joan      &lt;NA&gt;                Centrum-West  52.37297      4.88 Entire h… 125  
+## 4 27886 Roma… 97647   Flip      &lt;NA&gt;                Centrum-West  52.38761      4.89 Private … 135  
+## 5 28871 Comf… 124245  Edwin     &lt;NA&gt;                Centrum-Oost  52.3661       4.89 Private … 75   
+## 6 29051 Comf… 124245  Edwin     &lt;NA&gt;                Centrum-Oost  52.36607      4.89 Private … 55   
 ## # ℹ 7 more variables: minimum_nights &lt;dbl&gt;, number_of_reviews &lt;dbl&gt;, last_review &lt;chr&gt;,
-## #   reviews_per_month &lt;chr&gt;, calculated_host_listings_count &lt;dbl&gt;, availability_365 &lt;dbl&gt;, ...17 &lt;dbl&gt;</code></pre>
+## #   reviews_per_month &lt;chr&gt;, calculated_host_listings_count &lt;dbl&gt;, availability_365 &lt;dbl&gt;,
+## #   ...17 &lt;dbl&gt;</code></pre>
 <p>Note how I have reused the variable name: <code>listings</code>. It
 was an existing data frame which is now overwritten by the same data
 from a different file. Do not forget to use <code>?</code> from the R
@@ -898,12 +910,14 @@ listings_5</code></pre>
 ## 5               336  2020-09-20              2.68                              2              346</code></pre>
 <p>Again, the columns of <code>listings</code>:</p>
 <pre class="r"><code>colnames(listings)</code></pre>
-<pre><code>##  [1] &quot;id&quot;                             &quot;name&quot;                           &quot;host_id&quot;                       
-##  [4] &quot;host_name&quot;                      &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
-##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                      &quot;room_type&quot;                     
-## [10] &quot;price&quot;                          &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
-## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;              &quot;calculated_host_listings_count&quot;
-## [16] &quot;availability_365&quot;</code></pre>
+<pre><code>##  [1] &quot;id&quot;                             &quot;name&quot;                          
+##  [3] &quot;host_id&quot;                        &quot;host_name&quot;                     
+##  [5] &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
+##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                     
+##  [9] &quot;room_type&quot;                      &quot;price&quot;                         
+## [11] &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
+## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;             
+## [15] &quot;calculated_host_listings_count&quot; &quot;availability_365&quot;</code></pre>
 <p>And if we want to subset only the rows from 5 to 10 and only the
 <code>name</code> and <code>room_type</code> columns:</p>
 <pre class="r"><code>listings[5:10, c(&#39;host_name&#39;, &#39;room_type&#39;)]</code></pre>
@@ -1682,14 +1696,14 @@ unique</em> <code>host_id</code>.</p>
 <pre class="r"><code>num_host_listings &lt;- table(listings$host_id)
 head(num_host_listings, 50)</code></pre>
 <pre><code>## 
-##   3159   3592   7924  12085  30390  47517  49851  56142  58458  59484  61977  62341  62658  65041  72890 
-##      1      1      1      1      1      1      1      1      1      2      1      1      1      2      1 
-##  77950  81046  92194  92253  96492  97647  98297  98647  98844 109257 111635 113034 124245 125667 126790 
-##      1      1      1      1      1      1      1      1      1      1      1      1      2      2      1 
-## 127938 133488 142145 149649 158271 166264 169567 178515 178521 179452 185619 185836 186729 187728 188073 
-##      1      1      1      1      1      1      1      1      1      1      1      1      1      1      1 
-## 188098 190897 194523 195126 195537 
-##      1      1      1      1      1</code></pre>
+##   3159   3592   7924  12085  30390  47517  49851  56142  58458  59484  61977  62341  62658  65041 
+##      1      1      1      1      1      1      1      1      1      2      1      1      1      2 
+##  72890  77950  81046  92194  92253  96492  97647  98297  98647  98844 109257 111635 113034 124245 
+##      1      1      1      1      1      1      1      1      1      1      1      1      1      2 
+## 125667 126790 127938 133488 142145 149649 158271 166264 169567 178515 178521 179452 185619 185836 
+##      2      1      1      1      1      1      1      1      1      1      1      1      1      1 
+## 186729 187728 188073 188098 190897 194523 195126 195537 
+##      1      1      1      1      1      1      1      1</code></pre>
 <p>The <code>table()</code> function is your tool to obtain the
 frequency distribution of a variable in R. It’s easy: if
 <code>vec &lt;- c(1, 2, 3, 5, 5, 7, 7, 7)</code> is a vector,

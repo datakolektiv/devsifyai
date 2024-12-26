@@ -470,7 +470,8 @@ class="section level3">
 <code>_data</code> directory for this session:</p>
 <pre class="r"><code>dataDir &lt;- paste0(getwd(), &quot;/_data/_listings/&quot;)
 list.files(dataDir)</code></pre>
-<pre><code>## [1] &quot;listings_amsterdam.csv&quot; &quot;listings_antwerp.csv&quot;   &quot;listings_asheville.csv&quot; &quot;listings_athens.csv&quot;</code></pre>
+<pre><code>## [1] &quot;listings_amsterdam.csv&quot; &quot;listings_antwerp.csv&quot;   &quot;listings_asheville.csv&quot;
+## [4] &quot;listings_athens.csv&quot;</code></pre>
 <p>Good. There is highly typical situation in Data Science in which some
 data collection systems have a regular data production update: for
 example, the datasets encompassing some observations that need to be
@@ -572,7 +573,7 @@ the <code>for</code> loops inefficient in R</h4>
 <pre class="r"><code>files &lt;- list.files(dataDir)
 dataSet &lt;- lapply(paste0(dataDir, files), 
                   read.csv, 
-                  header = T, stringsAsFactors = F)</code></pre>
+                  header = TRUE, stringsAsFactors = FALSE)</code></pre>
 <p>Yes, we need <code>for</code> loops here and there, but <strong>this
 ^^ is the R way of doing things</strong>:</p>
 <ul>
@@ -750,7 +751,8 @@ dataset (Amsterdam, Antwerp, Asheville, Athens) do the data come from.
 Let’s fix this. Remember that we have the filenames in
 <code>files</code>:</p>
 <pre class="r"><code>files</code></pre>
-<pre><code>## [1] &quot;listings_amsterdam.csv&quot; &quot;listings_antwerp.csv&quot;   &quot;listings_asheville.csv&quot; &quot;listings_athens.csv&quot;</code></pre>
+<pre><code>## [1] &quot;listings_amsterdam.csv&quot; &quot;listings_antwerp.csv&quot;   &quot;listings_asheville.csv&quot;
+## [4] &quot;listings_athens.csv&quot;</code></pre>
 <p>What happens if…</p>
 <pre class="r"><code>strsplit(files[1], split = &quot;_&quot;)</code></pre>
 <pre><code>## [[1]]
@@ -826,8 +828,8 @@ listings %&gt;%
 ## 2 antwerp           NA
 ## 3 asheville         NA
 ## 4 athens            NA</code></pre>
-<p>Ooops, what is <code>{dplyr}</code>? That comes later. What I wanted
-to do this in base R?</p>
+<p>Ooops, what is <code>{dplyr}</code>? That comes later. What if I
+wanted to do this in base R?</p>
 <pre class="r"><code>city &lt;- unique(listings$city)
 mean_price &lt;- unname(sapply(city, function(x) {
   w &lt;- which(listings$city == x)
@@ -1042,7 +1044,7 @@ if (num_rows &gt;= 10000) {
 <p>And we can chain <code>if ... else</code> indefinitely:</p>
 <pre class="r"><code>this_number &lt;- 5
 if (this_number &gt; 10) {
-  print(&quot;This number is less than ten...&quot;)
+  print(&quot;This number is greater than ten...&quot;)
 } else if (this_number &lt; 5) {
   print(&quot;This number is less than five.&quot;)
 }</code></pre>
@@ -1050,7 +1052,7 @@ if (this_number &gt; 10) {
 exactly five. However,</p>
 <pre class="r"><code>this_number &lt;- 5
 if (this_number &gt; 10) {
-  print(&quot;This number is less than ten...&quot;)
+  print(&quot;This number is greater than ten...&quot;)
 } else if (this_number &lt;= 5) {
   print(&quot;This number is less or equal to five.&quot;)
 }</code></pre>
@@ -1095,11 +1097,11 @@ switch(this_number,
        &quot;It&#39;s the fourth one!&quot;)</code></pre>
 <pre><code>## [1] &quot;It&#39;s the first one!&quot;</code></pre>
 <pre class="r"><code>this_number &lt;- 4
-switch(this_number,
-       &quot;It&#39;s the first one!&quot;,
-       &quot;It&#39;s the second one!&quot;, 
-       &quot;It&#39;s the third one one!&quot;,
-       &quot;It&#39;s the fourth one!&quot;)</code></pre>
+  switch(this_number,
+         &quot;It&#39;s the first one!&quot;,
+         &quot;It&#39;s the second one!&quot;, 
+         &quot;It&#39;s the third one one!&quot;,
+         &quot;It&#39;s the fourth one!&quot;)</code></pre>
 <pre><code>## [1] &quot;It&#39;s the fourth one!&quot;</code></pre>
 <p>You can use code blocks in <code>switch()</code>, of course:</p>
 <pre class="r"><code>some_expression = &#39;hey&#39;
@@ -1144,39 +1146,51 @@ accordingly:</p>
 <pre class="r"><code>columns &lt;- lapply(dataSet, colnames)
 columns</code></pre>
 <pre><code>## [[1]]
-##  [1] &quot;id&quot;                             &quot;name&quot;                           &quot;host_id&quot;                       
-##  [4] &quot;host_name&quot;                      &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
-##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                      &quot;room_type&quot;                     
-## [10] &quot;price&quot;                          &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
-## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;              &quot;calculated_host_listings_count&quot;
-## [16] &quot;availability_365&quot;               &quot;number_of_reviews_ltm&quot;          &quot;license&quot;                       
+##  [1] &quot;id&quot;                             &quot;name&quot;                          
+##  [3] &quot;host_id&quot;                        &quot;host_name&quot;                     
+##  [5] &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
+##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                     
+##  [9] &quot;room_type&quot;                      &quot;price&quot;                         
+## [11] &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
+## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;             
+## [15] &quot;calculated_host_listings_count&quot; &quot;availability_365&quot;              
+## [17] &quot;number_of_reviews_ltm&quot;          &quot;license&quot;                       
 ## [19] &quot;city&quot;                          
 ## 
 ## [[2]]
-##  [1] &quot;id&quot;                             &quot;name&quot;                           &quot;host_id&quot;                       
-##  [4] &quot;host_name&quot;                      &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
-##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                      &quot;room_type&quot;                     
-## [10] &quot;price&quot;                          &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
-## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;              &quot;calculated_host_listings_count&quot;
-## [16] &quot;availability_365&quot;               &quot;number_of_reviews_ltm&quot;          &quot;license&quot;                       
+##  [1] &quot;id&quot;                             &quot;name&quot;                          
+##  [3] &quot;host_id&quot;                        &quot;host_name&quot;                     
+##  [5] &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
+##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                     
+##  [9] &quot;room_type&quot;                      &quot;price&quot;                         
+## [11] &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
+## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;             
+## [15] &quot;calculated_host_listings_count&quot; &quot;availability_365&quot;              
+## [17] &quot;number_of_reviews_ltm&quot;          &quot;license&quot;                       
 ## [19] &quot;city&quot;                          
 ## 
 ## [[3]]
-##  [1] &quot;id&quot;                             &quot;name&quot;                           &quot;host_id&quot;                       
-##  [4] &quot;host_name&quot;                      &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
-##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                      &quot;room_type&quot;                     
-## [10] &quot;price&quot;                          &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
-## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;              &quot;calculated_host_listings_count&quot;
-## [16] &quot;availability_365&quot;               &quot;number_of_reviews_ltm&quot;          &quot;license&quot;                       
+##  [1] &quot;id&quot;                             &quot;name&quot;                          
+##  [3] &quot;host_id&quot;                        &quot;host_name&quot;                     
+##  [5] &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
+##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                     
+##  [9] &quot;room_type&quot;                      &quot;price&quot;                         
+## [11] &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
+## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;             
+## [15] &quot;calculated_host_listings_count&quot; &quot;availability_365&quot;              
+## [17] &quot;number_of_reviews_ltm&quot;          &quot;license&quot;                       
 ## [19] &quot;city&quot;                          
 ## 
 ## [[4]]
-##  [1] &quot;id&quot;                             &quot;name&quot;                           &quot;host_id&quot;                       
-##  [4] &quot;host_name&quot;                      &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
-##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                      &quot;room_type&quot;                     
-## [10] &quot;price&quot;                          &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
-## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;              &quot;calculated_host_listings_count&quot;
-## [16] &quot;availability_365&quot;               &quot;number_of_reviews_ltm&quot;          &quot;license&quot;                       
+##  [1] &quot;id&quot;                             &quot;name&quot;                          
+##  [3] &quot;host_id&quot;                        &quot;host_name&quot;                     
+##  [5] &quot;neighbourhood_group&quot;            &quot;neighbourhood&quot;                 
+##  [7] &quot;latitude&quot;                       &quot;longitude&quot;                     
+##  [9] &quot;room_type&quot;                      &quot;price&quot;                         
+## [11] &quot;minimum_nights&quot;                 &quot;number_of_reviews&quot;             
+## [13] &quot;last_review&quot;                    &quot;reviews_per_month&quot;             
+## [15] &quot;calculated_host_listings_count&quot; &quot;availability_365&quot;              
+## [17] &quot;number_of_reviews_ltm&quot;          &quot;license&quot;                       
 ## [19] &quot;city&quot;</code></pre>
 <p>Learn about <code>identical()</code>:</p>
 <pre class="r"><code>identical(columns[[1]], columns[[2]])</code></pre>

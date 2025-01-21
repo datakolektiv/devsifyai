@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Session04 More Functional Programming + Basic Statistics in R</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><img id="logo" style="width: 30px;" src="DK_Logo_White_NoTitle_25.png" /></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Sessions
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="s00_installations.html">S00. R and Python Installations</a>
+    </li>
+    <li>
+      <a href="s01_introduction_to_r.html">S01. Introduction to R</a>
+    </li>
+    <li>
+      <a href="s02_dataframe.html">S02. I/O, Packages, and data.frame</a>
+    </li>
+    <li>
+      <a href="s03_functional.html">S03. Functional programming + Control flow in R</a>
+    </li>
+    <li>
+      <a href="s04_more_functional.html">S04. More functional Programming + Basic Statistics in R</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="l01_lists.html">L01. Data Types, Lists</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Notes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="n00_installations.html">N00. R and Python Installations</a>
+    </li>
+    <li>
+      <a href="n03_functional.html">N03. Functional Programming</a>
+    </li>
+    <li>
+      <a href="n04_more_functional.html">N04. More Functional Programming</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="video.html">Video</a>
+</li>
+<li>
+  <a href="resources.html">Resources</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="media.html">Media</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Session04 More Functional Programming +
+Basic Statistics in R</h1>
+<h4 class="author">Goran S. Milovanovic, PhD</h4>
+
+</div>
+
+
+<p><img src="DK_Logo_100.png" /></p>
+<hr />
+<div id="more-functional-programming-basic-statistics-in-r"
+class="section level1">
+<h1>More Functional programming + Basic Statistics in R</h1>
+<hr />
+<div id="what-do-we-want-to-do-today" class="section level3">
+<h3>What do we want to do today?</h3>
+<p>In this session, we are consolidating and expanding our knowledge and
+understanding of functional programming in R by applying functionals to
+calculate basic statistics in a sample of measurements. Additionally, we
+will review basic descriptive statistics: mean, median, Q1, Q3, IQR,
+minimum, maximum, variance, and standard deviation. As the final new
+concept of functional programming in R introduced during the course, we
+will present function factories: functions that create functions!</p>
+</div>
+<div id="descriptive-statistics-reminder-on-vectorization-and-recycling"
+class="section level3">
+<h3>1. Descriptive Statistics + Reminder on Vectorization and
+Recycling</h3>
+<p>Let us use this chapter, in which we will revisit the important
+feature of vectorization in the R programming language, to introduce –
+and some we have already used – basic statistical functions!</p>
+<div id="remember-element-wise-operations" class="section level4">
+<h4>REMEMBER: Element-wise operations!</h4>
+<p>A vector:</p>
+<pre class="r"><code>v1 &lt;- c(1,2,3,4,5,17)
+print(v1)</code></pre>
+<pre><code>## [1]  1  2  3  4  5 17</code></pre>
+<p><strong>Everything</strong> is a vector, even a single numerical
+value:</p>
+<pre class="r"><code>a &lt;- 5
+print(a[1])</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>print(a)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<p>Recycling:</p>
+<pre class="r"><code>v1 &lt;- 5
+v2 &lt;- c(2,3,4)
+print(v1 + v2)</code></pre>
+<pre><code>## [1] 7 8 9</code></pre>
+<p>Be careful:</p>
+<pre class="r"><code>v1 &lt;- c(1,2)
+v2 &lt;- c(2,3,4)
+print(v1 + v2)</code></pre>
+<pre><code>## [1] 3 5 5</code></pre>
+<p>Recycling and <code>mean()</code></p>
+<pre class="r"><code>v1 &lt;- c(1,2,3)
+print(mean(v1))</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>v2 &lt;- c(2,3,4)
+print(mean(v2))</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>v3 &lt;- c(5,6,7)
+print(mean(v3))</code></pre>
+<pre><code>## [1] 6</code></pre>
+<p>Length of the whole following expression is <code>2</code>:</p>
+<pre class="r"><code>c(mean(v1), mean(v2)) * mean(v3)</code></pre>
+<pre><code>## [1] 12 18</code></pre>
+<p>Do not forget about <code>NA</code> values when using
+<code>mean()</code>:</p>
+<pre class="r"><code>v1 &lt;- c(1,NA)
+v2 &lt;- c(2,3,4)
+print(mean(v1) + mean(v2))</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>Huh. Use <code>na.rm=TRUE</code></p>
+<pre class="r"><code>v1 &lt;- c(1,NA)
+v2 &lt;- c(2,3,4)
+print(mean(v1, na.rm=TRUE) + mean(v2, na.rm=TRUE))</code></pre>
+<pre><code>## [1] 4</code></pre>
+<p>And always use <code>na.rm=TRUE</code> when you are unsure whether
+you will, or will not have to deal with missing values in your data.</p>
+<p>Let’s introduce all of the most important descriptive statistics in
+R: load the <code>mtcars</code> data and inspect w.
+<code>summary()</code>:</p>
+<pre class="r"><code>data(mtcars)
+summary(mtcars)</code></pre>
+<pre><code>##       mpg             cyl             disp             hp             drat             wt       
+##  Min.   :10.40   Min.   :4.000   Min.   : 71.1   Min.   : 52.0   Min.   :2.760   Min.   :1.513  
+##  1st Qu.:15.43   1st Qu.:4.000   1st Qu.:120.8   1st Qu.: 96.5   1st Qu.:3.080   1st Qu.:2.581  
+##  Median :19.20   Median :6.000   Median :196.3   Median :123.0   Median :3.695   Median :3.325  
+##  Mean   :20.09   Mean   :6.188   Mean   :230.7   Mean   :146.7   Mean   :3.597   Mean   :3.217  
+##  3rd Qu.:22.80   3rd Qu.:8.000   3rd Qu.:326.0   3rd Qu.:180.0   3rd Qu.:3.920   3rd Qu.:3.610  
+##  Max.   :33.90   Max.   :8.000   Max.   :472.0   Max.   :335.0   Max.   :4.930   Max.   :5.424  
+##       qsec             vs               am              gear            carb      
+##  Min.   :14.50   Min.   :0.0000   Min.   :0.0000   Min.   :3.000   Min.   :1.000  
+##  1st Qu.:16.89   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:3.000   1st Qu.:2.000  
+##  Median :17.71   Median :0.0000   Median :0.0000   Median :4.000   Median :2.000  
+##  Mean   :17.85   Mean   :0.4375   Mean   :0.4062   Mean   :3.688   Mean   :2.812  
+##  3rd Qu.:18.90   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:4.000   3rd Qu.:4.000  
+##  Max.   :22.90   Max.   :1.0000   Max.   :1.0000   Max.   :5.000   Max.   :8.000</code></pre>
+<p>Let’s focus on the <code>mpg</code> column for a moment:</p>
+<pre class="r"><code>summary(mtcars$mpg)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   10.40   15.43   19.20   20.09   22.80   33.90</code></pre>
+<p>Do we have any <code>NAs</code> in <code>mtcars$mpg</code>?</p>
+<pre class="r"><code>sum(is.na(mtcars$mpg))</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>No. Let’s go over statistics, one by one. Minimum,
+<code>min()</code>:</p>
+<pre class="r"><code>min(mtcars$mpg)</code></pre>
+<pre><code>## [1] 10.4</code></pre>
+<p>Maximum, <code>max()</code>:</p>
+<pre class="r"><code>max(mtcars$mpg)</code></pre>
+<pre><code>## [1] 33.9</code></pre>
+<p>The <strong>median</strong> is the middle value in an ordered set of
+numbers. To find it, you first sort the data from smallest to
+largest:</p>
+<ul>
+<li>If there is an odd number of values in the dataset, the median is
+the single middle value.</li>
+<li>If there is an even number of values, the median is the average
+(mean) of the two middle values.</li>
+</ul>
+<p>Median, <code>med()</code>:</p>
+<pre class="r"><code>median(mtcars$mpg)</code></pre>
+<pre><code>## [1] 19.2</code></pre>
+<p><strong>Q1 (First Quartile)</strong>: This is the value that marks
+the 25th percentile of a dataset, meaning 25% of the data values lie
+below <span class="math inline">\(Q_1\)</span> and 75% lie above it.</p>
+<p><strong>Q3 (Third Quartile)</strong>: This is the value that marks
+the 75th percentile of a dataset, meaning 75% of the data values lie
+below <span class="math inline">\(Q_3\)</span> and 25% lie above it.</p>
+<p><strong>IQR (Interquartile Range)</strong>: This is a measure of the
+spread of the middle 50% of the data. It is calculated as: <span
+class="math display">\[
+\mathrm{IQR} = Q_3 - Q_1.
+\]</span></p>
+<p>Introducing the <code>quantile()</code> function, <code>p=.25</code>
+for <code>Q1</code>:</p>
+<pre class="r"><code>quantile(mtcars$mpg, p = .25)</code></pre>
+<pre><code>##    25% 
+## 15.425</code></pre>
+<p><code>p=.74</code> for <code>Q3</code>:</p>
+<pre class="r"><code>quantile(mtcars$mpg, p = .27)</code></pre>
+<pre><code>##    27% 
+## 15.611</code></pre>
+<p>and of course, <code>p=.50</code> for the median:</p>
+<pre class="r"><code>quantile(mtcars$mpg, p = .5)</code></pre>
+<pre><code>##  50% 
+## 19.2</code></pre>
+<p>What is missing from R’s <code>summary()</code>?</p>
+<p>Measures of <strong>dispersion</strong> (also called measures of
+spread or variability) describe how scattered or spread out the data
+values are around a central point (such as the mean or median). Two key
+measures of dispersion are <strong>variance</strong> and
+<strong>standard deviation</strong>:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Variance</strong>
+<ul>
+<li>Variance measures how far each data point in a set is from the
+mean.<br />
+</li>
+<li>It is calculated as the average of the squared differences between
+each data point and the mean.<br />
+</li>
+<li>For a <strong>population</strong> of size <span
+class="math inline">\(N\)</span> with mean <span
+class="math inline">\(\mu\)</span>, the variance (<span
+class="math inline">\(\sigma^2\)</span>) is:<br />
+<span class="math display">\[
+\sigma^2 = \frac{\sum_{i=1}^N (x_i - \mu)^2}{N}.
+\]</span><br />
+</li>
+<li>For a <strong>sample</strong> of size <span
+class="math inline">\(n\)</span> with sample mean <span
+class="math inline">\(\bar{x}\)</span>, the sample variance (<span
+class="math inline">\(s^2\)</span>) is typically computed as:<br />
+<span class="math display">\[
+s^2 = \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{n - 1}.
+\]</span><br />
+</li>
+<li>The difference in denominators (<span
+class="math inline">\(N\)</span> vs. <span
+class="math inline">\(n-1\)</span>) reflects a bias correction when
+estimating population variance from a sample (this is known as Bessel’s
+correction).</li>
+</ul></li>
+<li><strong>Standard Deviation</strong>
+<ul>
+<li>Standard deviation is the square root of the variance.<br />
+</li>
+<li>It is often preferred in reporting because it has the same units as
+the original data, making it easier to interpret as the “average”
+distance from the mean.<br />
+</li>
+<li>Population standard deviation:<br />
+<span class="math display">\[
+\sigma = \sqrt{\sigma^2}
+\]</span><br />
+</li>
+<li>Sample standard deviation:<br />
+<span class="math display">\[
+s = \sqrt{s^2}
+\]</span></li>
+</ul></li>
+</ol>
+<p>Together, <strong>variance</strong> and <strong>standard
+deviation</strong> give a sense of how “spread out” or concentrated the
+data values are around the mean.</p>
+<pre class="r"><code>var(mtcars$mpg)</code></pre>
+<pre><code>## [1] 36.3241</code></pre>
+<pre class="r"><code>sd(mtcars$mpg)</code></pre>
+<pre><code>## [1] 6.026948</code></pre>
+<pre class="r"><code>sd(mtcars$mpg) == sqrt(var(mtcars$mpg))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Another thing that you might wish to take a look at is
+<strong>IQR</strong>:</p>
+<p><strong>IQR (Interquartile Range)</strong> is a measure of dispersion
+that focuses on the “middle 50%” of the data. Specifically, it is
+defined as the difference between the third quartile (<span
+class="math inline">\(Q_3\)</span>) and the first quartile (<span
+class="math inline">\(Q_1\)</span>):</p>
+<p><span class="math display">\[
+\text{IQR} = Q_3 - Q_1.
+\]</span></p>
+<ul>
+<li><strong><span class="math inline">\(Q_1\)</span></strong> (the first
+quartile) is the value at or below which 25% of the data lie.<br />
+</li>
+<li><strong><span class="math inline">\(Q_3\)</span></strong> (the third
+quartile) is the value at or below which 75% of the data lie.</li>
+</ul>
+<p>Because it relies on quartiles rather than every data point, the IQR
+is <strong>less sensitive to outliers</strong> than measures like the
+variance or standard deviation. It provides a concise summary of the
+“typical spread” in the central portion of the data.</p>
+<pre class="r"><code>IQR(mtcars$mpg)</code></pre>
+<pre><code>## [1] 7.375</code></pre>
+<pre class="r"><code>quantile(mtcars$mpg, p=.75) - quantile(mtcars$mpg, p=.25) </code></pre>
+<pre><code>##   75% 
+## 7.375</code></pre>
+</div>
+</div>
+<div id="visualizing-descriptive-statistics-the-box-plot"
+class="section level3">
+<h3>2. Visualizing Descriptive Statistics: The Box Plot</h3>
+<p>Numbers and numbers only… Data visualization is <em>way better</em>
+to understand the data than by just looking at numbers. Let’s begin with
+the base R function <code>boxplot()</code> to visualize only one
+variable, <code>mtcars$qsec</code>, and learn what boxplots are for. As
+you will see, they are among the most helpfull tools to understand the
+distribution of the values of some measurement in statistics.</p>
+<pre class="r"><code>boxplot(mtcars$qsec,
+        horizontal = TRUE, 
+        xlab = &quot;qsec&quot;,
+        col = &quot;darkorange&quot;,
+        main = &quot;Boxplot: qsec&quot;)</code></pre>
+<p><img src="s04_more_functional_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>The thick line in the box stands where the <em>median</em> of the
+<code>mtcars$qsec</code> is found. The box is bounded by Q1 (25%) from
+the left and Q3 (75%) from the right. The width of the box thus equates
+the <strong>IQR</strong> - Interquartile Range - which is the difference
+between Q3 and Q1: <code>IQR = Q3 - Q1</code>. What about the length of
+the whiskers, and why is there that lonely point to the right marked?
+That needs some discussion:</p>
+<pre class="r"><code>## NOTE: Boxplot &quot;fences&quot; and outlier detection
+# Q3 = 75 percentile, Q1 = 25 percentile
+Q3 &lt;- quantile(mtcars$qsec, .75)
+Q3</code></pre>
+<pre><code>##  75% 
+## 18.9</code></pre>
+<pre class="r"><code>Q1 &lt;- quantile(mtcars$qsec, .25)
+Q1</code></pre>
+<pre><code>##     25% 
+## 16.8925</code></pre>
+<pre class="r"><code># IQ = Q3 - Q1; Interquartile range
+IQR &lt;- unname(Q3 - Q1)
+IQR</code></pre>
+<pre><code>## [1] 2.0075</code></pre>
+<p>The definitions of the fences used in R are:</p>
+<ul>
+<li>Lower inner fence: <code>Q1 - 1.5*IQR</code></li>
+<li>Upper inner fence: <code>Q3 + 1.5*IQR</code></li>
+<li>Lower outer fence: <code>Q1 - 3*IQR</code></li>
+<li>Upper outer fence: <code>Q3 + 3*IQR</code></li>
+<li>A point beyond an inner fence on either side is considered a
+<strong>mild outlier</strong></li>
+<li>A point beyond an outer fence is considered an <strong>extreme
+outlier</strong></li>
+</ul>
+<p>Now, let’s find out about the outlier to the right of the boxplot’s
+whiskers in our plot:</p>
+<pre class="r"><code>lif &lt;- Q1 - 1.5*IQR
+uif &lt;- Q3 + 1.5*IQR
+lof &lt;- Q1 - 3*IQR
+uof &lt;- Q3 + 3*IQR
+mtcars$qsec[mtcars$qsec &gt; uif]</code></pre>
+<pre><code>## [1] 22.9</code></pre>
+<pre class="r"><code>mtcars$qsec[mtcars$qsec &gt; uof]</code></pre>
+<pre><code>## numeric(0)</code></pre>
+<p>Conclusion: there is one point in <code>mtcars$qsec</code> that is
+positioned above the <em>upper inner fence</em> in the boxplot, and that
+one point represents a <em>mild outlier</em> because it does not go
+beyond the <em>upper outter fence</em>. There are no outliers bellow
+lower fences in <code>mtcars$qsec</code>.</p>
+<p>We have found one outlier… And that would be your first step on the
+road to anomaly detection in Data Science!</p>
+<p>Now, can we visualize more than one variable in the
+<code>mtcars</code> dataset and thus try to understand the dataset as a
+whole, or at least a large part of it? Of course:</p>
+<pre class="r"><code>boxplot(mtcars[ , c(&#39;mpg&#39;, &#39;disp&#39;, &#39;hp&#39;, &#39;drat&#39;, &#39;wt&#39;, &#39;qsec&#39;)], 
+        horizontal = FALSE, 
+        xlab=&quot;qsec&quot;,
+        ylab = &quot;value&quot;,
+        col = &quot;darkorange&quot;,
+        main = &quot;Boxplot&quot;)</code></pre>
+<p><img src="s04_more_functional_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>But the variables seem to be on different scales. What can often help
+in situations like this one is to use the <em>logarithmic
+scaling</em>:</p>
+<pre class="r"><code>boxplot(mtcars[ , c(&#39;mpg&#39;, &#39;disp&#39;, &#39;hp&#39;, &#39;drat&#39;, &#39;wt&#39;, &#39;qsec&#39;)], 
+        horizontal = FALSE, 
+        xlab=&quot;qsec&quot;,
+        ylab = &quot;log(value)&quot;,
+        log = &quot;y&quot;,
+        col = &quot;indianred&quot;,
+        main = &quot;Boxplot: qsec&quot;)</code></pre>
+<p><img src="s04_more_functional_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>But is now also difficult to understand the distributions of a
+particular variable in the boxplot.</p>
+<p>While even base R offers great means to visualize data, {ggplot2} is
+the industrial standard data visualization package and it is definitely
+way, way better. We will now begin our study of the anatomy of a ggplot2
+plot using our boxplot as an example.</p>
+<p>In order to produce a boxplot with ggplot2, mtcars first need to be
+transformed from the <em>wide data representation</em> format into a
+<em>long data representation format</em>:</p>
+<pre class="r"><code>library(tidyverse)
+mtcars$id &lt;- 1:dim(mtcars)[1]
+
+mtcarsPlot &lt;- mtcars %&gt;%
+  select(id, mpg, disp, hp, drat, wt, qsec) %&gt;% 
+  pivot_longer(cols = -id,
+               names_to = &quot;Measurement&quot;,
+               values_to = &quot;Value&quot;)
+
+head(mtcarsPlot, 30)</code></pre>
+<pre><code>## # A tibble: 30 × 3
+##       id Measurement  Value
+##    &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt;
+##  1     1 mpg          21   
+##  2     1 disp        160   
+##  3     1 hp          110   
+##  4     1 drat          3.9 
+##  5     1 wt            2.62
+##  6     1 qsec         16.5 
+##  7     2 mpg          21   
+##  8     2 disp        160   
+##  9     2 hp          110   
+## 10     2 drat          3.9 
+## # ℹ 20 more rows</code></pre>
+<p>Do you understand the difference between <strong>long</strong> and
+<strong>wide</strong> data formats? We will discuss it live in our
+session! The <code>select()</code> function used in the code above is
+from the <code>{dplyr}</code> package: it simply selects only the
+desired columns from a dataframe. Then, the <code>pivot_longer()</code>
+function, from the <code>{tidyr}</code> package, transform the wide
+<code>mtcars</code>into the long <code>mtcarsPlot</code> following the
+addition of the <code>id</code> column to <code>mtcars</code> because we
+want to keep track of the mapping between models (i.e. rows, records) in
+the original dataset and its long format! The <strong>pipe
+operator</strong> - <code>%&gt;%</code> - works in the following way
+(note: a simplified explanation follows):</p>
+<ul>
+<li>begin with a data set, pipe it to</li>
+<li>a transformation, then pipe the result of the transformation to</li>
+<li>another transformation, then …</li>
+<li>etc.</li>
+</ul>
+<p>Pipes are <strong>ideal</strong> to chain data transformations in
+R!</p>
+<p>Now, the boxplot with {ggplot2}:</p>
+<pre class="r"><code>ggplot(data = mtcarsPlot, 
+       aes(x = Measurement, 
+           y = Value, 
+           fill = Measurement)) +
+  geom_boxplot() + 
+  ggtitle(&quot;mtcars boxplot&quot;) + 
+  theme_bw() + 
+  theme(panel.border = element_blank()) + 
+  theme(plot.title = element_text(hjust = .5)) +
+  theme(legend.position = &quot;top&quot;)</code></pre>
+<p><img src="s04_more_functional_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p><strong>Note.</strong> We use <code>+</code> to chain the layers in
+{ggplot2} visualizations, similarly as we use the pipes to chain data
+transformations. Do not confuse <code>+</code> as used to build a
+{ggplot2} visualization with <code>+</code> as an arithmetic operation
+or <code>%&gt;%</code>.</p>
+</div>
+<div id="more-functional-programming-function-factories"
+class="section level3">
+<h3>3. More Functional Programming + Function Factories</h3>
+<p>Here is a schematic overview of some R functions that are typically
+used in functional programming. The one at the bottom -
+<code>Map(f, ...)</code> - we have not used yet. But we will, at some
+point, and it is also pretty intuitive, e.g. for two lists,
+<code>x</code>, <code>y</code>, and a binary function
+<code>f(x,y</code>), <code>Map(f, x, y)</code> returns
+<code>f(x[[1]], y[[1]]), f(x[[2]], y[[2]]), .., f(x[[n]], y[[n]])</code>.
+<code>Map()</code> can use n-ary functions, i.e. <code>f</code> can have
+as many arguments as needed.</p>
+<p><img src="S03_01_FunctionalProgramming.jpeg" /></p>
+<div id="lapply-sapply-apply" class="section level4">
+<h4>3.1 Lapply(), Sapply(), Apply()</h4>
+<p>In <strong>R</strong>, the functions <strong>apply()</strong>,
+<strong>lapply()</strong>, and <strong>sapply()</strong> are part of the
+“apply family,” which provides a convenient way to iterate over data
+structures (like vectors, lists, matrices, or data frames) without
+writing explicit loops. Here’s an overview of each function:</p>
+<hr />
+<div id="apply" class="section level5">
+<h5>1. <code>apply()</code></h5>
+<p><strong>Purpose:</strong><br />
+- Primarily used to apply a function to the rows or columns of matrices
+or arrays.</p>
+<p><strong>Typical Usage:</strong></p>
+<pre class="r"><code>apply(X, MARGIN, FUN, ...)</code></pre>
+<ul>
+<li><strong><code>X</code></strong>: A matrix or array.</li>
+<li><strong><code>MARGIN</code></strong>: A numeric vector indicating
+the dimension(s) over which the function is applied.
+<ul>
+<li><code>MARGIN = 1</code> → apply function over rows.</li>
+<li><code>MARGIN = 2</code> → apply function over columns.</li>
+<li>For multi-dimensional arrays, you can use something like
+<code>MARGIN = c(1,3)</code> to apply over specific dimensions.</li>
+</ul></li>
+<li><strong><code>FUN</code></strong>: The function to apply.</li>
+<li><strong><code>...</code></strong>: Additional arguments passed to
+the function.</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<pre class="r"><code># Create a matrix
+m &lt;- matrix(1:9, nrow = 3)
+
+# Calculate the mean of each row
+apply(m, 1, mean)
+
+# Calculate the sum of each column
+apply(m, 2, sum)</code></pre>
+<hr />
+</div>
+<div id="lapply" class="section level5">
+<h5>2. <code>lapply()</code></h5>
+<p><strong>Purpose:</strong><br />
+- Used to apply a function to each element of a list (or vector),
+returning the results in a <strong>list</strong> of the same length.</p>
+<p><strong>Typical Usage:</strong></p>
+<pre class="r"><code>lapply(X, FUN, ...)</code></pre>
+<ul>
+<li><strong><code>X</code></strong>: A list or vector.</li>
+<li><strong><code>FUN</code></strong>: The function to apply to each
+element of <code>X</code>.</li>
+<li><strong><code>...</code></strong>: Additional arguments passed to
+the function.</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<pre class="r"><code># Create a list of numeric vectors
+my_list &lt;- list(a = 1:5, b = 6:10, c = c(10, 20, 30))
+
+# Use lapply to get the sum of each vector
+lapply(my_list, sum)
+
+# Use lapply to calculate the mean of each vector
+lapply(my_list, mean)</code></pre>
+<p><code>lapply()</code> always returns a <strong>list</strong>, even if
+the function returns a single number for each element.</p>
+<hr />
+</div>
+<div id="sapply" class="section level5">
+<h5>3. <code>sapply()</code></h5>
+<p><strong>Purpose:</strong><br />
+- Similar to <code>lapply()</code>, but tries to
+<strong>simplify</strong> the result into a vector, matrix, or array if
+possible.</p>
+<p><strong>Typical Usage:</strong></p>
+<pre class="r"><code>sapply(X, FUN, ..., simplify = TRUE, USE.NAMES = TRUE)</code></pre>
+<ul>
+<li><strong><code>X</code></strong>: A list or vector.</li>
+<li><strong><code>FUN</code></strong>: The function to apply.</li>
+<li><strong><code>...</code></strong>: Additional arguments to pass to
+the function.</li>
+<li><strong><code>simplify</code></strong>: Logical flag or character
+string indicating how to simplify the result. Default is
+<code>TRUE</code>.</li>
+<li><strong><code>USE.NAMES</code></strong>: Logical flag indicating
+whether to preserve names. Default is <code>TRUE</code>.</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<pre class="r"><code># Same list as before
+my_list &lt;- list(a = 1:5, b = 6:10, c = c(10, 20, 30))
+
+# Calculate means using sapply
+sapply(my_list, mean)</code></pre>
+<p>If each call to <code>FUN</code> returns a single, non-list value,
+<code>sapply()</code> simplifies the result to a <strong>numeric
+vector</strong>. If each call returns a vector of the same length &gt;
+1, <code>sapply()</code> can simplify to a <strong>matrix</strong>.</p>
+<p><strong>Key difference from <code>lapply()</code></strong>:<br />
+- <code>lapply()</code> always returns a list. - <code>sapply()</code>
+will <strong>try</strong> to return a simpler R object (vector or
+matrix). If it cannot simplify, it falls back to a list.</p>
+<hr />
+</div>
+<div id="summary" class="section level5">
+<h5>Summary</h5>
+<ul>
+<li><strong><code>apply()</code></strong>: For matrices/arrays. Iterates
+over rows/columns (or specified dimensions) to apply a function. Returns
+a vector, list, or array depending on the function’s output.<br />
+</li>
+<li><strong><code>lapply()</code></strong>: For lists (or vectors).
+Applies a function to each element and always returns a
+<strong>list</strong>.<br />
+</li>
+<li><strong><code>sapply()</code></strong>: For lists (or vectors).
+Applies a function to each element and <strong>simplifies</strong> the
+result (if possible) into a vector, matrix, or array.</li>
+</ul>
+<p>These functions help write more concise, “vectorized” code, reducing
+the need for explicit loops and often making R code more idiomatic and
+easier to read.</p>
+<pre class="r"><code>v1 &lt;- 1:100
+
+# - power() function
+power &lt;- function(x) {
+  # code blocks...
+  return(x^2)
+}
+
+# - silly functional:
+squares &lt;- lapply(v1, power)
+class(squares)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<pre class="r"><code>print(head(squares, 10))</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 4
+## 
+## [[3]]
+## [1] 9
+## 
+## [[4]]
+## [1] 16
+## 
+## [[5]]
+## [1] 25
+## 
+## [[6]]
+## [1] 36
+## 
+## [[7]]
+## [1] 49
+## 
+## [[8]]
+## [1] 64
+## 
+## [[9]]
+## [1] 81
+## 
+## [[10]]
+## [1] 100</code></pre>
+<p>Again, <code>sapply()</code> will try to simplify, as the name
+suggests:</p>
+<pre class="r"><code>squares &lt;- sapply(v1, power)
+print(head(squares, 10))</code></pre>
+<pre><code>##  [1]   1   4   9  16  25  36  49  64  81 100</code></pre>
+<pre class="r"><code>print(class(squares))</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<p>Now, <code>apply()</code> is a bit more complicated… Let’s create a
+2D data structure, i.e. a <strong>matrix</strong>:</p>
+<pre class="r"><code>m1 &lt;- matrix(data = c(1,2,3,4),
+             ncol = 2)
+print(m1)</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4</code></pre>
+<p>Remember <code>sum()</code>?</p>
+<pre class="r"><code>sum(c(1,2))</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p>Now, <code>apply()</code> <code>sum()</code> over
+<strong>rows</strong>:</p>
+<pre class="r"><code>apply(X = m1, MARGIN = 1, FUN = sum)</code></pre>
+<pre><code>## [1] 4 6</code></pre>
+<p>And <code>apply()</code> <code>sum()</code> over
+<strong>columns</strong>:</p>
+<pre class="r"><code>apply(X = m1, MARGIN = 2, FUN = sum)</code></pre>
+<pre><code>## [1] 3 7</code></pre>
+</div>
+</div>
+<div id="reduce" class="section level4">
+<h4>3.2 Reduce()</h4>
+<p>In <strong>R</strong>, the <strong><code>Reduce()</code></strong>
+function is used to iteratively apply a <strong>binary function</strong>
+(a function of two arguments) to elements of a vector or list,
+ultimately reducing them to a single value. It is part of R’s functional
+programming tools (along with functions like <code>Filter()</code>,
+<code>Find()</code>, <code>Map()</code>, etc.) and closely resembles the
+concept of “fold” or “reduce” operations in other programming languages
+(e.g., in Lisp or Python).</p>
+<hr />
+<div id="basic-usage" class="section level5">
+<h5>Basic Usage</h5>
+<pre><code>Reduce(f, x, init, right = FALSE, accumulate = FALSE)</code></pre>
+<ul>
+<li><strong><code>f</code></strong>: The binary function you want to
+apply.<br />
+</li>
+<li><strong><code>x</code></strong>: The vector (or list) of elements to
+which <code>f</code> will be applied.<br />
+</li>
+<li><strong><code>init</code></strong>: An optional initial value. If
+provided, the reduction starts with <code>init</code> and the first
+element of <code>x</code>.<br />
+</li>
+<li><strong><code>right</code></strong>: A logical value indicating
+whether to apply the function from the right end (<code>TRUE</code>) or
+the left end (<code>FALSE</code>). The default is <code>FALSE</code>
+(left to right).<br />
+</li>
+<li><strong><code>accumulate</code></strong>: A logical value. If
+<code>FALSE</code> (default), only the final result is returned. If
+<code>TRUE</code>, all intermediate results are returned as a list.</li>
+</ul>
+</div>
+<div id="how-it-works" class="section level5">
+<h5>How it works:</h5>
+<ol style="list-style-type: decimal">
+<li><p><strong>Left to right</strong>
+(<code>right = FALSE</code>):<br />
+<span class="math display">\[
+(((x_1 \; f \; x_2) \; f \; x_3) \; f \; x_4) \cdots
+\]</span> By default, <code>Reduce()</code> starts with the leftmost
+element of <code>x</code> and applies the function to successive
+elements.</p></li>
+<li><p><strong>Right to left</strong> (<code>right = TRUE</code>):<br />
+<span class="math display">\[
+(x_1 \; f \; (x_2 \; f \; (x_3 \; f \; x_4))) \cdots
+\]</span> Here, the function is applied in a nested manner starting from
+the rightmost element.</p></li>
+</ol>
+<hr />
+</div>
+<div id="examples" class="section level5">
+<h5>Examples</h5>
+<div id="summation-example" class="section level6">
+<h6>1. Summation Example</h6>
+<pre class="r"><code># Summing elements from left to right
+Reduce(`+`, 1:5)</code></pre>
+<pre><code>## [1] 15</code></pre>
+<p>This is equivalent to <code>((((1 + 2) + 3) + 4) + 5)</code>, which
+results in <code>15</code>.</p>
+</div>
+<div id="multiplication-example" class="section level6">
+<h6>2. Multiplication Example</h6>
+<pre class="r"><code># Multiplying elements from left to right
+Reduce(`*`, 1:5)</code></pre>
+<pre><code>## [1] 120</code></pre>
+<p>This is equivalent to <code>((((1 * 2) * 3) * 4) * 5)</code>, which
+results in <code>120</code>.</p>
+</div>
+<div id="using-init" class="section level6">
+<h6>3. Using <code>init</code></h6>
+<pre class="r"><code># Start summing with an initial value of 10
+Reduce(`+`, 1:5, init = 10)</code></pre>
+<pre><code>## [1] 25</code></pre>
+<p>This is equivalent to <code>((((10 + 1) + 2) + 3) + 4) + 5</code>,
+which results in <code>25</code>.</p>
+</div>
+<div id="right-to-left" class="section level6">
+<h6>4. Right to Left</h6>
+<pre class="r"><code># If we apply subtraction from right to left
+vec &lt;- 1:5
+Reduce(`-`, vec, right = TRUE)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p>This evaluates as <code>1 - (2 - (3 - (4 - 5)))</code>. Evaluating
+step by step:<br />
+- <code>(4 - 5) = -1</code><br />
+- <code>(3 - -1) = 4</code><br />
+- <code>(2 - 4) = -2</code><br />
+- <code>(1 - -2) = 3</code></p>
+<p>Hence the result is <code>3</code>.</p>
+</div>
+<div id="accumulating-results" class="section level6">
+<h6>5. Accumulating Results</h6>
+<pre class="r"><code># Keep track of all intermediate results
+Reduce(`+`, 1:5, accumulate = TRUE)</code></pre>
+<pre><code>## [1]  1  3  6 10 15</code></pre>
+<p>This will return a vector or list (depending on your R version) of
+partial sums, e.g.:<br />
+<span class="math display">\[
+[1, 3, 6, 10, 15]
+\]</span> (representing the partial sums 1, (1+2), (1+2+3), (1+2+3+4),
+and (1+2+3+4+5)).</p>
+<hr />
+</div>
+</div>
+<div id="why-use-reduce" class="section level5">
+<h5>Why Use <code>Reduce()</code>?</h5>
+<ul>
+<li><strong>Functional Style</strong>: It can be more concise or
+expressive in functional-style programming, especially when combined
+with other functional tools.</li>
+<li><strong>Flexibility</strong>: You can supply any binary function,
+including user-defined functions, and control the direction
+(<code>right</code> vs. <code>left</code>) and whether to track
+intermediate states (<code>accumulate</code>).</li>
+<li><strong>Readability</strong>: Sometimes, writing
+<code>Reduce(sum, x)</code> can be clearer about your intent than a for
+loop or repeated function calls—especially for more complex
+operations.</li>
+</ul>
+<p>However, for simple operations like summation or product, built-in
+functions (<code>sum(x)</code>, <code>prod(x)</code>) are typically more
+efficient and straightforward. <code>Reduce()</code> shines when you
+need a <strong>custom</strong> or <strong>more nuanced</strong>
+operation that builds on each intermediate step.</p>
+<hr />
+</div>
+<div id="summary-1" class="section level5">
+<h5>Summary</h5>
+<ul>
+<li><strong><code>Reduce()</code></strong> iteratively applies a
+<strong>binary function</strong> across a vector or list, collapsing it
+to a single value (or a list of intermediate values if
+<code>accumulate = TRUE</code>).</li>
+<li>The optional <strong><code>init</code></strong> argument sets a
+starting value.</li>
+<li>The <strong><code>right</code></strong> argument lets you control
+whether to reduce from left to right or right to left.</li>
+<li>By using <strong><code>accumulate = TRUE</code></strong>, you can
+keep track of each intermediate step rather than only the final
+result.</li>
+</ul>
+<p>This makes <code>Reduce()</code> a powerful tool for functional-style
+reductions or aggregations in R.</p>
+</div>
+</div>
+<div id="map" class="section level4">
+<h4>3.3 Map()</h4>
+<p>In <strong>R</strong>, the <strong><code>Map()</code></strong>
+function applies a given function <strong>in parallel</strong> to
+corresponding elements of one or more vectors or lists, returning the
+results in a <strong>list</strong>. Conceptually, it is similar to
+functions like <code>lapply()</code> or <code>mapply()</code> but
+focuses on aligning elements of multiple inputs by position.</p>
+<hr />
+<div id="basic-usage-1" class="section level5">
+<h5>Basic Usage</h5>
+<pre><code>Map(f, ...)</code></pre>
+<ul>
+<li><strong><code>f</code></strong>: A function to apply.</li>
+<li><strong><code>...</code></strong>: One or more vectors (or lists)
+whose elements will be passed to <code>f</code> in parallel.</li>
+</ul>
+</div>
+<div id="how-it-works-1" class="section level5">
+<h5>How it works</h5>
+<ul>
+<li><code>Map()</code> takes the <strong>first element</strong> of each
+input, passes them all at once to <code>f</code>, then takes the
+<strong>second element</strong> of each input, passes them to
+<code>f</code>, and so on.</li>
+<li>It returns a <strong>list</strong>, regardless of the output type of
+<code>f</code>.</li>
+</ul>
+</div>
+<div id="example-1-summation" class="section level5">
+<h5>Example 1: Summation</h5>
+<pre class="r"><code># Two numeric vectors of the same length
+x &lt;- 1:5
+y &lt;- 6:10
+
+# Apply sum() to each pair of elements (x[i], y[i])
+result &lt;- Map(sum, x, y)</code></pre>
+<ul>
+<li>Internally, R does:
+<ol style="list-style-type: decimal">
+<li><code>sum(1, 6)</code></li>
+<li><code>sum(2, 7)</code></li>
+<li><code>sum(3, 8)</code></li>
+<li><code>sum(4, 9)</code></li>
+<li><code>sum(5, 10)</code></li>
+</ol></li>
+<li>So <code>result</code> will be a list:</li>
+</ul>
+<pre><code>  [[1]]
+  [1] 7
+  
+  [[2]]
+  [1] 9
+  
+  [[3]]
+  [1] 11
+  
+  [[4]]
+  [1] 13
+  
+  [[5]]
+  [1] 15</code></pre>
+</div>
+<div id="example-2-multiple-arguments" class="section level5">
+<h5>Example 2: Multiple Arguments</h5>
+<pre class="r"><code># Define a custom function that takes three arguments
+my_func &lt;- function(a, b, c) {
+  a + b + c
+}
+
+# Create three vectors
+a_vec &lt;- c(1, 2, 3)
+b_vec &lt;- c(10, 20, 30)
+c_vec &lt;- c(100, 200, 300)
+
+# Use Map to apply my_func to corresponding elements
+Map(my_func, a_vec, b_vec, c_vec)</code></pre>
+<pre><code>## [[1]]
+## [1] 111
+## 
+## [[2]]
+## [1] 222
+## 
+## [[3]]
+## [1] 333</code></pre>
+<ul>
+<li><p>This returns:</p>
+<pre class="r"><code>[[1]]
+[1] 111
+
+[[2]]
+[1] 222
+
+[[3]]
+[1] 333</code></pre></li>
+</ul>
+<hr />
+</div>
+<div id="relationship-to-mapply" class="section level5">
+<h5>Relationship to <code>mapply()</code></h5>
+<ul>
+<li><code>Map(f, x, y, ...)</code> is essentially a wrapper around
+<code>mapply(f, x, y, ..., SIMPLIFY = FALSE)</code>.
+<ul>
+<li><code>mapply()</code> defaults to <code>SIMPLIFY = TRUE</code>,
+which tries to simplify the result to a vector or array if
+possible.<br />
+</li>
+<li><code>Map()</code> <strong>always</strong> returns a list, making it
+more comparable to <code>lapply()</code> but for multiple inputs.</li>
+</ul></li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="comparison-to-other-apply-functions" class="section level2">
+<h2>Comparison to Other <code>*apply()</code> Functions</h2>
+<ul>
+<li><strong><code>lapply(X, FUN)</code></strong>
+<ul>
+<li>Iterates over each element of a <strong>single</strong> list/vector
+<code>X</code> and applies <code>FUN</code>, returning a list.<br />
+</li>
+<li>If you have multiple lists to iterate in parallel, you need to
+combine them somehow or use <code>Map()</code> /
+<code>mapply()</code>.</li>
+</ul></li>
+<li><strong><code>sapply(X, FUN)</code></strong>
+<ul>
+<li>Like <code>lapply()</code>, but tries to simplify the result (e.g.,
+to a vector or matrix if possible).</li>
+</ul></li>
+<li><strong><code>apply(X, MARGIN, FUN)</code></strong>
+<ul>
+<li>Designed for matrices or arrays. Applies <code>FUN</code> row-wise,
+column-wise, or over other dimensions.</li>
+</ul></li>
+<li><strong><code>mapply(FUN, ...)</code></strong>
+<ul>
+<li>A multivariate version of <code>sapply()</code> that iterates in
+parallel over multiple vectors or lists. By default, it tries to
+simplify the output.</li>
+</ul></li>
+<li><strong><code>Map(f, ...)</code></strong>
+<ul>
+<li>A simpler, more direct call to
+<code>mapply(f, ..., SIMPLIFY=FALSE)</code>, ensuring the result is
+always a <strong>list</strong>.</li>
+</ul></li>
+</ul>
+<hr />
+<div id="summary-2" class="section level5">
+<h5>Summary</h5>
+<ul>
+<li><strong><code>Map()</code></strong> is a convenient way to apply a
+<strong>binary or multi-argument function</strong> to corresponding
+elements of <strong>multiple</strong> vectors or lists in
+parallel.<br />
+</li>
+<li>It returns a <strong>list</strong> whose length matches the shortest
+input provided.<br />
+</li>
+<li>If you need the output in a simpler form (like a vector or matrix)
+and the function naturally produces such data, you might use
+<code>mapply()</code> instead (with default
+<code>SIMPLIFY = TRUE</code>).</li>
+</ul>
+<pre class="r"><code>c1 &lt;- c(&quot;Paris&quot;, &quot;London&quot;)
+c2 &lt;- c(&quot;France&quot;, &quot;UK&quot;)
+m &lt;- Map(paste, c1, c2)
+class(m)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<pre class="r"><code>print(m)</code></pre>
+<pre><code>## $Paris
+## [1] &quot;Paris France&quot;
+## 
+## $London
+## [1] &quot;London UK&quot;</code></pre>
+<pre class="r"><code># a binary function
+f2 &lt;- function(a, b) {
+  return(
+    a^2 + b
+  )
+}
+
+v1 &lt;- 1:20
+v2 &lt;- 21:40
+m &lt;- Map(f2, v1, v2)
+print(m)</code></pre>
+<pre><code>## [[1]]
+## [1] 22
+## 
+## [[2]]
+## [1] 26
+## 
+## [[3]]
+## [1] 32
+## 
+## [[4]]
+## [1] 40
+## 
+## [[5]]
+## [1] 50
+## 
+## [[6]]
+## [1] 62
+## 
+## [[7]]
+## [1] 76
+## 
+## [[8]]
+## [1] 92
+## 
+## [[9]]
+## [1] 110
+## 
+## [[10]]
+## [1] 130
+## 
+## [[11]]
+## [1] 152
+## 
+## [[12]]
+## [1] 176
+## 
+## [[13]]
+## [1] 202
+## 
+## [[14]]
+## [1] 230
+## 
+## [[15]]
+## [1] 260
+## 
+## [[16]]
+## [1] 292
+## 
+## [[17]]
+## [1] 326
+## 
+## [[18]]
+## [1] 362
+## 
+## [[19]]
+## [1] 400
+## 
+## [[20]]
+## [1] 440</code></pre>
+</div>
+<div id="function-factories" class="section level4">
+<h4>3.4 Function Factories</h4>
+<p>In <strong>R</strong>, a <strong>function factory</strong> is a
+function that <strong>creates and returns</strong> another function.
+Essentially, you write a function (<strong>the “factory”</strong>) whose
+output is <strong>itself a function</strong>. When called, the factory
+can capture arguments or data in its environment—leading to powerful and
+flexible programming patterns. These “nested” functions often leverage
+<strong>closures</strong> (the enclosing environment that stores
+variables used by the function).</p>
+<hr />
+</div>
+</div>
+<div id="why-use-a-function-factory" class="section level2">
+<h2>Why Use a Function Factory?</h2>
+<ul>
+<li><strong>Parameterizing functions</strong>: You might want to create
+a family of related functions that differ only by certain parameters.
+Rather than rewriting the function logic multiple times, you can use a
+single factory to generate slightly different functions.</li>
+<li><strong>Encapsulation</strong>: You can hide internal details (data
+or parameters) in the function’s environment.</li>
+<li><strong>Reusability</strong>: Factories enable you to produce
+multiple specialized functions from one template.</li>
+</ul>
+<hr />
+</div>
+<div id="a-simple-example" class="section level2">
+<h2>A Simple Example</h2>
+<p>A classic illustration is making a “power” function factory, where
+you generate custom exponentiation functions:</p>
+<pre class="r"><code># This function (the factory) takes &#39;n&#39; and returns a function 
+# that raises its input &#39;x&#39; to the power of &#39;n&#39;.
+make_power_func &lt;- function(n) {
+  # The returned function is a closure that &#39;remembers&#39; the value of n.
+  function(x) {
+    x ^ n
+  }
+}</code></pre>
+<pre class="r"><code># Create a &#39;square&#39; function
+square_func &lt;- make_power_func(2)
+square_func(4)  # Returns 16</code></pre>
+<pre><code>## [1] 16</code></pre>
+<pre class="r"><code># Create a &#39;cube&#39; function
+cube_func &lt;- make_power_func(3)
+cube_func(4)    # Returns 64</code></pre>
+<pre><code>## [1] 64</code></pre>
+<ul>
+<li><strong><code>make_power_func(2)</code></strong> returns a new
+function (a closure) that does <span
+class="math inline">\(x^2\)</span>.<br />
+</li>
+<li><strong><code>make_power_func(3)</code></strong> returns a new
+function that does <span class="math inline">\(x^3\)</span>.</li>
+</ul>
+<p>Notice how each returned function “remembers” the value of
+<code>n</code> from the factory call.</p>
+<hr />
+</div>
+<div id="summary-3" class="section level2">
+<h2>Summary</h2>
+<ul>
+<li>A <strong>function factory</strong> is simply a function that
+<strong>returns another function</strong>.<br />
+</li>
+<li>This pattern is particularly useful for creating families of related
+functions that share core logic but differ by parameters or captured
+data.</li>
+</ul>
+<p>In R, <strong>function factories</strong> are a powerful technique
+that can simplify code organization, promote reuse, and maintain a
+clear, functional style of programming.</p>
+<hr />
+<div id="further-readings" class="section level3">
+<h3>Further Readings</h3>
+<ul>
+<li><a href="https://r4ds.had.co.nz/functions.html">Chapter 19 Functions
+from R for Data Science</a></li>
+<li><a href="https://adv-r.hadley.nz/functions.html">Chapter 6 Functions
+from Advanced R</a></li>
+<li><a href="https://adv-r.hadley.nz/fp.html">Chapter Functional
+Programming from Advanced R</a></li>
+<li><a
+href="https://r4ds.had.co.nz/exploratory-data-analysis.html">Chapter 7,
+Exploratory Data Analysis, from from R for Data Science, Hadley Wickham
+&amp; Garrett Grolemund</a></li>
+</ul>
+</div>
+<div id="important-sources-documentation-etc." class="section level3">
+<h3>Important sources, documentation, etc.</h3>
+<ul>
+<li><a href="https://adv-r.hadley.nz/index.html">Advanced R, Hadley
+Wickham, 2nd edition</a></li>
+<li><a href="https://www.statmethods.net/">Quick-R</a> - An excellent
+set of concise R tutorials.</li>
+<li><a href="https://cran.r-project.org/">CRAN: The Comprehensive R
+Archive Network</a> - This is were the official versions of R packages
+live</li>
+<li><a
+href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;ved=2ahUKEwjXhNPIu_TtAhVSkMMKHRx6A3QQFjABegQIAhAC&amp;url=http%3A%2F%2Fwww.stat.columbia.edu%2F~tzheng%2Ffiles%2FRcolor.pdf&amp;usg=AOvVaw1XIn-mwZ73RgG8bxh4Lan4">Colors
+in R (PDF)</a></li>
+<li><a href="https://ggplot2.tidyverse.org/reference/">ggplot2
+Reference</a></li>
+<li><a href="https://www.rdocumentation.org/">RDocumentation: Search all
+21,217 CRAN, Bioconductor and GitHub packages</a></li>
+</ul>
+</div>
+<div id="r-markdown" class="section level3">
+<h3>R Markdown</h3>
+<p><a href="https://rmarkdown.rstudio.com/">R Markdown</a> is what I
+have used to produce this beautiful Notebook. We will learn more about
+it near the end of the course, but if you already feel ready to dive
+deep, here’s a book: <a href="https://bookdown.org/yihui/rmarkdown/">R
+Markdown: The Definitive Guide, Yihui Xie, J. J. Allaire, Garrett
+Grolemunds.</a></p>
+<hr />
+<p>License: <a href="http://www.gnu.org/licenses/gpl-3.0.txt">GPLv3</a>
+This Notebook is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or (at your
+option) any later version. This Notebook is distributed in the hope that
+it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details. You should have received a
+copy of the GNU General Public License along with this Notebook. If not,
+see <a href="http://www.gnu.org/licenses/"
+class="uri">http://www.gnu.org/licenses/</a>.</p>
+<hr />
+</div>
+</div>
+</div>
+
+<hr>
+<p style="text-align:center;">
+  <img src="DK_Logo_White_150.png">
+</p>
+<p style="font-size:13px;text-align:center;">
+  <b>Contact: </b><a href = "mailto: goran.milovanovic@datakolektiv.com">goran.milovanovic@datakolektiv.com</a><br><br><a href="https://github.com/datakolektiv"><img src="github.png"></a>&nbsp;&nbsp;<a href="https://www.linkedin.com/in/gmilovanovic/"><img src="linkedin.png"></a>
+</p>
+<p style="font-size:11px;text-align:center;"><b>Impressum</b><br>
+<b>Data Kolektiv, 2004, Belgrade.</b></p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

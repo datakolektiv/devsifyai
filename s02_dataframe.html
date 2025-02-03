@@ -341,7 +341,7 @@ div.tocify {
       <a href="s04_more_functional.html">S04. More functional Programming + Basic Statistics in R</a>
     </li>
     <li>
-      <a href="s05_EDA.html">Exploratory Data Analysis (EDA)</a>
+      <a href="s05_EDA.html">S05. Exploratory Data Analysis (EDA)</a>
     </li>
   </ul>
 </li>
@@ -768,20 +768,32 @@ class="section level3">
 <p>If you want to see what objects do you have instantiated in the
 current R session, use <code>ls()</code>:</p>
 <pre class="r"><code>ls()</code></pre>
-<pre><code>##  [1] &quot;a&quot;                  &quot;analyticsDir&quot;       &quot;awesome&quot;            &quot;c1&quot;                
-##  [5] &quot;c2&quot;                 &quot;cities&quot;             &quot;countries&quot;          &quot;dataDir&quot;           
-##  [9] &quot;distribution&quot;       &quot;f2&quot;                 &quot;filename&quot;           &quot;IQR&quot;               
-## [13] &quot;iris&quot;               &quot;lattitudes&quot;         &quot;lif&quot;                &quot;listings&quot;          
-## [17] &quot;listings_selection&quot; &quot;ll&quot;                 &quot;lof&quot;                &quot;logic&quot;             
-## [21] &quot;longitudes&quot;         &quot;m&quot;                  &quot;m1&quot;                 &quot;mtcars&quot;            
-## [25] &quot;mtcarsPlot&quot;         &quot;my_list&quot;            &quot;my_vector&quot;          &quot;myArray1&quot;          
-## [29] &quot;myArray2&quot;           &quot;myCities&quot;           &quot;myFun&quot;              &quot;myList&quot;            
-## [33] &quot;myResult&quot;           &quot;mySequence&quot;         &quot;object&quot;             &quot;person&quot;            
-## [37] &quot;persons&quot;            &quot;populations&quot;        &quot;power&quot;              &quot;Q1&quot;                
-## [41] &quot;Q3&quot;                 &quot;rangeQsec&quot;          &quot;rootDir&quot;            &quot;s&quot;                 
-## [45] &quot;separateCities&quot;     &quot;someList&quot;           &quot;squares&quot;            &quot;top_listings&quot;      
-## [49] &quot;uif&quot;                &quot;uof&quot;                &quot;v1&quot;                 &quot;v2&quot;                
-## [53] &quot;word&quot;               &quot;word1&quot;              &quot;word2&quot;</code></pre>
+<pre><code>##   [1] &quot;a&quot;                  &quot;a_vec&quot;              &quot;analyticsDir&quot;       &quot;awesome&quot;           
+##   [5] &quot;b_vec&quot;              &quot;c_vec&quot;              &quot;c1&quot;                 &quot;c2&quot;                
+##   [9] &quot;check&quot;              &quot;cities&quot;             &quot;city&quot;               &quot;columns&quot;           
+##  [13] &quot;counter&quot;            &quot;countries&quot;          &quot;cube_func&quot;          &quot;d&quot;                 
+##  [17] &quot;dataDir&quot;            &quot;dataFramesCheck&quot;    &quot;dataSet&quot;            &quot;distribution&quot;      
+##  [21] &quot;emptyList&quot;          &quot;f2&quot;                 &quot;filename&quot;           &quot;files&quot;             
+##  [25] &quot;freqHosts&quot;          &quot;i&quot;                  &quot;index&quot;              &quot;IQR&quot;               
+##  [29] &quot;iris&quot;               &quot;lattitudes&quot;         &quot;lif&quot;                &quot;listings&quot;          
+##  [33] &quot;listings_5&quot;         &quot;listings_selection&quot; &quot;ll&quot;                 &quot;lof&quot;               
+##  [37] &quot;logic&quot;              &quot;longitudes&quot;         &quot;m&quot;                  &quot;m1&quot;                
+##  [41] &quot;make_power_func&quot;    &quot;mean_price&quot;         &quot;mtcars&quot;             &quot;mtcarsPlot&quot;        
+##  [45] &quot;my_func&quot;            &quot;my_list&quot;            &quot;my_vector&quot;          &quot;myArray1&quot;          
+##  [49] &quot;myArray2&quot;           &quot;myCities&quot;           &quot;myFun&quot;              &quot;myList&quot;            
+##  [53] &quot;myResult&quot;           &quot;mySequence&quot;         &quot;names&quot;              &quot;num_cols&quot;          
+##  [57] &quot;num_files&quot;          &quot;num_host_listings&quot;  &quot;num_hosts&quot;          &quot;num_pairs&quot;         
+##  [61] &quot;num_rows&quot;           &quot;numbers&quot;            &quot;object&quot;             &quot;person&quot;            
+##  [65] &quot;persons&quot;            &quot;populations&quot;        &quot;power&quot;              &quot;Q1&quot;                
+##  [69] &quot;Q3&quot;                 &quot;rangeQsec&quot;          &quot;result&quot;             &quot;roomType&quot;          
+##  [73] &quot;roomTypes&quot;          &quot;rootDir&quot;            &quot;s&quot;                  &quot;search&quot;            
+##  [77] &quot;separateCities&quot;     &quot;some_expression&quot;    &quot;someDataFrame&quot;      &quot;someList&quot;          
+##  [81] &quot;someVector&quot;         &quot;square_func&quot;        &quot;squares&quot;            &quot;string&quot;            
+##  [85] &quot;strings&quot;            &quot;testDataFrame&quot;      &quot;testHosts&quot;          &quot;this_animal&quot;       
+##  [89] &quot;this_number&quot;        &quot;top_listings&quot;       &quot;uif&quot;                &quot;uof&quot;               
+##  [93] &quot;urlData&quot;            &quot;v1&quot;                 &quot;v2&quot;                 &quot;v3&quot;                
+##  [97] &quot;vec&quot;                &quot;word&quot;               &quot;word1&quot;              &quot;word2&quot;             
+## [101] &quot;x&quot;                  &quot;y&quot;</code></pre>
 <p>Some of them we do not need anymore and we want to remove them.
 <strong>Note.</strong> In real Data Science practice, most of the time
 we really need to look carefully after memory usage, because we
@@ -797,17 +809,32 @@ session are rather small:</p>
 anymore, so let’s remove it with <code>rm()</code>:</p>
 <pre class="r"><code>rm(listings_selection)
 ls()</code></pre>
-<pre><code>##  [1] &quot;a&quot;              &quot;analyticsDir&quot;   &quot;awesome&quot;        &quot;c1&quot;             &quot;c2&quot;            
-##  [6] &quot;cities&quot;         &quot;countries&quot;      &quot;dataDir&quot;        &quot;distribution&quot;   &quot;f2&quot;            
-## [11] &quot;filename&quot;       &quot;IQR&quot;            &quot;iris&quot;           &quot;lattitudes&quot;     &quot;lif&quot;           
-## [16] &quot;listings&quot;       &quot;ll&quot;             &quot;lof&quot;            &quot;logic&quot;          &quot;longitudes&quot;    
-## [21] &quot;m&quot;              &quot;m1&quot;             &quot;mtcars&quot;         &quot;mtcarsPlot&quot;     &quot;my_list&quot;       
-## [26] &quot;my_vector&quot;      &quot;myArray1&quot;       &quot;myArray2&quot;       &quot;myCities&quot;       &quot;myFun&quot;         
-## [31] &quot;myList&quot;         &quot;myResult&quot;       &quot;mySequence&quot;     &quot;object&quot;         &quot;person&quot;        
-## [36] &quot;persons&quot;        &quot;populations&quot;    &quot;power&quot;          &quot;Q1&quot;             &quot;Q3&quot;            
-## [41] &quot;rangeQsec&quot;      &quot;rootDir&quot;        &quot;s&quot;              &quot;separateCities&quot; &quot;someList&quot;      
-## [46] &quot;squares&quot;        &quot;top_listings&quot;   &quot;uif&quot;            &quot;uof&quot;            &quot;v1&quot;            
-## [51] &quot;v2&quot;             &quot;word&quot;           &quot;word1&quot;          &quot;word2&quot;</code></pre>
+<pre><code>##   [1] &quot;a&quot;                 &quot;a_vec&quot;             &quot;analyticsDir&quot;      &quot;awesome&quot;          
+##   [5] &quot;b_vec&quot;             &quot;c_vec&quot;             &quot;c1&quot;                &quot;c2&quot;               
+##   [9] &quot;check&quot;             &quot;cities&quot;            &quot;city&quot;              &quot;columns&quot;          
+##  [13] &quot;counter&quot;           &quot;countries&quot;         &quot;cube_func&quot;         &quot;d&quot;                
+##  [17] &quot;dataDir&quot;           &quot;dataFramesCheck&quot;   &quot;dataSet&quot;           &quot;distribution&quot;     
+##  [21] &quot;emptyList&quot;         &quot;f2&quot;                &quot;filename&quot;          &quot;files&quot;            
+##  [25] &quot;freqHosts&quot;         &quot;i&quot;                 &quot;index&quot;             &quot;IQR&quot;              
+##  [29] &quot;iris&quot;              &quot;lattitudes&quot;        &quot;lif&quot;               &quot;listings&quot;         
+##  [33] &quot;listings_5&quot;        &quot;ll&quot;                &quot;lof&quot;               &quot;logic&quot;            
+##  [37] &quot;longitudes&quot;        &quot;m&quot;                 &quot;m1&quot;                &quot;make_power_func&quot;  
+##  [41] &quot;mean_price&quot;        &quot;mtcars&quot;            &quot;mtcarsPlot&quot;        &quot;my_func&quot;          
+##  [45] &quot;my_list&quot;           &quot;my_vector&quot;         &quot;myArray1&quot;          &quot;myArray2&quot;         
+##  [49] &quot;myCities&quot;          &quot;myFun&quot;             &quot;myList&quot;            &quot;myResult&quot;         
+##  [53] &quot;mySequence&quot;        &quot;names&quot;             &quot;num_cols&quot;          &quot;num_files&quot;        
+##  [57] &quot;num_host_listings&quot; &quot;num_hosts&quot;         &quot;num_pairs&quot;         &quot;num_rows&quot;         
+##  [61] &quot;numbers&quot;           &quot;object&quot;            &quot;person&quot;            &quot;persons&quot;          
+##  [65] &quot;populations&quot;       &quot;power&quot;             &quot;Q1&quot;                &quot;Q3&quot;               
+##  [69] &quot;rangeQsec&quot;         &quot;result&quot;            &quot;roomType&quot;          &quot;roomTypes&quot;        
+##  [73] &quot;rootDir&quot;           &quot;s&quot;                 &quot;search&quot;            &quot;separateCities&quot;   
+##  [77] &quot;some_expression&quot;   &quot;someDataFrame&quot;     &quot;someList&quot;          &quot;someVector&quot;       
+##  [81] &quot;square_func&quot;       &quot;squares&quot;           &quot;string&quot;            &quot;strings&quot;          
+##  [85] &quot;testDataFrame&quot;     &quot;testHosts&quot;         &quot;this_animal&quot;       &quot;this_number&quot;      
+##  [89] &quot;top_listings&quot;      &quot;uif&quot;               &quot;uof&quot;               &quot;urlData&quot;          
+##  [93] &quot;v1&quot;                &quot;v2&quot;                &quot;v3&quot;                &quot;vec&quot;              
+##  [97] &quot;word&quot;              &quot;word1&quot;             &quot;word2&quot;             &quot;x&quot;                
+## [101] &quot;y&quot;</code></pre>
 <p><code>someList</code> is really small and we do not care to remove
 it.</p>
 <div id="install-a-package-to-read-data-from-excel"

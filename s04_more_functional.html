@@ -340,6 +340,9 @@ div.tocify {
     <li>
       <a href="s04_more_functional.html">S04. More functional Programming + Basic Statistics in R</a>
     </li>
+    <li>
+      <a href="s05_EDA.html">Exploratory Data Analysis (EDA)</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -536,10 +539,10 @@ for <code>Q1</code>:</p>
 <pre class="r"><code>quantile(mtcars$mpg, p = .25)</code></pre>
 <pre><code>##    25% 
 ## 15.425</code></pre>
-<p><code>p=.74</code> for <code>Q3</code>:</p>
-<pre class="r"><code>quantile(mtcars$mpg, p = .27)</code></pre>
-<pre><code>##    27% 
-## 15.611</code></pre>
+<p><code>p=.75</code> for <code>Q3</code>:</p>
+<pre class="r"><code>quantile(mtcars$mpg, p = .75)</code></pre>
+<pre><code>##  75% 
+## 22.8</code></pre>
 <p>and of course, <code>p=.50</code> for the median:</p>
 <pre class="r"><code>quantile(mtcars$mpg, p = .5)</code></pre>
 <pre><code>##  50% 

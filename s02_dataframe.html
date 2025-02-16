@@ -343,6 +343,10 @@ div.tocify {
     <li>
       <a href="s05_EDA.html">S05. Exploratory Data Analysis (EDA)</a>
     </li>
+    <li class="dropdown-header">S06. Probability Theory 01</li>
+    <li>
+      <a href="s06_Probability.html"></a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -533,19 +537,20 @@ in RStudio: ask yourself “Where am I?”:</p>
 ## [133] &quot;s02_dataframe.Rmd&quot;                        &quot;S03_01_FunctionalProgramming.jpeg&quot;       
 ## [135] &quot;s03_functional.Rmd&quot;                       &quot;S04_01_RProgramming.jpeg&quot;                
 ## [137] &quot;s04_more_functional.Rmd&quot;                  &quot;s05_EDA.Rmd&quot;                             
-## [139] &quot;S07_01_ProbabilityFunctions.jpeg&quot;         &quot;S17_01_ROC.jpeg&quot;                         
-## [141] &quot;S17_02_LikelihoodFunction.jpeg&quot;           &quot;S21_01_RandomForest.jpeg&quot;                
-## [143] &quot;S22_01_Bias-Variance_Tradeoff.jpeg&quot;       &quot;session00_logos.png&quot;                     
-## [145] &quot;site_libs&quot;                                &quot;sitelinks1.jpg&quot;                          
-## [147] &quot;sitelinks2.jpg&quot;                           &quot;sitelinks3.jpg&quot;                          
-## [149] &quot;sitelinks4.jpg&quot;                           &quot;skc_kahneman_delfi_2015.jpg&quot;             
-## [151] &quot;startit_add_dsss2022_800.jpeg&quot;            &quot;StartitMeetup2016_InfRetreival.png&quot;      
-## [153] &quot;StartitMeetup2016.png&quot;                    &quot;talasAI.png&quot;                             
-## [155] &quot;twitter.png&quot;                              &quot;undp_machinery2023.jpg&quot;                  
-## [157] &quot;UvodR_startit_banner.jpg&quot;                 &quot;video.Rmd&quot;                               
-## [159] &quot;VladimirMijatovic175px.jpg&quot;               &quot;wd_thinkpad_official.png&quot;                
-## [161] &quot;webit2023.jpeg&quot;                           &quot;WikidataCon2019.png&quot;                     
-## [163] &quot;WikidataCon2021.png&quot;                      &quot;wikimediablog2018.jpg&quot;</code></pre>
+## [139] &quot;s06_Probability.Rmd&quot;                      &quot;S07_01_ProbabilityFunctions.jpeg&quot;        
+## [141] &quot;S17_01_ROC.jpeg&quot;                          &quot;S17_02_LikelihoodFunction.jpeg&quot;          
+## [143] &quot;S21_01_RandomForest.jpeg&quot;                 &quot;S22_01_Bias-Variance_Tradeoff.jpeg&quot;      
+## [145] &quot;session00_logos.png&quot;                      &quot;site_libs&quot;                               
+## [147] &quot;sitelinks1.jpg&quot;                           &quot;sitelinks2.jpg&quot;                          
+## [149] &quot;sitelinks3.jpg&quot;                           &quot;sitelinks4.jpg&quot;                          
+## [151] &quot;skc_kahneman_delfi_2015.jpg&quot;              &quot;startit_add_dsss2022_800.jpeg&quot;           
+## [153] &quot;StartitMeetup2016_InfRetreival.png&quot;       &quot;StartitMeetup2016.png&quot;                   
+## [155] &quot;talasAI.png&quot;                              &quot;twitter.png&quot;                             
+## [157] &quot;undp_machinery2023.jpg&quot;                   &quot;UvodR_startit_banner.jpg&quot;                
+## [159] &quot;video.Rmd&quot;                                &quot;VladimirMijatovic175px.jpg&quot;              
+## [161] &quot;wd_thinkpad_official.png&quot;                 &quot;webit2023.jpeg&quot;                          
+## [163] &quot;WikidataCon2019.png&quot;                      &quot;WikidataCon2021.png&quot;                     
+## [165] &quot;wikimediablog2018.jpg&quot;</code></pre>
 <p>Ok, so I do have a <code>_data</code> directory in my working
 directory. Let’s pronounce the <code>_data</code> directory in R:</p>
 <pre class="r"><code>rootDir &lt;- getwd()
@@ -768,32 +773,28 @@ class="section level3">
 <p>If you want to see what objects do you have instantiated in the
 current R session, use <code>ls()</code>:</p>
 <pre class="r"><code>ls()</code></pre>
-<pre><code>##   [1] &quot;a&quot;                  &quot;a_vec&quot;              &quot;analyticsDir&quot;       &quot;awesome&quot;           
-##   [5] &quot;b_vec&quot;              &quot;c_vec&quot;              &quot;c1&quot;                 &quot;c2&quot;                
-##   [9] &quot;check&quot;              &quot;cities&quot;             &quot;city&quot;               &quot;columns&quot;           
-##  [13] &quot;counter&quot;            &quot;countries&quot;          &quot;cube_func&quot;          &quot;d&quot;                 
-##  [17] &quot;dataDir&quot;            &quot;dataFramesCheck&quot;    &quot;dataSet&quot;            &quot;distribution&quot;      
-##  [21] &quot;emptyList&quot;          &quot;f2&quot;                 &quot;filename&quot;           &quot;files&quot;             
-##  [25] &quot;freqHosts&quot;          &quot;i&quot;                  &quot;index&quot;              &quot;IQR&quot;               
-##  [29] &quot;iris&quot;               &quot;lattitudes&quot;         &quot;lif&quot;                &quot;listings&quot;          
-##  [33] &quot;listings_5&quot;         &quot;listings_selection&quot; &quot;ll&quot;                 &quot;lof&quot;               
-##  [37] &quot;logic&quot;              &quot;longitudes&quot;         &quot;m&quot;                  &quot;m1&quot;                
-##  [41] &quot;make_power_func&quot;    &quot;mean_price&quot;         &quot;mtcars&quot;             &quot;mtcarsPlot&quot;        
-##  [45] &quot;my_func&quot;            &quot;my_list&quot;            &quot;my_vector&quot;          &quot;myArray1&quot;          
-##  [49] &quot;myArray2&quot;           &quot;myCities&quot;           &quot;myFun&quot;              &quot;myList&quot;            
-##  [53] &quot;myResult&quot;           &quot;mySequence&quot;         &quot;names&quot;              &quot;num_cols&quot;          
-##  [57] &quot;num_files&quot;          &quot;num_host_listings&quot;  &quot;num_hosts&quot;          &quot;num_pairs&quot;         
-##  [61] &quot;num_rows&quot;           &quot;numbers&quot;            &quot;object&quot;             &quot;person&quot;            
-##  [65] &quot;persons&quot;            &quot;populations&quot;        &quot;power&quot;              &quot;Q1&quot;                
-##  [69] &quot;Q3&quot;                 &quot;rangeQsec&quot;          &quot;result&quot;             &quot;roomType&quot;          
-##  [73] &quot;roomTypes&quot;          &quot;rootDir&quot;            &quot;s&quot;                  &quot;search&quot;            
-##  [77] &quot;separateCities&quot;     &quot;some_expression&quot;    &quot;someDataFrame&quot;      &quot;someList&quot;          
-##  [81] &quot;someVector&quot;         &quot;square_func&quot;        &quot;squares&quot;            &quot;string&quot;            
-##  [85] &quot;strings&quot;            &quot;testDataFrame&quot;      &quot;testHosts&quot;          &quot;this_animal&quot;       
-##  [89] &quot;this_number&quot;        &quot;top_listings&quot;       &quot;uif&quot;                &quot;uof&quot;               
-##  [93] &quot;urlData&quot;            &quot;v1&quot;                 &quot;v2&quot;                 &quot;v3&quot;                
-##  [97] &quot;vec&quot;                &quot;word&quot;               &quot;word1&quot;              &quot;word2&quot;             
-## [101] &quot;x&quot;                  &quot;y&quot;</code></pre>
+<pre><code>##  [1] &quot;a&quot;                   &quot;analyticsDir&quot;        &quot;awesome&quot;             &quot;binomialProbability&quot;
+##  [5] &quot;binomMeans&quot;          &quot;c1&quot;                  &quot;c2&quot;                  &quot;cauchySums&quot;         
+##  [9] &quot;choices&quot;             &quot;cities&quot;              &quot;coin&quot;                &quot;countries&quot;          
+## [13] &quot;dataDir&quot;             &quot;die&quot;                 &quot;exp_prob&quot;            &quot;exp_prob_df&quot;        
+## [17] &quot;f2&quot;                  &quot;filename&quot;            &quot;heads&quot;               &quot;iris&quot;               
+## [21] &quot;lambda&quot;              &quot;lattitudes&quot;          &quot;listings&quot;            &quot;listings_selection&quot; 
+## [25] &quot;ll&quot;                  &quot;logic&quot;               &quot;longitudes&quot;          &quot;m&quot;                  
+## [29] &quot;m1&quot;                  &quot;mean&quot;                &quot;meanSize&quot;            &quot;meanSizes&quot;          
+## [33] &quot;mtcars&quot;              &quot;my_list&quot;             &quot;my_vector&quot;           &quot;myArray1&quot;           
+## [37] &quot;myArray2&quot;            &quot;myCities&quot;            &quot;myFun&quot;               &quot;myList&quot;             
+## [41] &quot;myResult&quot;            &quot;mySequence&quot;          &quot;n&quot;                   &quot;n_samples&quot;          
+## [45] &quot;no_outcomes&quot;         &quot;no_tries&quot;            &quot;normalMeans&quot;         &quot;normalProbability&quot;  
+## [49] &quot;normMeans&quot;           &quot;number_of_rolls&quot;     &quot;object&quot;              &quot;observations&quot;       
+## [53] &quot;outcomes&quot;            &quot;p&quot;                   &quot;person&quot;              &quot;persons&quot;            
+## [57] &quot;pFiveAndLessSixes&quot;   &quot;pFiveSixes&quot;          &quot;poisMeans&quot;           &quot;poissonDeviates&quot;    
+## [61] &quot;poissonMean&quot;         &quot;poissonProperty&quot;     &quot;poissonVar&quot;          &quot;populations&quot;        
+## [65] &quot;power&quot;               &quot;randomBinomials&quot;     &quot;randomBinomialsPlot&quot; &quot;result&quot;             
+## [69] &quot;result_frame&quot;        &quot;rootDir&quot;             &quot;s&quot;                   &quot;sampleMeans&quot;        
+## [73] &quot;sampleN&quot;             &quot;sd&quot;                  &quot;separateCities&quot;      &quot;someList&quot;           
+## [77] &quot;squares&quot;             &quot;top_listings&quot;        &quot;tossing&quot;             &quot;tragedies&quot;          
+## [81] &quot;v1&quot;                  &quot;v2&quot;                  &quot;word&quot;                &quot;word1&quot;              
+## [85] &quot;word2&quot;               &quot;X&quot;</code></pre>
 <p>Some of them we do not need anymore and we want to remove them.
 <strong>Note.</strong> In real Data Science practice, most of the time
 we really need to look carefully after memory usage, because we
@@ -809,32 +810,28 @@ session are rather small:</p>
 anymore, so let’s remove it with <code>rm()</code>:</p>
 <pre class="r"><code>rm(listings_selection)
 ls()</code></pre>
-<pre><code>##   [1] &quot;a&quot;                 &quot;a_vec&quot;             &quot;analyticsDir&quot;      &quot;awesome&quot;          
-##   [5] &quot;b_vec&quot;             &quot;c_vec&quot;             &quot;c1&quot;                &quot;c2&quot;               
-##   [9] &quot;check&quot;             &quot;cities&quot;            &quot;city&quot;              &quot;columns&quot;          
-##  [13] &quot;counter&quot;           &quot;countries&quot;         &quot;cube_func&quot;         &quot;d&quot;                
-##  [17] &quot;dataDir&quot;           &quot;dataFramesCheck&quot;   &quot;dataSet&quot;           &quot;distribution&quot;     
-##  [21] &quot;emptyList&quot;         &quot;f2&quot;                &quot;filename&quot;          &quot;files&quot;            
-##  [25] &quot;freqHosts&quot;         &quot;i&quot;                 &quot;index&quot;             &quot;IQR&quot;              
-##  [29] &quot;iris&quot;              &quot;lattitudes&quot;        &quot;lif&quot;               &quot;listings&quot;         
-##  [33] &quot;listings_5&quot;        &quot;ll&quot;                &quot;lof&quot;               &quot;logic&quot;            
-##  [37] &quot;longitudes&quot;        &quot;m&quot;                 &quot;m1&quot;                &quot;make_power_func&quot;  
-##  [41] &quot;mean_price&quot;        &quot;mtcars&quot;            &quot;mtcarsPlot&quot;        &quot;my_func&quot;          
-##  [45] &quot;my_list&quot;           &quot;my_vector&quot;         &quot;myArray1&quot;          &quot;myArray2&quot;         
-##  [49] &quot;myCities&quot;          &quot;myFun&quot;             &quot;myList&quot;            &quot;myResult&quot;         
-##  [53] &quot;mySequence&quot;        &quot;names&quot;             &quot;num_cols&quot;          &quot;num_files&quot;        
-##  [57] &quot;num_host_listings&quot; &quot;num_hosts&quot;         &quot;num_pairs&quot;         &quot;num_rows&quot;         
-##  [61] &quot;numbers&quot;           &quot;object&quot;            &quot;person&quot;            &quot;persons&quot;          
-##  [65] &quot;populations&quot;       &quot;power&quot;             &quot;Q1&quot;                &quot;Q3&quot;               
-##  [69] &quot;rangeQsec&quot;         &quot;result&quot;            &quot;roomType&quot;          &quot;roomTypes&quot;        
-##  [73] &quot;rootDir&quot;           &quot;s&quot;                 &quot;search&quot;            &quot;separateCities&quot;   
-##  [77] &quot;some_expression&quot;   &quot;someDataFrame&quot;     &quot;someList&quot;          &quot;someVector&quot;       
-##  [81] &quot;square_func&quot;       &quot;squares&quot;           &quot;string&quot;            &quot;strings&quot;          
-##  [85] &quot;testDataFrame&quot;     &quot;testHosts&quot;         &quot;this_animal&quot;       &quot;this_number&quot;      
-##  [89] &quot;top_listings&quot;      &quot;uif&quot;               &quot;uof&quot;               &quot;urlData&quot;          
-##  [93] &quot;v1&quot;                &quot;v2&quot;                &quot;v3&quot;                &quot;vec&quot;              
-##  [97] &quot;word&quot;              &quot;word1&quot;             &quot;word2&quot;             &quot;x&quot;                
-## [101] &quot;y&quot;</code></pre>
+<pre><code>##  [1] &quot;a&quot;                   &quot;analyticsDir&quot;        &quot;awesome&quot;             &quot;binomialProbability&quot;
+##  [5] &quot;binomMeans&quot;          &quot;c1&quot;                  &quot;c2&quot;                  &quot;cauchySums&quot;         
+##  [9] &quot;choices&quot;             &quot;cities&quot;              &quot;coin&quot;                &quot;countries&quot;          
+## [13] &quot;dataDir&quot;             &quot;die&quot;                 &quot;exp_prob&quot;            &quot;exp_prob_df&quot;        
+## [17] &quot;f2&quot;                  &quot;filename&quot;            &quot;heads&quot;               &quot;iris&quot;               
+## [21] &quot;lambda&quot;              &quot;lattitudes&quot;          &quot;listings&quot;            &quot;ll&quot;                 
+## [25] &quot;logic&quot;               &quot;longitudes&quot;          &quot;m&quot;                   &quot;m1&quot;                 
+## [29] &quot;mean&quot;                &quot;meanSize&quot;            &quot;meanSizes&quot;           &quot;mtcars&quot;             
+## [33] &quot;my_list&quot;             &quot;my_vector&quot;           &quot;myArray1&quot;            &quot;myArray2&quot;           
+## [37] &quot;myCities&quot;            &quot;myFun&quot;               &quot;myList&quot;              &quot;myResult&quot;           
+## [41] &quot;mySequence&quot;          &quot;n&quot;                   &quot;n_samples&quot;           &quot;no_outcomes&quot;        
+## [45] &quot;no_tries&quot;            &quot;normalMeans&quot;         &quot;normalProbability&quot;   &quot;normMeans&quot;          
+## [49] &quot;number_of_rolls&quot;     &quot;object&quot;              &quot;observations&quot;        &quot;outcomes&quot;           
+## [53] &quot;p&quot;                   &quot;person&quot;              &quot;persons&quot;             &quot;pFiveAndLessSixes&quot;  
+## [57] &quot;pFiveSixes&quot;          &quot;poisMeans&quot;           &quot;poissonDeviates&quot;     &quot;poissonMean&quot;        
+## [61] &quot;poissonProperty&quot;     &quot;poissonVar&quot;          &quot;populations&quot;         &quot;power&quot;              
+## [65] &quot;randomBinomials&quot;     &quot;randomBinomialsPlot&quot; &quot;result&quot;              &quot;result_frame&quot;       
+## [69] &quot;rootDir&quot;             &quot;s&quot;                   &quot;sampleMeans&quot;         &quot;sampleN&quot;            
+## [73] &quot;sd&quot;                  &quot;separateCities&quot;      &quot;someList&quot;            &quot;squares&quot;            
+## [77] &quot;top_listings&quot;        &quot;tossing&quot;             &quot;tragedies&quot;           &quot;v1&quot;                 
+## [81] &quot;v2&quot;                  &quot;word&quot;                &quot;word1&quot;               &quot;word2&quot;              
+## [85] &quot;X&quot;</code></pre>
 <p><code>someList</code> is really small and we do not care to remove
 it.</p>
 <div id="install-a-package-to-read-data-from-excel"

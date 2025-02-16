@@ -343,6 +343,10 @@ div.tocify {
     <li>
       <a href="s05_EDA.html">S05. Exploratory Data Analysis (EDA)</a>
     </li>
+    <li class="dropdown-header">S06. Probability Theory 01</li>
+    <li>
+      <a href="s06_Probability.html"></a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -623,8 +627,13 @@ plot using our boxplot as an example.</p>
 <p>In order to produce a boxplot with ggplot2, mtcars first need to be
 transformed from the <em>wide data representation</em> format into a
 <em>long data representation format</em>:</p>
-<pre class="r"><code>library(tidyverse)
+<pre class="r"><code># load tidyverse
+library(tidyverse)
+
+# introduce id column
 mtcars$id &lt;- 1:dim(mtcars)[1]
+
+# wide to long transform
 mtcarsPlot &lt;- mtcars %&gt;%
   dplyr::select(id, mpg, disp, hp, drat, wt, qsec) %&gt;% 
   tidyr::pivot_longer(cols = -id,
@@ -726,7 +735,7 @@ in R.</p></li>
   theme_bw() + 
   theme(panel.border = element_blank()) + 
   theme(plot.title = element_text(hjust = .5)) +
-  theme(legend.position = &quot;top&quot;)</code></pre>
+  theme(legend.position = &quot;right&quot;)</code></pre>
 <p><img src="s05_EDA_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p><strong>Note.</strong> We use <code>+</code> to chain the layers in
 {ggplot2} visualizations, similarly as we use the pipes to chain data
@@ -742,7 +751,7 @@ just to see how easy it is:</p>
 <pre class="r"><code>ggplot(data = mtcars, 
        aes(x = hp, 
            y = qsec)) + 
-  geom_point(size = 2, color = &quot;darkorange&quot;) +
+  geom_point(size = 2, color = &quot;darkred&quot;) +
   ggtitle(&quot;mtcars: hp vs. qsec&quot;) + 
   theme_bw() +
   theme(panel.border = element_blank()) + 
@@ -754,9 +763,10 @@ see:</p>
 <pre class="r"><code>ggplot(data = mtcars, 
        aes(x = hp, 
            y = qsec)) + 
-  geom_smooth(method = &quot;lm&quot;, size = .25, color = &quot;darkblue&quot;,) + 
+  geom_smooth(method = &quot;lm&quot;, size = .25, color = &quot;darkblue&quot;) + 
   geom_point(size = 2, color = &quot;cadetblue3&quot;) +
-  ggtitle(&quot;mtcars: hp vs. qsec&quot;) + 
+  ggtitle(&quot;mtcars: hp vs. qsec&quot;) +
+  theme_bw() +
   theme(panel.border = element_blank()) + 
   theme(plot.title = element_text(hjust = .5))</code></pre>
 <p><img src="s05_EDA_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
@@ -764,7 +774,7 @@ see:</p>
 course. Now back to the EDA things! Before that, just another {ggplot2}
 trick to help you understand your data better…</p>
 <pre class="r"><code>mtcarsPlot &lt;- mtcars %&gt;% 
-  select(hp, qsec)
+  dplyr::select(hp, qsec)
 
 mtcarsPlot$label &lt;- paste0(&quot;(&quot;, 
                            mtcarsPlot$hp, &quot;, &quot;, 
@@ -776,7 +786,7 @@ ggplot(data = mtcarsPlot,
            label = label)) + 
   geom_smooth(method = &quot;lm&quot;, size = .25, color = &quot;cadetblue3&quot;) + 
   geom_point(size = 2, color = &quot;cadetblue3&quot;) +
-  geom_text(size = 3) + 
+  geom_text(size = 2) + 
   ggtitle(&quot;mtcars: hp vs. qsec&quot;) + 
   theme_bw() +
   theme(panel.border = element_blank()) + 
@@ -796,7 +806,7 @@ ggplot(data = mtcarsPlot,
            label = label)) + 
   geom_smooth(method = &quot;lm&quot;, size = .25, color = &quot;cadetblue3&quot;) + 
   geom_point(size = 1.5, color = &quot;cadetblue3&quot;) +
-  geom_text_repel(size = 3) + 
+  geom_text_repel(size = 2.5) + 
   ggtitle(&quot;mtcars: hp vs. qsec&quot;) + 
   theme(panel.border = element_blank()) + 
   theme(plot.title = element_text(hjust = .5))</code></pre>
@@ -809,9 +819,9 @@ ggplot(data = mtcarsPlot,
 <code>mtcars$cyl</code> - distributed across the models in the
 dataset?</p>
 <pre class="r"><code>mtcarsPlot &lt;- mtcars %&gt;% 
-  select(cyl) %&gt;% 
-  group_by(cyl) %&gt;% 
-  summarise(count = n())
+  dplyr::select(cyl) %&gt;% 
+  dplyr::group_by(cyl) %&gt;% 
+  dplyr::summarise(count = n())
 mtcarsPlot</code></pre>
 <pre><code>## # A tibble: 3 × 2
 ##     cyl count
@@ -864,8 +874,8 @@ ggplot(mtcars,
   theme_bw() + 
   theme(panel.border = element_blank()) +
   theme(plot.title = element_text(hjust = .5))</code></pre>
-<p><img src="s05_EDA_files/figure-html/unnamed-chunk-29-1.png" width="672" />
-The overall distribution of <code>mtcars$hp</code> is:</p>
+<p><img src="s05_EDA_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>The overall distribution of <code>mtcars$hp</code> is:</p>
 <pre class="r"><code>ggplot(mtcars, 
        aes(x = hp)) + 
   geom_density(alpha = .15, color = &quot;black&quot;, fill = &quot;darkorange&quot;) + 
@@ -880,8 +890,8 @@ The overall distribution of <code>mtcars$hp</code> is:</p>
 <div id="cross-tabulations-and-aggregations" class="section level3">
 <h3>3. Cross-Tabulations and Aggregations</h3>
 <p><strong>Q.</strong> How is the average <code>qsec</code> distributed
-across <code>cyl</code> and <code>gear</code> in <code>mtcars</code>?
-Remember <code>table()</code>:</p>
+across <code>cyl</code> and <code>gear</code> in
+<code>mtcars</code>?</p>
 <pre class="r"><code>distribution &lt;- 
   mtcars %&gt;% 
   dplyr::select(cyl, gear, qsec) %&gt;% 
@@ -939,9 +949,6 @@ this one:</p>
 href="https://r4ds.had.co.nz/exploratory-data-analysis.html">Chapter 7,
 Exploratory Data Analysis, from from R for Data Science, Hadley Wickham
 &amp; Garrett Grolemund</a></li>
-<li>Everything from <a href="https://r4ds.had.co.nz">Chapter 7,
-Exploratory Data Analysis, from from R for Data Science, Hadley Wickham
-&amp; Garrett Grolemund</a> on {ggplot2}.</li>
 </ul>
 </div>
 <div id="important-sources-documentation-etc." class="section level3">

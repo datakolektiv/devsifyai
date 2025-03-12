@@ -740,7 +740,7 @@ class="math inline">\(\sigma\)</span>-algebra of events</em> and
 <em>probability-as-a-measure</em>. We can consider <span
 class="math inline">\(\sigma\)</span>-algebra of events as a family of
 sets where every set is an event, and every element of this event-set is
-an <em>outcome</em> for which consider the evenet realized, i.e. a
+an <em>outcome</em> for which consider the event realized, i.e. a
 <em>favorable outcome</em>.</p>
 <p>For example, if we toss a coin two times, then one event-set might
 be</p>
@@ -919,18 +919,19 @@ probability of it NOT happening is 78%.</p>
 \leqslant P(B) \]</span></p>
 <p>If set <span class="math inline">\(A\)</span> is contained in set
 <span class="math inline">\(B\)</span>, i.e. if all the outcomes
-favourable for event <span class="math inline">\(A\)</span> are also
+favorable for event <span class="math inline">\(A\)</span> are also
 favourable for event <span class="math inline">\(B\)</span>, then event
 <span class="math inline">\(A\)</span> has smaller (or equal) chances
 for realization than the event <span class="math inline">\(B\)</span>.
-In other words - events with smaller set of favourable outcomes are less
+In other words - events with smaller set of favorable outcomes are less
 probable.</p>
 <hr />
 <p><span class="math display">\[ 5^\circ\ A,\ B\ {\rm indep.}
 \Rightarrow P(AB) = P(A)P(B).\]</span></p>
-<p>If two events are independant, then the probability of them both
-occuring is equal to the product of probabilites of each event occuring
-independantly. If we toss a coin two times, we can calculate</p>
+<p>If two events are independent, then the probability of them both
+occurring is equal to the product of probabilities of each event
+occurring independently. If we toss a coin two times, we can
+calculate</p>
 <p><span class="math display">\[P(HT) = P(H)P(T).\]</span></p>
 <hr />
 <p>All this talk about the Probability Theory, but we still haven’t
@@ -1088,14 +1089,17 @@ class="math inline">\(P(\Omega) = 1\)</span>).</p>
 sample(choices, size = 1, prob = c(.2, .05, .45, .3))</code></pre>
 <pre><code>## [1] 0</code></pre>
 <pre class="r"><code>choices &lt;- c(-1, 0, 2, 4.6)
-result &lt;- sample(choices, size = 100, prob = c(.2, .05, .45, .3), replace = TRUE)
+result &lt;- sample(choices, 
+                 size = 100, 
+                 prob = c(.2, .05, .45, .3), 
+                 replace = TRUE)
 result</code></pre>
-<pre><code>##   [1]  2.0  2.0  2.0 -1.0 -1.0 -1.0  2.0  2.0  2.0  2.0 -1.0  4.6  2.0  2.0  4.6  2.0  2.0  4.6 -1.0
-##  [20]  4.6  4.6 -1.0  2.0  4.6  4.6 -1.0  4.6  4.6  2.0  4.6 -1.0  4.6  4.6  2.0  2.0  4.6  0.0  0.0
-##  [39] -1.0 -1.0 -1.0  4.6  4.6  4.6  4.6 -1.0 -1.0  0.0  0.0 -1.0  2.0  2.0  2.0 -1.0  4.6  2.0  4.6
-##  [58]  2.0  2.0 -1.0 -1.0  4.6  4.6  2.0  4.6  4.6  4.6 -1.0  4.6  0.0  2.0  2.0  4.6  4.6  2.0  2.0
-##  [77]  2.0  2.0  2.0 -1.0  2.0  2.0  2.0  4.6  4.6  4.6  2.0 -1.0 -1.0  0.0  4.6  4.6  4.6  2.0  2.0
-##  [96]  2.0  2.0 -1.0  2.0  2.0</code></pre>
+<pre><code>##   [1]  2.0  2.0  2.0 -1.0 -1.0 -1.0  2.0  2.0  2.0  2.0 -1.0  4.6  2.0  2.0  4.6  2.0  2.0  4.6
+##  [19] -1.0  4.6  4.6 -1.0  2.0  4.6  4.6 -1.0  4.6  4.6  2.0  4.6 -1.0  4.6  4.6  2.0  2.0  4.6
+##  [37]  0.0  0.0 -1.0 -1.0 -1.0  4.6  4.6  4.6  4.6 -1.0 -1.0  0.0  0.0 -1.0  2.0  2.0  2.0 -1.0
+##  [55]  4.6  2.0  4.6  2.0  2.0 -1.0 -1.0  4.6  4.6  2.0  4.6  4.6  4.6 -1.0  4.6  0.0  2.0  2.0
+##  [73]  4.6  4.6  2.0  2.0  2.0  2.0  2.0 -1.0  2.0  2.0  2.0  4.6  4.6  4.6  2.0 -1.0 -1.0  0.0
+##  [91]  4.6  4.6  4.6  2.0  2.0  2.0  2.0 -1.0  2.0  2.0</code></pre>
 <pre class="r"><code>result_frame &lt;- as.data.frame(table(result))
 result_frame</code></pre>
 <pre><code>##   result Freq
@@ -1317,12 +1321,12 @@ randomBinomials # see the difference?</code></pre>
 ##  [94] 50 53 47 44 51 44 50</code></pre>
 <pre class="r"><code>randomBinomials &lt;- rbinom(n = 100, size = 10000, p = .5)
 randomBinomials</code></pre>
-<pre><code>##   [1] 4935 5020 5015 5064 5007 4988 4949 5010 5042 4924 5041 5021 5000 4992 4922 5058 4969 4888 5105
-##  [20] 4960 5038 5020 4923 5028 4920 4977 4997 4972 4955 5039 5104 5002 5024 4937 4986 5063 5038 4974
-##  [39] 4968 4984 4981 5064 4972 5004 5037 5055 4950 4952 4996 4991 5089 5054 4981 4985 5000 4939 5032
-##  [58] 5010 4989 4998 4976 5058 5140 5008 4929 5057 4972 4968 4923 5053 4975 4983 5043 4991 5053 5022
-##  [77] 5084 5052 5028 4941 5072 5052 5001 4999 5008 5038 4979 5050 4959 5053 4956 5043 5059 5043 5099
-##  [96] 4971 4955 4967 5023 5052</code></pre>
+<pre><code>##   [1] 4935 5020 5015 5064 5007 4988 4949 5010 5042 4924 5041 5021 5000 4992 4922 5058 4969 4888
+##  [19] 5105 4960 5038 5020 4923 5028 4920 4977 4997 4972 4955 5039 5104 5002 5024 4937 4986 5063
+##  [37] 5038 4974 4968 4984 4981 5064 4972 5004 5037 5055 4950 4952 4996 4991 5089 5054 4981 4985
+##  [55] 5000 4939 5032 5010 4989 4998 4976 5058 5140 5008 4929 5057 4972 4968 4923 5053 4975 4983
+##  [73] 5043 4991 5053 5022 5084 5052 5028 4941 5072 5052 5001 4999 5008 5038 4979 5050 4959 5053
+##  [91] 4956 5043 5059 5043 5099 4971 4955 4967 5023 5052</code></pre>
 <p>Let’s plot the distribution of the previous experiment:</p>
 <pre class="r"><code>randomBinomialsPlot &lt;- data.frame(success = randomBinomials)
 ggplot(randomBinomialsPlot, 

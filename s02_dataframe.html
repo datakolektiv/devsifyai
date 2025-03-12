@@ -643,28 +643,28 @@ head(listings, 10)</code></pre>
 ## 18520 46944602                        cozy apartment in amsterdam 375398295    Danila
 ## 18521 46953753           Great luxurious apartment in city centre 379498141      Lisa
 ## 18522 46960026         Classic houseboat in Amsterdam city centre 213284349    Jochum
-##       neighbourhood_group                          neighbourhood latitude longitude       room_type
-## 18513                  NA                           Centrum-Oost 52.37867   4.90730 Entire home/apt
-## 18514                  NA                           Centrum-West 52.37706   4.89396 Entire home/apt
-## 18515                  NA                De Pijp - Rivierenbuurt 52.34381   4.90639 Entire home/apt
-## 18516                  NA                           Centrum-West 52.37495   4.89378    Private room
-## 18517                  NA                               Oud-Oost 52.35830   4.92186 Entire home/apt
-## 18518                  NA                           Centrum-Oost 52.36978   4.91443 Entire home/apt
-## 18519                  NA                           Centrum-Oost 52.36404   4.87967 Entire home/apt
-## 18520                  NA                De Pijp - Rivierenbuurt 52.34071   4.90854 Entire home/apt
-## 18521                  NA                           Centrum-Oost 52.36003   4.89317    Private room
-## 18522                  NA Oostelijk Havengebied - Indische Buurt 52.37701   4.91797    Private room
-##       price minimum_nights number_of_reviews last_review reviews_per_month
-## 18513   130              3                 0                            NA
-## 18514    46              1                 0                            NA
-## 18515    50              3                 0                            NA
-## 18516    40              1                 0                            NA
-## 18517   275              3                 0                            NA
-## 18518   330              3                 0                            NA
-## 18519   350              4                 0                            NA
-## 18520    60             28                 0                            NA
-## 18521    67              2                 0                            NA
-## 18522    96              2                 0                            NA
+##       neighbourhood_group                          neighbourhood latitude longitude
+## 18513                  NA                           Centrum-Oost 52.37867   4.90730
+## 18514                  NA                           Centrum-West 52.37706   4.89396
+## 18515                  NA                De Pijp - Rivierenbuurt 52.34381   4.90639
+## 18516                  NA                           Centrum-West 52.37495   4.89378
+## 18517                  NA                               Oud-Oost 52.35830   4.92186
+## 18518                  NA                           Centrum-Oost 52.36978   4.91443
+## 18519                  NA                           Centrum-Oost 52.36404   4.87967
+## 18520                  NA                De Pijp - Rivierenbuurt 52.34071   4.90854
+## 18521                  NA                           Centrum-Oost 52.36003   4.89317
+## 18522                  NA Oostelijk Havengebied - Indische Buurt 52.37701   4.91797
+##             room_type price minimum_nights number_of_reviews last_review reviews_per_month
+## 18513 Entire home/apt   130              3                 0                            NA
+## 18514 Entire home/apt    46              1                 0                            NA
+## 18515 Entire home/apt    50              3                 0                            NA
+## 18516    Private room    40              1                 0                            NA
+## 18517 Entire home/apt   275              3                 0                            NA
+## 18518 Entire home/apt   330              3                 0                            NA
+## 18519 Entire home/apt   350              4                 0                            NA
+## 18520 Entire home/apt    60             28                 0                            NA
+## 18521    Private room    67              2                 0                            NA
+## 18522    Private room    96              2                 0                            NA
 ##       calculated_host_listings_count availability_365
 ## 18513                              1              347
 ## 18514                              7              135
@@ -773,42 +773,18 @@ class="section level3">
 <p>If you want to see what objects do you have instantiated in the
 current R session, use <code>ls()</code>:</p>
 <pre class="r"><code>ls()</code></pre>
-<pre><code>##   [1] &quot;a&quot;                   &quot;a_vec&quot;               &quot;analyticsDir&quot;        &quot;awesome&quot;            
-##   [5] &quot;b_vec&quot;               &quot;binomialProbability&quot; &quot;binomMeans&quot;          &quot;c_vec&quot;              
-##   [9] &quot;c1&quot;                  &quot;c2&quot;                  &quot;cauchySums&quot;          &quot;check&quot;              
-##  [13] &quot;choices&quot;             &quot;cities&quot;              &quot;city&quot;                &quot;coin&quot;               
-##  [17] &quot;columns&quot;             &quot;counter&quot;             &quot;countries&quot;           &quot;cube_func&quot;          
-##  [21] &quot;d&quot;                   &quot;dataDir&quot;             &quot;dataFramesCheck&quot;     &quot;dataSet&quot;            
-##  [25] &quot;die&quot;                 &quot;distribution&quot;        &quot;emptyList&quot;           &quot;exp_prob&quot;           
-##  [29] &quot;exp_prob_df&quot;         &quot;f2&quot;                  &quot;filename&quot;            &quot;files&quot;              
-##  [33] &quot;freqHosts&quot;           &quot;heads&quot;               &quot;i&quot;                   &quot;index&quot;              
-##  [37] &quot;IQR&quot;                 &quot;iris&quot;                &quot;lambda&quot;              &quot;lattitudes&quot;         
-##  [41] &quot;lif&quot;                 &quot;listings&quot;            &quot;listings_5&quot;          &quot;listings_selection&quot; 
-##  [45] &quot;ll&quot;                  &quot;lof&quot;                 &quot;logic&quot;               &quot;longitudes&quot;         
-##  [49] &quot;m&quot;                   &quot;m1&quot;                  &quot;make_power_func&quot;     &quot;mean&quot;               
-##  [53] &quot;mean_price&quot;          &quot;meanSize&quot;            &quot;meanSizes&quot;           &quot;mtcars&quot;             
-##  [57] &quot;mtcarsPlot&quot;          &quot;my_func&quot;             &quot;my_list&quot;             &quot;my_vector&quot;          
-##  [61] &quot;myArray1&quot;            &quot;myArray2&quot;            &quot;myCities&quot;            &quot;myFun&quot;              
-##  [65] &quot;myList&quot;              &quot;myResult&quot;            &quot;mySequence&quot;          &quot;n&quot;                  
-##  [69] &quot;n_samples&quot;           &quot;names&quot;               &quot;no_outcomes&quot;         &quot;no_tries&quot;           
-##  [73] &quot;normalMeans&quot;         &quot;normalProbability&quot;   &quot;normMeans&quot;           &quot;num_cols&quot;           
-##  [77] &quot;num_files&quot;           &quot;num_host_listings&quot;   &quot;num_hosts&quot;           &quot;num_pairs&quot;          
-##  [81] &quot;num_rows&quot;            &quot;number_of_rolls&quot;     &quot;numbers&quot;             &quot;object&quot;             
-##  [85] &quot;observations&quot;        &quot;outcomes&quot;            &quot;p&quot;                   &quot;person&quot;             
-##  [89] &quot;persons&quot;             &quot;pFiveAndLessSixes&quot;   &quot;pFiveSixes&quot;          &quot;poisMeans&quot;          
-##  [93] &quot;poissonDeviates&quot;     &quot;poissonMean&quot;         &quot;poissonProperty&quot;     &quot;poissonVar&quot;         
-##  [97] &quot;populations&quot;         &quot;power&quot;               &quot;Q1&quot;                  &quot;Q3&quot;                 
-## [101] &quot;randomBinomials&quot;     &quot;randomBinomialsPlot&quot; &quot;rangeQsec&quot;           &quot;result&quot;             
-## [105] &quot;result_frame&quot;        &quot;roomType&quot;            &quot;roomTypes&quot;           &quot;rootDir&quot;            
-## [109] &quot;s&quot;                   &quot;sampleMeans&quot;         &quot;sampleN&quot;             &quot;sd&quot;                 
-## [113] &quot;search&quot;              &quot;separateCities&quot;      &quot;some_expression&quot;     &quot;someDataFrame&quot;      
-## [117] &quot;someList&quot;            &quot;someVector&quot;          &quot;square_func&quot;         &quot;squares&quot;            
-## [121] &quot;string&quot;              &quot;strings&quot;             &quot;testDataFrame&quot;       &quot;testHosts&quot;          
-## [125] &quot;this_animal&quot;         &quot;this_number&quot;         &quot;top_listings&quot;        &quot;tossing&quot;            
-## [129] &quot;tragedies&quot;           &quot;uif&quot;                 &quot;uof&quot;                 &quot;urlData&quot;            
-## [133] &quot;v1&quot;                  &quot;v2&quot;                  &quot;v3&quot;                  &quot;vec&quot;                
-## [137] &quot;word&quot;                &quot;word1&quot;               &quot;word2&quot;               &quot;x&quot;                  
-## [141] &quot;X&quot;                   &quot;y&quot;</code></pre>
+<pre><code>##  [1] &quot;a&quot;                  &quot;analyticsDir&quot;       &quot;awesome&quot;            &quot;c1&quot;                
+##  [5] &quot;c2&quot;                 &quot;cities&quot;             &quot;countries&quot;          &quot;dataDir&quot;           
+##  [9] &quot;f2&quot;                 &quot;filename&quot;           &quot;iris&quot;               &quot;lattitudes&quot;        
+## [13] &quot;listings&quot;           &quot;listings_selection&quot; &quot;ll&quot;                 &quot;logic&quot;             
+## [17] &quot;longitudes&quot;         &quot;m&quot;                  &quot;m1&quot;                 &quot;mtcars&quot;            
+## [21] &quot;my_list&quot;            &quot;my_vector&quot;          &quot;myArray1&quot;           &quot;myArray2&quot;          
+## [25] &quot;myCities&quot;           &quot;myFun&quot;              &quot;myList&quot;             &quot;myResult&quot;          
+## [29] &quot;mySequence&quot;         &quot;object&quot;             &quot;person&quot;             &quot;persons&quot;           
+## [33] &quot;populations&quot;        &quot;power&quot;              &quot;rootDir&quot;            &quot;s&quot;                 
+## [37] &quot;separateCities&quot;     &quot;someList&quot;           &quot;squares&quot;            &quot;top_listings&quot;      
+## [41] &quot;v1&quot;                 &quot;v2&quot;                 &quot;word&quot;               &quot;word1&quot;             
+## [45] &quot;word2&quot;</code></pre>
 <p>Some of them we do not need anymore and we want to remove them.
 <strong>Note.</strong> In real Data Science practice, most of the time
 we really need to look carefully after memory usage, because we
@@ -824,42 +800,15 @@ session are rather small:</p>
 anymore, so let’s remove it with <code>rm()</code>:</p>
 <pre class="r"><code>rm(listings_selection)
 ls()</code></pre>
-<pre><code>##   [1] &quot;a&quot;                   &quot;a_vec&quot;               &quot;analyticsDir&quot;        &quot;awesome&quot;            
-##   [5] &quot;b_vec&quot;               &quot;binomialProbability&quot; &quot;binomMeans&quot;          &quot;c_vec&quot;              
-##   [9] &quot;c1&quot;                  &quot;c2&quot;                  &quot;cauchySums&quot;          &quot;check&quot;              
-##  [13] &quot;choices&quot;             &quot;cities&quot;              &quot;city&quot;                &quot;coin&quot;               
-##  [17] &quot;columns&quot;             &quot;counter&quot;             &quot;countries&quot;           &quot;cube_func&quot;          
-##  [21] &quot;d&quot;                   &quot;dataDir&quot;             &quot;dataFramesCheck&quot;     &quot;dataSet&quot;            
-##  [25] &quot;die&quot;                 &quot;distribution&quot;        &quot;emptyList&quot;           &quot;exp_prob&quot;           
-##  [29] &quot;exp_prob_df&quot;         &quot;f2&quot;                  &quot;filename&quot;            &quot;files&quot;              
-##  [33] &quot;freqHosts&quot;           &quot;heads&quot;               &quot;i&quot;                   &quot;index&quot;              
-##  [37] &quot;IQR&quot;                 &quot;iris&quot;                &quot;lambda&quot;              &quot;lattitudes&quot;         
-##  [41] &quot;lif&quot;                 &quot;listings&quot;            &quot;listings_5&quot;          &quot;ll&quot;                 
-##  [45] &quot;lof&quot;                 &quot;logic&quot;               &quot;longitudes&quot;          &quot;m&quot;                  
-##  [49] &quot;m1&quot;                  &quot;make_power_func&quot;     &quot;mean&quot;                &quot;mean_price&quot;         
-##  [53] &quot;meanSize&quot;            &quot;meanSizes&quot;           &quot;mtcars&quot;              &quot;mtcarsPlot&quot;         
-##  [57] &quot;my_func&quot;             &quot;my_list&quot;             &quot;my_vector&quot;           &quot;myArray1&quot;           
-##  [61] &quot;myArray2&quot;            &quot;myCities&quot;            &quot;myFun&quot;               &quot;myList&quot;             
-##  [65] &quot;myResult&quot;            &quot;mySequence&quot;          &quot;n&quot;                   &quot;n_samples&quot;          
-##  [69] &quot;names&quot;               &quot;no_outcomes&quot;         &quot;no_tries&quot;            &quot;normalMeans&quot;        
-##  [73] &quot;normalProbability&quot;   &quot;normMeans&quot;           &quot;num_cols&quot;            &quot;num_files&quot;          
-##  [77] &quot;num_host_listings&quot;   &quot;num_hosts&quot;           &quot;num_pairs&quot;           &quot;num_rows&quot;           
-##  [81] &quot;number_of_rolls&quot;     &quot;numbers&quot;             &quot;object&quot;              &quot;observations&quot;       
-##  [85] &quot;outcomes&quot;            &quot;p&quot;                   &quot;person&quot;              &quot;persons&quot;            
-##  [89] &quot;pFiveAndLessSixes&quot;   &quot;pFiveSixes&quot;          &quot;poisMeans&quot;           &quot;poissonDeviates&quot;    
-##  [93] &quot;poissonMean&quot;         &quot;poissonProperty&quot;     &quot;poissonVar&quot;          &quot;populations&quot;        
-##  [97] &quot;power&quot;               &quot;Q1&quot;                  &quot;Q3&quot;                  &quot;randomBinomials&quot;    
-## [101] &quot;randomBinomialsPlot&quot; &quot;rangeQsec&quot;           &quot;result&quot;              &quot;result_frame&quot;       
-## [105] &quot;roomType&quot;            &quot;roomTypes&quot;           &quot;rootDir&quot;             &quot;s&quot;                  
-## [109] &quot;sampleMeans&quot;         &quot;sampleN&quot;             &quot;sd&quot;                  &quot;search&quot;             
-## [113] &quot;separateCities&quot;      &quot;some_expression&quot;     &quot;someDataFrame&quot;       &quot;someList&quot;           
-## [117] &quot;someVector&quot;          &quot;square_func&quot;         &quot;squares&quot;             &quot;string&quot;             
-## [121] &quot;strings&quot;             &quot;testDataFrame&quot;       &quot;testHosts&quot;           &quot;this_animal&quot;        
-## [125] &quot;this_number&quot;         &quot;top_listings&quot;        &quot;tossing&quot;             &quot;tragedies&quot;          
-## [129] &quot;uif&quot;                 &quot;uof&quot;                 &quot;urlData&quot;             &quot;v1&quot;                 
-## [133] &quot;v2&quot;                  &quot;v3&quot;                  &quot;vec&quot;                 &quot;word&quot;               
-## [137] &quot;word1&quot;               &quot;word2&quot;               &quot;x&quot;                   &quot;X&quot;                  
-## [141] &quot;y&quot;</code></pre>
+<pre><code>##  [1] &quot;a&quot;              &quot;analyticsDir&quot;   &quot;awesome&quot;        &quot;c1&quot;             &quot;c2&quot;            
+##  [6] &quot;cities&quot;         &quot;countries&quot;      &quot;dataDir&quot;        &quot;f2&quot;             &quot;filename&quot;      
+## [11] &quot;iris&quot;           &quot;lattitudes&quot;     &quot;listings&quot;       &quot;ll&quot;             &quot;logic&quot;         
+## [16] &quot;longitudes&quot;     &quot;m&quot;              &quot;m1&quot;             &quot;mtcars&quot;         &quot;my_list&quot;       
+## [21] &quot;my_vector&quot;      &quot;myArray1&quot;       &quot;myArray2&quot;       &quot;myCities&quot;       &quot;myFun&quot;         
+## [26] &quot;myList&quot;         &quot;myResult&quot;       &quot;mySequence&quot;     &quot;object&quot;         &quot;person&quot;        
+## [31] &quot;persons&quot;        &quot;populations&quot;    &quot;power&quot;          &quot;rootDir&quot;        &quot;s&quot;             
+## [36] &quot;separateCities&quot; &quot;someList&quot;       &quot;squares&quot;        &quot;top_listings&quot;   &quot;v1&quot;            
+## [41] &quot;v2&quot;             &quot;word&quot;           &quot;word1&quot;          &quot;word2&quot;</code></pre>
 <p><code>someList</code> is really small and we do not care to remove
 it.</p>
 <div id="install-a-package-to-read-data-from-excel"
@@ -890,17 +839,17 @@ files:</p>
 ## • `` -&gt; `...17`</code></pre>
 <pre class="r"><code>head(listings)</code></pre>
 <pre><code>## # A tibble: 6 × 17
-##      id name  host_id host_name neighbourhood_group neighbourhood latitude longitude room_type price
-##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;               &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;
-## 1  2818 Quie… 3159    Daniel    &lt;NA&gt;                Oostelijk Ha… 52.36575      4.94 Private … 59   
-## 2 20168 Stud… 59484   Alexander &lt;NA&gt;                Centrum-Oost  52.36509      4.89 Private … 236  
-## 3 25428 Love… 56142   Joan      &lt;NA&gt;                Centrum-West  52.37297      4.88 Entire h… 125  
-## 4 27886 Roma… 97647   Flip      &lt;NA&gt;                Centrum-West  52.38761      4.89 Private … 135  
-## 5 28871 Comf… 124245  Edwin     &lt;NA&gt;                Centrum-Oost  52.3661       4.89 Private … 75   
-## 6 29051 Comf… 124245  Edwin     &lt;NA&gt;                Centrum-Oost  52.36607      4.89 Private … 55   
-## # ℹ 7 more variables: minimum_nights &lt;dbl&gt;, number_of_reviews &lt;dbl&gt;, last_review &lt;chr&gt;,
-## #   reviews_per_month &lt;chr&gt;, calculated_host_listings_count &lt;dbl&gt;, availability_365 &lt;dbl&gt;,
-## #   ...17 &lt;dbl&gt;</code></pre>
+##      id name       host_id host_name neighbourhood_group neighbourhood latitude longitude room_type
+##   &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;               &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;    
+## 1  2818 Quiet Gar… 3159    Daniel    &lt;NA&gt;                Oostelijk Ha… 52.36575      4.94 Private …
+## 2 20168 Studio wi… 59484   Alexander &lt;NA&gt;                Centrum-Oost  52.36509      4.89 Private …
+## 3 25428 Lovely ap… 56142   Joan      &lt;NA&gt;                Centrum-West  52.37297      4.88 Entire h…
+## 4 27886 Romantic,… 97647   Flip      &lt;NA&gt;                Centrum-West  52.38761      4.89 Private …
+## 5 28871 Comfortab… 124245  Edwin     &lt;NA&gt;                Centrum-Oost  52.3661       4.89 Private …
+## 6 29051 Comfortab… 124245  Edwin     &lt;NA&gt;                Centrum-Oost  52.36607      4.89 Private …
+## # ℹ 8 more variables: price &lt;chr&gt;, minimum_nights &lt;dbl&gt;, number_of_reviews &lt;dbl&gt;,
+## #   last_review &lt;chr&gt;, reviews_per_month &lt;chr&gt;, calculated_host_listings_count &lt;dbl&gt;,
+## #   availability_365 &lt;dbl&gt;, ...17 &lt;dbl&gt;</code></pre>
 <p>Note how I have reused the variable name: <code>listings</code>. It
 was an existing data frame which is now overwritten by the same data
 from a different file. Do not forget to use <code>?</code> from the R
@@ -1608,34 +1557,34 @@ listingsOnline &lt;- read.csv(URLencode(urlData),
                            check.names = F, 
                            stringsAsFactors = F)
 head(listingsOnline)</code></pre>
-<pre><code>##      id                                              name host_id     host_name neighbourhood_group
-## 1  2818         Quiet Garden View Room &amp; Super Fast Wi-Fi    3159        Daniel                  NA
-## 2 27886 Romantic, stylish B&amp;B houseboat in canal district   97647          Flip                  NA
-## 3 28871                           Comfortable double room  124245         Edwin                  NA
-## 4 29051                           Comfortable single room  124245         Edwin                  NA
-## 5 44391   Quiet 2-bedroom Amsterdam city centre apartment  194779           Jan                  NA
-## 6 48373               Cozy family home in Amsterdam South  220434 Vesna &amp; Misha                  NA
-##                            neighbourhood latitude longitude       room_type price minimum_nights
-## 1 Oostelijk Havengebied - Indische Buurt 52.36435   4.94358    Private room    83              3
-## 2                           Centrum-West 52.38761   4.89188    Private room   155              3
-## 3                           Centrum-West 52.36775   4.89092    Private room    79              2
-## 4                           Centrum-Oost 52.36584   4.89111    Private room    59              2
-## 5                           Centrum-Oost 52.37168   4.91471 Entire home/apt    NA              3
-## 6                 Buitenveldert - Zuidas 52.32781   4.87680 Entire home/apt    NA              3
-##   number_of_reviews last_review reviews_per_month calculated_host_listings_count availability_365
-## 1               389  2024-08-31              2.07                              1              105
-## 2               279  2024-09-03              1.81                              1              193
-## 3               638  2024-09-03              3.73                              2               74
-## 4               761  2024-09-04              4.64                              2               91
-## 5                42  2022-08-20              0.25                              1                0
-## 6                 5  2024-04-28              0.36                              1                0
-##   number_of_reviews_ltm                  license
-## 1                    35 0363 5F3A 5684 6750 D14D
-## 2                    18 0363 974D 4986 7411 88D8
-## 3                   100 0363 607B EA74 0BD8 2F6F
-## 4                    84 0363 607B EA74 0BD8 2F6F
-## 5                     0 0363 E76E F06A C1DD 172C
-## 6                     4 0363 4A2B A6AD 0196 F684</code></pre>
+<pre><code>##      id                                              name host_id     host_name
+## 1  2818         Quiet Garden View Room &amp; Super Fast Wi-Fi    3159        Daniel
+## 2 27886 Romantic, stylish B&amp;B houseboat in canal district   97647          Flip
+## 3 28871                           Comfortable double room  124245         Edwin
+## 4 29051                           Comfortable single room  124245         Edwin
+## 5 44391   Quiet 2-bedroom Amsterdam city centre apartment  194779           Jan
+## 6 48373               Cozy family home in Amsterdam South  220434 Vesna &amp; Misha
+##   neighbourhood_group                          neighbourhood latitude longitude       room_type
+## 1                  NA Oostelijk Havengebied - Indische Buurt 52.36435   4.94358    Private room
+## 2                  NA                           Centrum-West 52.38761   4.89188    Private room
+## 3                  NA                           Centrum-West 52.36775   4.89092    Private room
+## 4                  NA                           Centrum-Oost 52.36584   4.89111    Private room
+## 5                  NA                           Centrum-Oost 52.37168   4.91471 Entire home/apt
+## 6                  NA                 Buitenveldert - Zuidas 52.32781   4.87680 Entire home/apt
+##   price minimum_nights number_of_reviews last_review reviews_per_month
+## 1    83              3               389  2024-08-31              2.07
+## 2   155              3               279  2024-09-03              1.81
+## 3    79              2               638  2024-09-03              3.73
+## 4    59              2               761  2024-09-04              4.64
+## 5    NA              3                42  2022-08-20              0.25
+## 6    NA              3                 5  2024-04-28              0.36
+##   calculated_host_listings_count availability_365 number_of_reviews_ltm                  license
+## 1                              1              105                    35 0363 5F3A 5684 6750 D14D
+## 2                              1              193                    18 0363 974D 4986 7411 88D8
+## 3                              2               74                   100 0363 607B EA74 0BD8 2F6F
+## 4                              2               91                    84 0363 607B EA74 0BD8 2F6F
+## 5                              1                0                     0 0363 E76E F06A C1DD 172C
+## 6                              1                0                     4 0363 4A2B A6AD 0196 F684</code></pre>
 <p>The <code>URLencode()</code> function takes care of the
 percent-encoding of characters in the URLs. Never forget to use it when
 you need an online file. There are better solutions to this than the
@@ -2304,6 +2253,7 @@ in {ggplot2} is produced by <code>geom_density()</code> which has an
 logarithm in R is <code>log()</code> (and then there is
 <code>log10()</code> too).</p></li>
 </ul>
+<pre><code>## Warning: Removed 16 rows containing non-finite outside the scale range (`stat_density()`).</code></pre>
 <p><img src="s02_dataframe_files/figure-html/unnamed-chunk-86-1.png" width="672" /></p>
 <ul>
 <li><p><strong>E5.</strong> Compute the average

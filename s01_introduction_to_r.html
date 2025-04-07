@@ -358,6 +358,9 @@ div.tocify {
     <li>
       <a href="s06_Probability.html">S06. Probability Theory</a>
     </li>
+    <li>
+      <a href="s06_Correlation.html">S07. Covariance, Correlation, Regression</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -558,24 +561,30 @@ directory:</p>
 ## [125] &quot;resources.Rmd&quot;                            &quot;Rlogo.png&quot;                               
 ## [127] &quot;s00_installations.html&quot;                   &quot;s00_installations.Rmd&quot;                   
 ## [129] &quot;S01_01_Functions.jpeg&quot;                    &quot;S01_02_Arrays_and_Lists.jpeg&quot;            
-## [131] &quot;s01_introduction_to_r.nb.html&quot;            &quot;s01_introduction_to_r.Rmd&quot;               
-## [133] &quot;S02_01_DataFrames.jpeg&quot;                   &quot;s02_dataframe.Rmd&quot;                       
-## [135] &quot;S03_01_FunctionalProgramming.jpeg&quot;        &quot;s03_functional.Rmd&quot;                      
-## [137] &quot;S04_01_RProgramming.jpeg&quot;                 &quot;s04_more_functional.Rmd&quot;                 
-## [139] &quot;s05_EDA.Rmd&quot;                              &quot;s06_Probability.Rmd&quot;                     
-## [141] &quot;S07_01_ProbabilityFunctions.jpeg&quot;         &quot;S17_01_ROC.jpeg&quot;                         
-## [143] &quot;S17_02_LikelihoodFunction.jpeg&quot;           &quot;S21_01_RandomForest.jpeg&quot;                
-## [145] &quot;S22_01_Bias-Variance_Tradeoff.jpeg&quot;       &quot;session00_logos.png&quot;                     
-## [147] &quot;site_libs&quot;                                &quot;sitelinks1.jpg&quot;                          
-## [149] &quot;sitelinks2.jpg&quot;                           &quot;sitelinks3.jpg&quot;                          
-## [151] &quot;sitelinks4.jpg&quot;                           &quot;skc_kahneman_delfi_2015.jpg&quot;             
-## [153] &quot;startit_add_dsss2022_800.jpeg&quot;            &quot;StartitMeetup2016_InfRetreival.png&quot;      
-## [155] &quot;StartitMeetup2016.png&quot;                    &quot;talasAI.png&quot;                             
-## [157] &quot;twitter.png&quot;                              &quot;undp_machinery2023.jpg&quot;                  
-## [159] &quot;UvodR_startit_banner.jpg&quot;                 &quot;video.Rmd&quot;                               
-## [161] &quot;VladimirMijatovic175px.jpg&quot;               &quot;wd_thinkpad_official.png&quot;                
-## [163] &quot;webit2023.jpeg&quot;                           &quot;WikidataCon2019.png&quot;                     
-## [165] &quot;WikidataCon2021.png&quot;                      &quot;wikimediablog2018.jpg&quot;</code></pre>
+## [131] &quot;s01_introduction_to_r_files&quot;              &quot;s01_introduction_to_r.html&quot;              
+## [133] &quot;s01_introduction_to_r.nb.html&quot;            &quot;s01_introduction_to_r.Rmd&quot;               
+## [135] &quot;S02_01_DataFrames.jpeg&quot;                   &quot;s02_dataframe_files&quot;                     
+## [137] &quot;s02_dataframe.html&quot;                       &quot;s02_dataframe.Rmd&quot;                       
+## [139] &quot;S03_01_FunctionalProgramming.jpeg&quot;        &quot;s03_functional.html&quot;                     
+## [141] &quot;s03_functional.Rmd&quot;                       &quot;S04_01_RProgramming.jpeg&quot;                
+## [143] &quot;s04_more_functional_files&quot;                &quot;s04_more_functional.html&quot;                
+## [145] &quot;s04_more_functional.Rmd&quot;                  &quot;s05_EDA_files&quot;                           
+## [147] &quot;s05_EDA.html&quot;                             &quot;s05_EDA.Rmd&quot;                             
+## [149] &quot;s06_Probability_files&quot;                    &quot;s06_Probability.Rmd&quot;                     
+## [151] &quot;S07_01_ProbabilityFunctions.jpeg&quot;         &quot;s07_Correlation.Rmd&quot;                     
+## [153] &quot;S17_01_ROC.jpeg&quot;                          &quot;S17_02_LikelihoodFunction.jpeg&quot;          
+## [155] &quot;S21_01_RandomForest.jpeg&quot;                 &quot;S22_01_Bias-Variance_Tradeoff.jpeg&quot;      
+## [157] &quot;session00_logos.png&quot;                      &quot;site_libs&quot;                               
+## [159] &quot;sitelinks1.jpg&quot;                           &quot;sitelinks2.jpg&quot;                          
+## [161] &quot;sitelinks3.jpg&quot;                           &quot;sitelinks4.jpg&quot;                          
+## [163] &quot;skc_kahneman_delfi_2015.jpg&quot;              &quot;startit_add_dsss2022_800.jpeg&quot;           
+## [165] &quot;StartitMeetup2016_InfRetreival.png&quot;       &quot;StartitMeetup2016.png&quot;                   
+## [167] &quot;talasAI.png&quot;                              &quot;twitter.png&quot;                             
+## [169] &quot;undp_machinery2023.jpg&quot;                   &quot;UvodR_startit_banner.jpg&quot;                
+## [171] &quot;video.Rmd&quot;                                &quot;VladimirMijatovic175px.jpg&quot;              
+## [173] &quot;wd_thinkpad_official.png&quot;                 &quot;webit2023.jpeg&quot;                          
+## [175] &quot;WikidataCon2019.png&quot;                      &quot;WikidataCon2021.png&quot;                     
+## [177] &quot;wikimediablog2018.jpg&quot;</code></pre>
 <p>Take a look at <code>list.files(getwd())</code> carefully. We have
 already learned that <code>getwd()</code> is an R function. That
 function takes <strong>no input</strong>, and returns one
@@ -1587,8 +1596,8 @@ leaflet(data = myCities) %&gt;%
   addAwesomeMarkers(~lon, ~lat, icon = awesome, 
                     popup = ~as.character(population),
                    label = ~as.character(city))</code></pre>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-9e8dfbbc9b18de851999" style="width:864px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-9e8dfbbc9b18de851999">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addAwesomeMarkers","args":[[40.73061,44.787197,55.751244,48.864716,41.902782,52.520008],[-73.935242,20.457273,37.618423,2.349014,12.496366,13.404954],{"icon":"info","markerColor":"blue","iconColor":"black","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["8405837","1378682","12692466","2187526","2872800","3644826"],null,null,null,["New York","Belgrade","Moscow","Paris","Rome","Berlin"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[40.73061,55.751244],"lng":[-73.935242,37.618423]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-81623dce8c6517848489" style="width:864px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-81623dce8c6517848489">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addAwesomeMarkers","args":[[40.73061,44.787197,55.751244,48.864716,41.902782,52.520008],[-73.935242,20.457273,37.618423,2.349014,12.496366,13.404954],{"icon":"info","markerColor":"blue","iconColor":"black","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["8405837","1378682","12692466","2187526","2872800","3644826"],null,null,null,["New York","Belgrade","Moscow","Paris","Rome","Berlin"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[40.73061,55.751244],"lng":[-73.935242,37.618423]}},"evals":[],"jsHooks":[]}</script>
 <p>That would be ten (10) lines of code, not counting the comments of
 course.</p>
 </div>
@@ -1655,14 +1664,7 @@ print(mtcars)</code></pre>
   theme_bw() + 
   theme(plot.title = element_text(size = 10)) + 
   theme(panel.border = element_blank())</code></pre>
-<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: The following aesthetics were dropped during statistical transformation: label.
-## ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
-## ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?</code></pre>
 <p><img src="s01_introduction_to_r_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
 <p>But if you want to be sure that you can use this power in a
 responsible way, you need to get along with vectors, lists, nested

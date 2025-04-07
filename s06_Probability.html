@@ -346,6 +346,9 @@ div.tocify {
     <li>
       <a href="s06_Probability.html">S06. Probability Theory</a>
     </li>
+    <li>
+      <a href="s06_Correlation.html">S07. Covariance, Correlation, Regression</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -1260,8 +1263,9 @@ class="section level3">
 times. <strong>Q.</strong> What is the probability of obtaining five or
 less sixes at random?</p>
 <p>We know that R’s <code>dbinom()</code> represents the binomial
-probability mass function (p.m.f.). Let’s see: the probability of
-getting <em>exactly</em> five sixes at random is:</p>
+probability mass function (p.m.f.).</p>
+<p>Let’s see: the probability of getting <em>exactly</em> five sixes at
+random is:</p>
 <pre class="r"><code>pFiveSixes &lt;- dbinom(5, size = 10, p = 1/6)
 pFiveSixes</code></pre>
 <pre><code>## [1] 0.01302381</code></pre>
@@ -1307,11 +1311,11 @@ class="section level4">
 <p><code>rbinom()</code> will provide a vector of random deviates from
 the Binomial distribution with the desired parameter, e.g.:</p>
 <pre class="r"><code># Generate a sample of random binomial variates:
-randomBinomials &lt;- rbinom(n = 100, size = 1, p = .5)
+randomBinomials &lt;- rbinom(n = 100, size = 10, p = .5)
 randomBinomials</code></pre>
-<pre><code>##   [1] 1 0 1 0 0 0 1 0 1 0 0 1 1 1 0 1 1 0 0 0 1 1 0 0 1 0 0 0 0 0 1 1 0 1 1 1 1 1 0 0 0 1 0 0 1 0 0
-##  [48] 1 0 0 1 0 0 0 0 1 1 0 0 1 1 0 0 0 1 1 1 0 0 0 1 0 1 1 1 0 1 0 1 0 0 0 1 1 1 0 0 0 1 1 0 0 0 1
-##  [95] 0 1 1 0 0 1</code></pre>
+<pre><code>##   [1] 6 4 6 2 2 5 6 3 5 5 3 5 6 6 4 8 6 4 4 3 6 7 3 4 7 5 4 3 5 3 5 5 4 8 6 5 7 5 5 5 2 9 4 3 7 5 4
+##  [48] 5 4 3 6 4 4 4 4 6 6 4 3 7 7 1 5 4 6 7 5 2 4 5 9 5 8 6 6 4 6 3 6 3 3 4 6 7 8 4 5 3 5 5 4 5 5 8
+##  [95] 3 6 7 3 4 7</code></pre>
 <p>Now, if each experiment encompasses 100 coin tosses:</p>
 <pre class="r"><code>randomBinomials &lt;- rbinom(n = 100, size = 100, p = .5)
 randomBinomials # see the difference?</code></pre>
@@ -1538,8 +1542,8 @@ dim(poissonDeviates)</code></pre>
 <pre class="r"><code>poissonDeviates &lt;- as.data.frame(poissonDeviates)
 poissonDeviates$id &lt;- 1:dim(poissonDeviates)[1]
 poissonDeviates &lt;- poissonDeviates %&gt;% 
-  pivot_longer(cols = -id) %&gt;% 
-  select(-name)
+  tidyr::pivot_longer(cols = -id) %&gt;% 
+  dplyr::select(-name)
 poissonDeviates$id &lt;- factor(poissonDeviates$id, 
                              levels = sort(unique(poissonDeviates$id)))</code></pre>
 <p>and finally:</p>
@@ -1560,7 +1564,7 @@ poissonDeviates$id &lt;- factor(poissonDeviates$id,
 <p>Let’s study one important property of the Poisson distribution:</p>
 <pre class="r"><code>lambda &lt;- 1:100
 poissonMean &lt;- sapply(lambda, function(x) {
-  mean(rpois(100000,x))
+  mean(rpois(100000, x))
 })
 poissonVar &lt;- sapply(lambda, function(x) {
   var(rpois(100000,x))

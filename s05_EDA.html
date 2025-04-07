@@ -346,6 +346,9 @@ div.tocify {
     <li>
       <a href="s06_Probability.html">S06. Probability Theory</a>
     </li>
+    <li>
+      <a href="s06_Correlation.html">S07. Covariance, Correlation, Regression</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -794,7 +797,7 @@ ggplot(data = mtcarsPlot,
 <p>Not readable enough? <code>install.packages(ggrepel)</code>. Now,</p>
 <pre class="r"><code>library(ggrepel)
 mtcarsPlot &lt;- mtcars %&gt;% 
-  select(hp, qsec)
+  dplyr::select(hp, qsec)
 mtcarsPlot$label &lt;- paste0(&quot;(&quot;, 
                            mtcarsPlot$hp, &quot;, &quot;, 
                            mtcarsPlot$qsec, 

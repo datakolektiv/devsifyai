@@ -349,6 +349,9 @@ div.tocify {
     <li>
       <a href="s07_Correlation.html">S07. Covariance, Correlation, Regression</a>
     </li>
+    <li>
+      <a href="s08_LeastSquares.html">S08. Estimation Theory - Least Squares</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -407,8 +410,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Session07 Covariance, Correlation, Simple
 Linear Regression</h1>
-<h4 class="author">Goran S. Milovanovic, PhD, Aleksandar Cvetković,
-Phd</h4>
+<h4 class="author">Goran S. Milovanovic, PhD</h4>
 
 </div>
 
@@ -451,9 +453,9 @@ gentle way - towards simple linear regression.</p>
 <div id="prerequisits" class="section level3">
 <h3>0. Prerequisits</h3>
 <p>Install:</p>
-<pre class="r"><code>#install.packages(&#39;corrplot&#39;)
-#install.packages(&#39;Hmisc&#39;)
-#install.packages(&#39;ppcor&#39;)
+<pre class="r"><code># install.packages(&#39;corrplot&#39;)
+# install.packages(&#39;Hmisc&#39;)
+# install.packages(&#39;ppcor&#39;)
 dataDir &lt;- paste0(getwd(), &quot;/_data/&quot;)</code></pre>
 <p>Setup:</p>
 <pre class="r"><code>library(tidyverse)
@@ -518,7 +520,7 @@ plot(iris$Sepal.Length, iris$Petal.Length,
                         color = Species)
        ) + 
   geom_point() + 
-  geom_smooth(method = &quot;lm&quot;, se = F, linewidth = .25) +
+  geom_smooth(method = &quot;lm&quot;, se = FALSE, linewidth = .25) +
   theme_bw() + 
   theme(panel.border = element_blank())</code></pre>
 <p><img src="s07_Correlation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
@@ -572,13 +574,16 @@ class="math inline">\(X\)</span>:</p>
 \frac{x_i-\bar{X}}{\sigma}\]</span></p>
 <p>Thus,</p>
 <pre class="r"><code>zSepalLength &lt;- (iris$Sepal.Length - mean(iris$Sepal.Length))/sd(iris$Sepal.Length)
+
 zPetalLength &lt;- (iris$Petal.Length - mean(iris$Petal.Length))/sd(iris$Petal.Length)
+
 cov(zSepalLength, zPetalLength)</code></pre>
 <pre><code>## [1] 0.8717538</code></pre>
 <p>is the correlation of <code>Sepal.Length</code> and
 <code>Petal.Length</code>; let’s check with {base} R function
 <code>cor()</code> which computes the correlation:</p>
-<pre class="r"><code>cor(iris$Sepal.Length, iris$Petal.Length, method = &quot;pearson&quot;)</code></pre>
+<pre class="r"><code>cor(iris$Sepal.Length, iris$Petal.Length, 
+    method = &quot;pearson&quot;)</code></pre>
 <pre><code>## [1] 0.8717538</code></pre>
 <p>Right. There are many formulas that compute <code>r</code>, the
 correlation coefficient; however, understanding that is simply the
@@ -671,7 +676,7 @@ R. The {base} approach would be to use <code>plot()</code> on a
 <code>data.frame</code> like in the following example:</p>
 <pre class="r"><code># {base} approach
 data(&quot;mtcars&quot;)
-corMatrix &lt;- cor(mtcars[, 1:8])
+corMatrix &lt;- cor(mtcars[ , 1:8])
 plot(as.data.frame(corMatrix))</code></pre>
 <p><img src="s07_Correlation_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>But there’s also the fantastic <code>{corrplot}</code> package to
@@ -716,7 +721,8 @@ discuss prediction meaningfully.</p>
 class="section level4">
 <h4>3.1 Linear Correlation, Assumption of Linearity, and Causality</h4>
 <pre class="r"><code>## Pearson correlation in R {base}
-cor1 &lt;- cor(iris$Sepal.Length, iris$Petal.Length, 
+cor1 &lt;- cor(iris$Sepal.Length, 
+            iris$Petal.Length, 
             method = &quot;pearson&quot;)
 cor1</code></pre>
 <pre><code>## [1] 0.8717538</code></pre>
@@ -758,7 +764,7 @@ account for situations like the present one; in the meantime, pretend
 like nothing has happened…</p>
 <p>By the way, is the <span class="math inline">\(R\)</span> coefficient
 of linear correlation statistically significant?</p>
-<pre class="r"><code># Is Pearson&#39;s product-moment correlation coefficient significant?
+<pre class="r"><code># Is Pearson&#39;s correlation coefficient significant?
 cor2 &lt;- rcorr(iris$Sepal.Length, # {hmisc}
               iris$Petal.Length, 
               type=&quot;pearson&quot;)
